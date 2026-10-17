@@ -11,13 +11,22 @@ npm run dev
 
 Open http://localhost:3000.
 
-## Build static export
+## Deploy to Cloudflare
+
+Runs on Cloudflare Workers via OpenNext (`@opennextjs/cloudflare`).
 
 ```bash
-npm run build
+npm run build     # = opennextjs-cloudflare build → .open-next/worker.js
+npm run deploy    # = opennextjs-cloudflare deploy → Cloudflare Workers
 ```
 
-The `out/` directory is generated because `next.config.ts` enables `output: 'export'`. This is suitable for a static host such as Vercel.
+On first run, log in to Cloudflare once:
+
+```bash
+npx wrangler login
+```
+
+Worker config lives in `wrangler.jsonc` (name `krillion-home-mvp`).
 
 ## Important data and branding notes
 
