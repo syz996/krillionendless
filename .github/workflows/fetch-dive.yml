@@ -1,0 +1,27 @@
+name: fetch dive
+
+on:
+  schedule:
+    - cron: '0 17 * * *'   # UTC 17:00 = 纽约 13:00（夏令时），翻期后抓取
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node --check fetch-dive.mjs
+      - run: node fetch-dive.mjs
+      - run: node fetch-dive.mjs --verify
+      - run: |
+          git config user.name  "dive-bot"
+          git config user.email "bot@krillionendless.org"
+          git add content/
+          git diff --cached --quiet || git commit -m "dive: $(date -u +%F)"
+          git push

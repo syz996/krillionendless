@@ -1,0 +1,20 @@
+// 站点全局配置（纯常量，无 fs，可被服务端与客户端组件共用）。
+export const SITE = {
+  baseUrl: 'https://krillionendless.org',  // 用于 canonical / sitemap / robots 的绝对地址
+  brand: 'KrillionEndless',                // 品牌名
+  domain: 'krillionendless.org',           // 页脚展示域名
+  defaultFaq: [
+    {
+      q: 'Is this the official Krillion archive?',
+      a: 'No. This is an independent, fan-made archive — not affiliated with the official game at krillion.io.',
+    },
+    {
+      q: 'Do these pages include the official answers?',
+      a: 'No. Each archive page lists a dive’s public prompts and original hints only — it does not reproduce the official answer key or rarity scores.',
+    },
+    {
+      q: 'Can I replay this dive?',
+      a: 'Yes. Open the unlimited version to replay with the same 25-second timer, or come back here to review the prompts again.',
+    },
+  ],
+};
