@@ -6,6 +6,32 @@ import SiteFooter from '../../../components/SiteFooter';
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
 
+const diveFaqs = [
+  { q: "Is this the official Krillion archive?", a: "No. This is an independent, fan-made archive — not affiliated with the official game at krillion.io." },
+  { q: "Do these pages include the official answers?", a: "No. Each archive page lists a dive's public prompts and original hints only — it does not reproduce the official answer key or rarity scores." },
+  { q: "Can I replay this dive?", a: "Yes. Open the unlimited version to replay with the same 25-second timer, or come back here to review the prompts again." },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: diveFaqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://krillionendless.org/" },
+      { "@type": "ListItem", position: 2, name: "Archive", item: "https://krillionendless.org/archive/" },
+      { "@type": "ListItem", position: 3, name: `Dive #${n}`, item: `https://krillionendless.org/archive/dive-${n}/` },
+    ],
+  },
+];
 export const dynamicParams = false;
 
 function parseNumber(slug: string): number | null {

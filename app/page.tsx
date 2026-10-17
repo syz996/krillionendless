@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import GameClient from "./GameClient";
+import { homeFaqs } from "@/content/faq";
 
 export const metadata: Metadata = {
   title: "Krillion Unlimited Game — Independent Practice Dive",
@@ -24,6 +25,36 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: homeFaqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "KrillionEndless",
+  url: "https://krillionendless.org/",
+};
+
 export default function Page() {
-  return <GameClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+      />
+      <GameClient />
+    </>
+  );
 }

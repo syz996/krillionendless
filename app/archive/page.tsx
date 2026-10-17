@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import { DIVES, SITE, fmtDate, diveSlug, getArchiveGroups } from '../../lib/archive';
+import { DIVES, getArchiveGroups } from '../../lib/archive';
 import SiteHeader from '../../components/SiteHeader';
 import SiteFooter from '../../components/SiteFooter';
 
-// canonical / og 绝对地址来自 SITE.baseUrl
-const BASE = SITE.baseUrl.replace(/\/+$/, '');
+// 部署域名上线后填（用于 canonical / og 绝对地址），如 'https://krillionendless.com'
+const BASE = '';
 
 export function generateMetadata(): Metadata {
   const count = DIVES.length;
@@ -42,7 +42,7 @@ export default function ArchivePage() {
               <h2>{g.label}</h2>
               <ul>
                 {g.dives.map(d => (
-                  <li key={d.dive}><a href={`/archive/${diveSlug(d.dive)}/`}>Dive #{d.dive} — {fmtDate(d.date)}</a></li>
+                  <li key={d.number}><a href={`/archive/dive-${d.number}/`}>Dive #{d.number} — {d.displayDate}</a></li>
                 ))}
               </ul>
             </div>
@@ -51,16 +51,10 @@ export default function ArchivePage() {
 
         <div className="ad-slot">Advertisement</div>
 
-        {count > 0 ? (
-          <details>
-            <summary>How far back does this archive go?</summary>
-            <p>
-              {DIVES[0] === DIVES[DIVES.length - 1]
-                ? `This archive starts at Dive #${DIVES[0].dive} (${fmtDate(DIVES[0].date)}), and a new page is added every day.`
-                : `This archive currently covers Dive #${DIVES[0].dive} (${fmtDate(DIVES[0].date)}) through Dive #${DIVES[DIVES.length - 1].dive} (${fmtDate(DIVES[DIVES.length - 1].date)}), and a new page is added every day.`}
-            </p>
-          </details>
-        ) : null}
+        <details>
+          <summary>How far back does this archive go?</summary>
+          <p>Dive #1 was played on July 16, 2026. This archive covers all {count} dives since then, and a new one is added every day.</p>
+        </details>
         <details>
           <summary>Is this the official Krillion archive?</summary>
           <p>No. This is an independent, fan-made archive — not affiliated with the official game at krillion.io.</p>
