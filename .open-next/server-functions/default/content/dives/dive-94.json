@@ -1,0 +1,41 @@
+{
+  "dive": 94,
+  "date": "2026-10-17",
+  "prompts": [
+    {
+      "prompt": "Name a way to prepare potatoes",
+      "hint": "Think about the cooking method first — boiling, mashing, roasting, frying — then the dishes that build on them. Plenty of everyday answers sit at the common end, while regional preparations and less obvious styles are where the rarer, higher-value picks hide."
+    },
+    {
+      "prompt": "Name an animal whose name is exactly four letters long",
+      "hint": "Four letters covers a lot of ground, from household pets to farm animals, birds, fish and reptiles. Cast wide and don't stop at the most obvious family pet; a surprising number of wild and aquatic animals fit the box perfectly."
+    },
+    {
+      "prompt": "Name someone who's won MVP (NBA/NFL/MLB), Premier League Player of the Season, or won the Ballon d'Or",
+      "hint": "This spans several different honours across American sport and world football, so the answer pool is enormous. Football's biggest names sit at the crowded end, while older legends and players remembered for one dominant league season are the picks most people forget."
+    },
+    {
+      "prompt": "Name a chemical element whose symbol is one letter",
+      "hint": "Only a small fixed set of chemical elements use a single-letter symbol, so this one is really a recall test. Run through the alphabet letters that can stand alone as a symbol, then choose an element that sits in the middle of the pack rather than the first guess."
+    },
+    {
+      "prompt": "Name a type of station (like a train station)",
+      "hint": "A 'station' goes well beyond trains. Think about the places people work out of, the spots that keep city services running, and the platforms that broadcast or transmit. Many of these answers are everyday words that simply never get called to mind under time pressure."
+    },
+    {
+      "prompt": "Name a country whose name ends in the letter E",
+      "hint": "The letter E is a common country-name ending across several continents. Start with the big European names, then push into Africa, the Americas and island nations — the less obvious geography is where the highest-value answers tend to sit."
+    },
+    {
+      "prompt": "Name a superhero team",
+      "hint": "Look beyond the two or three most famous movie teams. Comic book history is full of superteams across the big universes and beyond. A strong pick is one most casual fans recognise but rarely think to name first."
+    }
+  ],
+  "analysis": [
+    "This dive leans hard into open-ended listing questions. Almost every prompt accepts dozens of valid answers, which means the scoring gap between a common pick and a rare one is far larger than the gap between knowing something and knowing nothing. Speed matters, but choosing a memorable angle matters more.",
+    "A few prompts quietly test recall rather than creativity. The one-letter chemical symbols form a short, fixed list, and the four-letter animal question rewards scanning a broad mental list instead of stopping early. These are the rounds where a fast, systematic sweep beats the first thing that comes to mind.",
+    "The sports-honour question is the widest net on the page: it crosses American leagues and the biggest individual prize in football, so both casual and die-hard fans can play. The superhero and station prompts are the friendly entry points, while geography and food anchor the middle of the pack."
+  ],
+  "faq": [],
+  "overrides": {}
+}
