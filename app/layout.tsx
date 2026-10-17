@@ -4,7 +4,7 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Krillion Unlimited Game — Independent Practice Dive',
   description: 'Play an independent rare-answer trivia practice game with seven prompts, a 25-second timer, and an original starter question bank.',
-  robots: { index: false, follow: true }
+  robots: { index: true, follow: true }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

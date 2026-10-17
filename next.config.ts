@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+
 const nextConfig: NextConfig = {
   output: 'export',
   trailingSlash: true,
@@ -6,4 +7,5 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
 };
+
 export default nextConfig;

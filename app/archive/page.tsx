@@ -51,10 +51,16 @@ export default function ArchivePage() {
 
         <div className="ad-slot">Advertisement</div>
 
-        <details>
-          <summary>How far back does this archive go?</summary>
-          <p>Dive #1 was played on July 16, 2026. This archive covers all {count} dives since then, and a new one is added every day.</p>
-        </details>
+        {count > 0 ? (
+          <details>
+            <summary>How far back does this archive go?</summary>
+            <p>
+              {DIVES[0] === DIVES[DIVES.length - 1]
+                ? `This archive starts at Dive #${DIVES[0].dive} (${fmtDate(DIVES[0].date)}), and a new page is added every day.`
+                : `This archive currently covers Dive #${DIVES[0].dive} (${fmtDate(DIVES[0].date)}) through Dive #${DIVES[DIVES.length - 1].dive} (${fmtDate(DIVES[DIVES.length - 1].date)}), and a new page is added every day.`}
+            </p>
+          </details>
+        ) : null}
         <details>
           <summary>Is this the official Krillion archive?</summary>
           <p>No. This is an independent, fan-made archive — not affiliated with the official game at krillion.io.</p>
