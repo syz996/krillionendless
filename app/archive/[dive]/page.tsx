@@ -6,32 +6,6 @@ import SiteFooter from '../../../components/SiteFooter';
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
 
-const diveFaqs = [
-  { q: "Is this the official Krillion archive?", a: "No. This is an independent, fan-made archive — not affiliated with the official game at krillion.io." },
-  { q: "Do these pages include the official answers?", a: "No. Each archive page lists a dive's public prompts and original hints only — it does not reproduce the official answer key or rarity scores." },
-  { q: "Can I replay this dive?", a: "Yes. Open the unlimited version to replay with the same 25-second timer, or come back here to review the prompts again." },
-];
-
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: diveFaqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://krillionendless.org/" },
-      { "@type": "ListItem", position: 2, name: "Archive", item: "https://krillionendless.org/archive/" },
-      { "@type": "ListItem", position: 3, name: `Dive #${n}`, item: `https://krillionendless.org/archive/dive-${n}/` },
-    ],
-  },
-];
 export const dynamicParams = false;
 
 function parseNumber(slug: string): number | null {
@@ -48,11 +22,13 @@ export async function generateMetadata({ params }: { params: Promise<{ dive: str
   const number = parseNumber(slug);
   const dive = number == null ? undefined : getDiveByNumber(number);
   if (!dive) return {};
+
   const displayDate = fmtDate(dive.date);
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
   const title = dive.overrides?.title || `Krillion Dive #${dive.dive} Answers & Hints (${displayDate})`;
   const description = dive.overrides?.description
     || `What were the prompts in Krillion Dive #${dive.dive}? Here are all seven prompts from ${displayDate}, with a hint for each — plus how to replay the dive.`;
+
   return {
     title,
     description,
@@ -70,7 +46,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
 
   const displayDate = fmtDate(dive.date);
 
-  // 相关期：前后各 2 期（按距离排序取 5，首尾自动缩短）
+  // 相关期：按与当前期的距离排序，取前 5（首尾自动缩短）
   const related = DIVES
     .filter(x => x.dive !== dive.dive)
     .sort((a, b) => Math.abs(a.dive - dive.dive) - Math.abs(b.dive - dive.dive))

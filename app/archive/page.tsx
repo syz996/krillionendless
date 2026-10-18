@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { DIVES, getArchiveGroups } from '../../lib/archive';
+import { DIVES, SITE, fmtDate, diveSlug, getArchiveGroups } from '../../lib/archive';
 import SiteHeader from '../../components/SiteHeader';
 import SiteFooter from '../../components/SiteFooter';
 
-// 部署域名上线后填（用于 canonical / og 绝对地址），如 'https://krillionendless.com'
-const BASE = '';
+const BASE = SITE.baseUrl.replace(/\/+$/, '');
 
 export function generateMetadata(): Metadata {
   const count = DIVES.length;
@@ -42,7 +41,7 @@ export default function ArchivePage() {
               <h2>{g.label}</h2>
               <ul>
                 {g.dives.map(d => (
-                  <li key={d.number}><a href={`/archive/dive-${d.number}/`}>Dive #{d.number} — {d.displayDate}</a></li>
+                  <li key={d.dive}><a href={`/archive/${diveSlug(d.dive)}/`}>Dive #{d.dive} — {fmtDate(d.date)}</a></li>
                 ))}
               </ul>
             </div>
@@ -53,7 +52,13 @@ export default function ArchivePage() {
 
         <details>
           <summary>How far back does this archive go?</summary>
-          <p>Dive #1 was played on July 16, 2026. This archive covers all {count} dives since then, and a new one is added every day.</p>
+          <p>
+            {count === 0
+              ? 'The archive is being prepared. Check back soon.'
+              : DIVES[0] === DIVES[DIVES.length - 1]
+                ? `This archive starts at Dive #${DIVES[0].dive} (${fmtDate(DIVES[0].date)}), and a new page is added every day.`
+                : `This archive currently covers Dive #${DIVES[0].dive} (${fmtDate(DIVES[0].date)}) through Dive #${DIVES[DIVES.length - 1].dive} (${fmtDate(DIVES[DIVES.length - 1].date)}), and a new page is added every day.`}
+          </p>
         </details>
         <details>
           <summary>Is this the official Krillion archive?</summary>
