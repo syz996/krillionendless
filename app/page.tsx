@@ -58,6 +58,11 @@ export default function Page() {
   const latestDive: LatestDive | undefined = last
     ? { dive: last.dive, date: last.date, prompts: last.prompts }
     : undefined;
+  // 最近 5 期（倒序），供首页存档区块直链使用
+  const recentDives = [...DIVES]
+    .reverse()
+    .slice(0, 5)
+    .map(d => ({ dive: d.dive, date: d.date }));
   return (
     <>
       <script
@@ -68,7 +73,7 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
       />
-      <GameClient latestDive={latestDive} />
+      <GameClient latestDive={latestDive} recentDives={recentDives} />
     </>
   );
 }

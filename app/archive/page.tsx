@@ -8,8 +8,8 @@ const BASE = SITE.baseUrl.replace(/\/+$/, '');
 export function generateMetadata(): Metadata {
   const count = DIVES.length;
   const title = count === 1
-    ? 'Krillion Dive Archive — Past Dive Answers'
-    : `Krillion Dive Archive — All ${count} Past Dives & Answers`;
+    ? 'Krillion Dive Archive — Past Dive Prompts & Hints'
+    : `Krillion Dive Archive — All ${count} Past Dives, Prompts & Hints`;
   return {
     title,
     description: count === 1
