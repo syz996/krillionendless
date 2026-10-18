@@ -1,0 +1,41 @@
+{
+  "dive": 95,
+  "date": "2026-10-18",
+  "prompts": [
+    {
+      "prompt": "Name a fruit bigger than an apple",
+      "hint": "Start with the grocery-aisle staples — oranges, bananas and pears — then scale up to melons, vine fruits and thick-skinned tropical picks. The crowd settles on the common supermarket haul, while the rarest slots go to oversized fruits that casual players forget still count as fruit in the first place."
+    },
+    {
+      "prompt": "Name a symbol of Hinduism, Judaism, Christianity, Islam or Buddhism (like the cross)",
+      "hint": "Walk religion by religion and name the single most famous mark first — the cross, the Star of David, the crescent, the dharma wheel — then reach for the second and third emblems each faith uses that most players overlook. The iconic symbol is the common answer; the quieter one is where the points live."
+    },
+    {
+      "prompt": "Name a perfume or fragrance brand",
+      "hint": "Run the household designer and celebrity names first, then drift toward niche salon houses and indie labels. Because the distance between a mass-market brand and an under-the-radar fragrance is enormous, this round heavily rewards perfume hobbyists and treats everyone else as a level playing field."
+    },
+    {
+      "prompt": "Name a sport where competitors wear gloves",
+      "hint": "Think past boxing. Any sport where the hands grip, strike or absorb impact can qualify — combat, winter, and racket-and-ball codes all belong on the list. The smart money is on sports where only some competitors glove up, since those are exactly the answers most players skip under pressure."
+    },
+    {
+      "prompt": "Name a leg exercise at the gym (no cardio)",
+      "hint": "Anchor on the big barbell compounds — squats and deadlifts — then branch into isolation machines and single-leg bodyweight moves. The common band is the obvious classics everyone names first, while the rare tier sits with unilateral variations and fixed machines that never get name-dropped."
+    },
+    {
+      "prompt": "Name a Fortnite character or skin (sidekicks/pets don't count)",
+      "hint": "Begin with the skins everyone knows from recent battle passes, then reach for crossovers and legacy outfits that have been renamed over the seasons. Familiar faces land in the common zone; limited collaborations and early rare skins are where the highest-value answers hide."
+    },
+    {
+      "prompt": "Name a rapper with more than 500k monthly Spotify listeners",
+      "hint": "Five hundred thousand monthly listeners is a low bar, so the field is massive. Name the arena-level headliners first, then think about rappers riding one viral single or a regional lane. Superstars are the common answers; the famous-but-not-obvious names are the rare, high-scoring picks."
+    }
+  ],
+  "analysis": [
+    "This dive is a breadth test, not a knowledge test. Six of the seven prompts are open-ended list questions where nearly anyone can rattle off three or four answers, so the leaderboard separates players by reach and speed rather than recall. The harder answers are not harder to know — they are only harder to summon inside a twenty-five-second window.",
+    "Two rounds carry a subculture filter. The Fortnite prompt rewards anyone who has followed recent seasons and collabs, and the rapper question — despite its generous listener threshold — still favors players who know who is charting or streaming right now. Against a general audience these two act as mild veto rounds, but both are more forgiving than they first appear.",
+    "Only the religion-symbol prompt behaves like a quiz with a near-finite answer set, and even then it spans five faiths, keeping the pool wide. The gloves and gym rounds are the welcoming entry points, while fruit and fragrance quietly lean on everyday consumer knowledge that older and younger players do not always share."
+  ],
+  "faq": [],
+  "overrides": {}
+}
