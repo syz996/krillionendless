@@ -76,6 +76,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
     '@type': 'Article',
     headline: title,
     description,
+    image: [`${BASE}/og.png`],
     datePublished: dive.date,
     dateModified: dive.date,
     mainEntityOfPage: canonical,

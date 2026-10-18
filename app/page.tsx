@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import GameClient from "./GameClient";
+import GameClient, { type LatestDive } from "./GameClient";
 import { homeFaqs } from "@/content/faq";
+import { DIVES } from "@/lib/archive";
 
 const ogImage = {
   url: "https://krillionendless.org/og.png",
@@ -53,6 +54,10 @@ const siteJsonLd = {
 };
 
 export default function Page() {
+  const last = DIVES.length ? DIVES[DIVES.length - 1] : undefined;
+  const latestDive: LatestDive | undefined = last
+    ? { dive: last.dive, date: last.date, prompts: last.prompts }
+    : undefined;
   return (
     <>
       <script
@@ -63,7 +68,7 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
       />
-      <GameClient />
+      <GameClient latestDive={latestDive} />
     </>
   );
 }

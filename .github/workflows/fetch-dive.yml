@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   fetch:
@@ -25,3 +26,23 @@ jobs:
           git add content/
           git diff --cached --quiet || git commit -m "dive: $(date -u +%F)"
           git push
+      # 任一步骤失败时自动开 issue：数据断档必须人工介入，不能静默失败
+      - name: Report failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `Dive fetch failed on ${new Date().toISOString().slice(0, 10)}`;
+            const body = [
+              'The scheduled dive fetch failed and needs a manual check.',
+              '',
+              `[Run log](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
+              '',
+              'This issue was created automatically. Close it after the pipeline is fixed.'
+            ].join('\n');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+            });
