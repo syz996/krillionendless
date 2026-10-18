@@ -67,8 +67,6 @@ export default function ArchivePage() {
         <h1>Krillion Dive Archive</h1>
         <p className="meta">{count === 1 ? 'One dive' : `All ${count} dives`} · newest first</p>
 
-        <div className="ad-slot">Advertisement</div>
-
         <p>Every Krillion dive that has run so far, newest first. Pick any date to see that dive&rsquo;s seven prompts, a hint for each one, and a note on what made it hard — or open the <a href="/">unlimited version</a> and replay it with the same 25-second timer.</p>
 
         <section className="groups">
@@ -85,8 +83,6 @@ export default function ArchivePage() {
             </div>
           ))}
         </section>
-
-        <div className="ad-slot">Advertisement</div>
 
         <details>
           <summary>How far back does this archive go?</summary>

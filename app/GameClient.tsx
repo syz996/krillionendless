@@ -139,7 +139,6 @@ export default function HomePage({ latestDive, recentDives = [] }: { latestDive?
       <SiteHeader />
       <main className="wrap" id="top">
         <section className="hero"><div className="eyebrow"><Waves size={15} /> INDEPENDENT PRACTICE MODE</div><h1>Krillion Unlimited</h1><p className="sub">No daily limit — play an original practice dive whenever you like.</p></section>
-        <div className="ad-slot" aria-label="Reserved advertising placement">Advertisement</div>
 
         <section className="game" id="game" aria-label="Play the independent practice game">
           {!started && !finished ? <div className="intro-state"><div className="game-top"><span className="dive">PRACTICE DIVE</span><span>7 prompts · 25 seconds each</span></div><div className="intro-icon"><Waves size={30} /></div><h2>Ready to dive?</h2><p>Answer seven prompts — randomized practice questions, or a replay of the latest daily dive from the archive.</p><div className="intro-actions"><button className="btn" onClick={() => startGame('practice')}>Start practice dive <ArrowRight size={17} /></button>{latestDive ? <button className="btn ghost" onClick={() => startGame('replay')}>Replay Dive #{latestDive.dive}</button> : null}</div></div> : null}
@@ -167,7 +166,6 @@ export default function HomePage({ latestDive, recentDives = [] }: { latestDive?
         </section>
 
         <nav className="quicklinks" aria-label="Explore more"><a href="#faq-section">Answers &amp; hints <ArrowRight size={15} /></a><a href="/archive/">Practice archive <ArrowRight size={15} /></a></nav>
-        <div className="ad-slot">Advertisement</div>
 
         <section className="content-section"><h2>How to play this practice dive</h2><p>Answer seven short, open-ended prompts. Each prompt has a 25-second timer. If your answer matches one of the accepted answers in the practice question bank, you earn its preset points. If it does not match, you can try again before time runs out. You can also replay the latest daily dive from the archive — same seven prompts, same timer, no scoring.</p><div className="steps-grid"><article><span>01</span><h3>Read the prompt</h3><p>Check the category carefully and think of a specific answer that fits.</p></article><article><span>02</span><h3>Submit one answer</h3><p>Accepted spelling variants are supported for a small number of answers.</p></article><article><span>03</span><h3>Review your score</h3><p>At the end, review your points and see which prompts you answered.</p></article></div>
           <h3 className="subheading">Practice scoring tiers</h3><div className="table-wrap"><table><thead><tr><th>Tier</th><th>Practice label</th><th>Points</th></tr></thead><tbody>{TIERS.map(tier => <tr key={tier.name}><td>{tier.name}</td><td>{tier.points >= 85 ? 'Less obvious answer' : tier.points >= 30 ? 'Specific answer' : 'Common answer'}</td><td>{tier.points}</td></tr>)}</tbody></table></div>

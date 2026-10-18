@@ -116,8 +116,6 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
         <h1>Krillion Dive #{dive.dive} Prompts &amp; Hints</h1>
         <p className="meta">{displayDate} · {dive.prompts.length} prompts · 25 seconds each</p>
 
-        <div className="ad-slot">Advertisement</div>
-
         <section>
           <h2>Dive #{dive.dive} prompts</h2>
           <p>These are the seven prompts that came up in Dive #{dive.dive}. If you&rsquo;re replaying it, give each one a try before you read the hint underneath.</p>
