@@ -2,6 +2,13 @@ import type { Metadata } from "next";
 import GameClient from "./GameClient";
 import { homeFaqs } from "@/content/faq";
 
+const ogImage = {
+  url: "https://krillionendless.org/og.png",
+  width: 1200,
+  height: 630,
+  alt: "KrillionEndless — independent Krillion practice and daily dive archive",
+};
+
 export const metadata: Metadata = {
   title: "Krillion Unlimited Game — Independent Practice Dive",
   description:
@@ -15,12 +22,14 @@ export const metadata: Metadata = {
     siteName: "KrillionEndless",
     type: "website",
     locale: "en_US",
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Krillion Unlimited Game — Independent Practice Dive",
     description:
       "Play an independent rare-answer trivia practice game with seven prompts, a 25-second timer, and an original starter question bank.",
+    images: [ogImage],
   },
   robots: { index: true, follow: true },
 };

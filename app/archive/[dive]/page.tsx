@@ -25,16 +25,24 @@ export async function generateMetadata({ params }: { params: Promise<{ dive: str
 
   const displayDate = fmtDate(dive.date);
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
-  const title = dive.overrides?.title || `Krillion Dive #${dive.dive} Answers & Hints (${displayDate})`;
+  const title = dive.overrides?.title || `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`;
   const description = dive.overrides?.description
     || `What were the prompts in Krillion Dive #${dive.dive}? Here are all seven prompts from ${displayDate}, with a hint for each — plus how to replay the dive.`;
+
+  const ogImage = {
+    url: `${BASE}/og.png`,
+    width: 1200,
+    height: 630,
+    alt: `${SITE.brand} — independent Krillion practice and daily dive archive`,
+  };
 
   return {
     title,
     description,
     alternates: { canonical },
     robots: { index: true, follow: true },
-    openGraph: { type: 'article', title, description, url: canonical },
+    openGraph: { type: 'article', title, description, url: canonical, images: [ogImage] },
+    twitter: { card: 'summary_large_image', title, description, images: [ogImage] },
   };
 }
 
@@ -59,7 +67,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
   const faq = [...(dive.faq || []), ...SITE.defaultFaq];
 
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
-  const title = dive.overrides?.title || `Krillion Dive #${dive.dive} Answers & Hints (${displayDate})`;
+  const title = dive.overrides?.title || `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`;
   const description = dive.overrides?.description
     || `What were the prompts in Krillion Dive #${dive.dive}? Here are all seven prompts from ${displayDate}, with a hint for each — plus how to replay the dive.`;
 
@@ -104,7 +112,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
       <main className="wrap">
         <nav className="crumbs"><a href="/">Home</a> › <a href="/archive/">Archive</a> › Dive #{dive.dive}</nav>
 
-        <h1>Krillion Dive #{dive.dive} Answers &amp; Hints</h1>
+        <h1>Krillion Dive #{dive.dive} Prompts &amp; Hints</h1>
         <p className="meta">{displayDate} · {dive.prompts.length} prompts · 25 seconds each</p>
 
         <div className="ad-slot">Advertisement</div>
@@ -126,8 +134,6 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
           <h2>What made this dive hard</h2>
           {dive.analysis.map((para, i) => <p key={i}>{para}</p>)}
         </section>
-
-        <div className="ad-slot">Advertisement</div>
 
         <section>
           <h2>Other dives</h2>

@@ -12,7 +12,9 @@ export function generateMetadata(): Metadata {
     : `Krillion Dive Archive — All ${count} Past Dives & Answers`;
   return {
     title,
-    description: `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes. Pick any past dive and replay it in the unlimited version.`,
+    description: count === 1
+      ? 'The one Krillion dive so far, with its seven prompts and hints. Replay it in the unlimited version.'
+      : `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes. Pick any past dive and replay it in the unlimited version.`,
     alternates: { canonical: `${BASE}/archive/` },
     robots: { index: true, follow: true },
     openGraph: { type: 'website', title: 'Krillion Dive Archive', url: `${BASE}/archive/` },
@@ -23,7 +25,9 @@ export default function ArchivePage() {
   const groups = getArchiveGroups();
   const count = DIVES.length;
 
-  const description = `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes.`;
+  const description = count === 1
+    ? 'The one Krillion dive so far, with its seven prompts and hints.'
+    : `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes.`;
 
   const collectionJsonLd = {
     '@context': 'https://schema.org',
@@ -61,7 +65,7 @@ export default function ArchivePage() {
         <nav className="crumbs"><a href="/">Home</a> › Archive</nav>
 
         <h1>Krillion Dive Archive</h1>
-        <p className="meta">All {count} dives · newest first</p>
+        <p className="meta">{count === 1 ? 'One dive' : `All ${count} dives`} · newest first</p>
 
         <div className="ad-slot">Advertisement</div>
 

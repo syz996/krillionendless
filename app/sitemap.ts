@@ -5,10 +5,11 @@ export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE.baseUrl.replace(/\/+$/, '');
+  const latestDate = DIVES.length ? DIVES[DIVES.length - 1].date : undefined;
   return [
-    { url: `${base}/`, priority: 1.0 },
-    { url: `${base}/archive/`, priority: 0.8 },
-    ...DIVES.map(d => ({ url: `${base}/archive/${diveSlug(d.dive)}/`, priority: 0.6 })),
+    { url: `${base}/`, priority: 1.0, lastModified: latestDate },
+    { url: `${base}/archive/`, priority: 0.8, lastModified: latestDate },
+    ...DIVES.map(d => ({ url: `${base}/archive/${diveSlug(d.dive)}/`, priority: 0.6, lastModified: d.date })),
     { url: `${base}/about/`, priority: 0.3 },
     { url: `${base}/contact/`, priority: 0.3 },
     { url: `${base}/privacy/`, priority: 0.3 },
