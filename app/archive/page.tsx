@@ -7,8 +7,11 @@ const BASE = SITE.baseUrl.replace(/\/+$/, '');
 
 export function generateMetadata(): Metadata {
   const count = DIVES.length;
+  const title = count === 1
+    ? 'Krillion Dive Archive — Past Dive Answers'
+    : `Krillion Dive Archive — All ${count} Past Dives & Answers`;
   return {
-    title: `Krillion Dive Archive — All ${count} Past Dives & Answers`,
+    title,
     description: `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes. Pick any past dive and replay it in the unlimited version.`,
     alternates: { canonical: `${BASE}/archive/` },
     robots: { index: true, follow: true },
@@ -20,8 +23,39 @@ export default function ArchivePage() {
   const groups = getArchiveGroups();
   const count = DIVES.length;
 
+  const description = `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes.`;
+
+  const collectionJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Krillion Dive Archive',
+    description,
+    url: `${BASE}/archive/`,
+    isPartOf: { '@type': 'WebSite', name: SITE.brand, url: `${BASE}/` },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: [...DIVES].reverse().map((d, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: `Dive #${d.dive}`,
+        url: `${BASE}/archive/${diveSlug(d.dive)}/`,
+      })),
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE}/` },
+      { '@type': 'ListItem', position: 2, name: 'Archive', item: `${BASE}/archive/` },
+    ],
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <SiteHeader />
       <main className="wrap">
         <nav className="crumbs"><a href="/">Home</a> › Archive</nav>

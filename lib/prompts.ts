@@ -1,8 +1,8 @@
 export type AnswerEntry = { aliases: string[]; tier: string; points: number; note?: string };
 export type Prompt = { id: string; text: string; answers: AnswerEntry[]; hint: string };
 
-// Original starter content for this independent practice prototype.
-// Tiers are editorial demo labels, NOT official Krillion data or live player statistics.
+// Practice question bank for the independent KrillionEndless practice game.
+// Tiers are editorial rarity labels, NOT official Krillion data or live player statistics.
 export const PROMPTS: Prompt[] = [
   {
     id: 'country-k', text: 'Name a country whose English name begins with the letter K', hint: 'Think of countries in Africa, Central Asia, and the Pacific.',
@@ -12,7 +12,7 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['kazakhstan'], tier: 'Schooler', points: 30 },
       { aliases: ['kyrgyzstan'], tier: 'Rare', points: 60 },
       { aliases: ['kiribati'], tier: 'Deep Cut', points: 85 },
-      { aliases: ['korea', 'south korea', 'republic of korea'], tier: 'Schooler', points: 30, note: 'For this demo, Korea means South Korea.' }
+      { aliases: ['korea', 'south korea', 'republic of korea'], tier: 'Schooler', points: 30, note: 'Korea here means South Korea.' }
     ]
   },
   {

@@ -58,8 +58,48 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
 
   const faq = [...(dive.faq || []), ...SITE.defaultFaq];
 
+  const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
+  const title = dive.overrides?.title || `Krillion Dive #${dive.dive} Answers & Hints (${displayDate})`;
+  const description = dive.overrides?.description
+    || `What were the prompts in Krillion Dive #${dive.dive}? Here are all seven prompts from ${displayDate}, with a hint for each — plus how to replay the dive.`;
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    datePublished: dive.date,
+    dateModified: dive.date,
+    mainEntityOfPage: canonical,
+    author: { '@type': 'Organization', name: SITE.brand },
+    publisher: { '@type': 'Organization', name: SITE.brand },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE}/` },
+      { '@type': 'ListItem', position: 2, name: 'Archive', item: `${BASE}/archive/` },
+      { '@type': 'ListItem', position: 3, name: `Dive #${dive.dive}`, item: canonical },
+    ],
+  };
+
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <SiteHeader />
       <main className="wrap">
         <nav className="crumbs"><a href="/">Home</a> › <a href="/archive/">Archive</a> › Dive #{dive.dive}</nav>
