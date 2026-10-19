@@ -5,6 +5,11 @@ import SiteFooter from '../../components/SiteFooter';
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
 
+const firstSentence = (s: string) => {
+  const m = s?.match(/^.*?[.!?](?:\s|$)/);
+  return m ? m[0].trim() : s;
+};
+
 export function generateMetadata(): Metadata {
   const count = DIVES.length;
   const title = count === 1
@@ -77,7 +82,7 @@ export default function ArchivePage() {
               <h2>{g.label}</h2>
               <ul>
                 {g.dives.map(d => (
-                  <li key={d.dive}><a href={`/archive/${diveSlug(d.dive)}/`}>Dive #{d.dive} — {fmtDate(d.date)}</a></li>
+                  <li key={d.dive}><a href={`/archive/${diveSlug(d.dive)}/`}>Dive #{d.dive} — {fmtDate(d.date)}</a>{d.analysis?.[0] ? <p className="dive-summary">{firstSentence(d.analysis[0])}</p> : null}</li>
                 ))}
               </ul>
             </div>

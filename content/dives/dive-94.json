@@ -32,9 +32,9 @@
     }
   ],
   "analysis": [
-    "This dive leans hard into open-ended listing questions. Almost every prompt accepts dozens of valid answers, which means the scoring gap between a common pick and a rare one is far larger than the gap between knowing something and knowing nothing. Speed matters, but choosing a memorable angle matters more.",
-    "A few prompts quietly test recall rather than creativity. The one-letter chemical symbols form a short, fixed list, and the four-letter animal question rewards scanning a broad mental list instead of stopping early. These are the rounds where a fast, systematic sweep beats the first thing that comes to mind.",
-    "The sports-honour question is the widest net on the page: it crosses American leagues and the biggest individual prize in football, so both casual and die-hard fans can play. The superhero and station prompts are the friendly entry points, while geography and food anchor the middle of the pack."
+    "The one prompt that can genuinely trip you up is the element question: single-letter chemical symbols are a closed list, so there is nothing to reason your way into — you either remember them or you don't. Every other prompt on the page leaves the door open. 'Prepare potatoes' or 'a four-letter animal' will take almost anything sensible, which means those rounds are won by whoever reaches a slightly less obvious answer before the clock runs out, not by whoever knows more.",
+    "The MVP and Ballon d'Or line is the day's quiet trap. It looks like the friendliest question because everyone can name a superstar instantly, but those household names are exactly what the rest of the field types first. The real points tend to hide with the player remembered for one sudden, dominant season and then forgotten.",
+    "The country-ending-in-E and potato prompts end up doing the same job from opposite directions: they spread the scoring far enough that the gap comes down to how willing you are to push past the first two or three obvious answers. The superhero question, stuck in the middle, stays welcoming because casual viewers and long-time comic readers can both settle on a team without straining."
   ],
   "faq": [],
   "overrides": {}

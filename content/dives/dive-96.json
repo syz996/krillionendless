@@ -1,0 +1,41 @@
+{
+  "dive": 96,
+  "date": "2026-10-19",
+  "prompts": [
+    {
+      "prompt": "Name a female artist with over 500,000 monthly listeners on Spotify",
+      "hint": "Five hundred thousand is a forgiving bar, so this one stretches far beyond the few arena-filling headliners. Start with the biggest pop names, then reach across country, R&B, Latin and K-pop lanes, and into the indies and legacy acts that still hold an audience."
+    },
+    {
+      "prompt": "Name a foul or rule violation in soccer, basketball, American football, cricket, rugby or ice hockey",
+      "hint": "Each of the six sports has its own vocabulary for breaking the rules, so pick one you remember clearly rather than inventing a generic term. Start with the everyday infractions fans shout about, then let the rarer violations and penalties separate a strong answer from a lazy one."
+    },
+    {
+      "prompt": "Name an underwear brand",
+      "hint": "This is a pure shopping-memory round. Run through what is on the shelf at department stores, malls, sport shops and quick-fashion chains — the most obvious names are the common picks, while heritage labels and niche premium houses are the answers most players skip."
+    },
+    {
+      "prompt": "Name a university in the US or UK",
+      "hint": "The pool is gigantic on purpose, so aim past the handful of world-famous names. Big research universities, liberal-arts colleges and the UK's ancient and red-brick institutions all count; the higher-value picks are the respected schools that do not instantly come to mind."
+    },
+    {
+      "prompt": "Name a language that’s the most spoken in at least two countries",
+      "hint": "The key word is 'most spoken', not merely 'official' — the language has to be the number-one spoken language in two separate countries. Run through the world's major languages first, then look at regions where neighbours share a dominant tongue."
+    },
+    {
+      "prompt": "Name a character that has been playable in a Super Smash Bros. game",
+      "hint": "Every Smash game added a fresh wave of fighters, so think across the whole series rather than the latest roster. Nintendo's own mascots are the easy answers; the rarer, higher-value picks are the third-party and retro characters that only long-time fans remember."
+    },
+    {
+      "prompt": "Name a fruit normally eaten with its skin on",
+      "hint": "Separate 'can be eaten with the skin on' from 'normally is'. The safe answers are the small berries and stone-free snacks people never peel, while the clever picks are the borderline fruits some eat whole and others always peel."
+    }
+  ],
+  "analysis": [
+    "Most of this dive rewards what is already lying around in memory — a brand on a waistband, the name of a school, a fruit nobody bothers to peel. Very little here asks for a fact you would have to actively study. What it does ask is that you can surface a less obvious example fast, because the first answer to every prompt is going to be the one the whole field types.",
+    "The music and gaming prompts both hinge on how closely you follow a single scene. The female-artist question has a listener bar so generous it should not filter anyone out, yet its real points still skew toward names that are huge in one genre or country without crossing over worldwide. Smash Bros. is harsher on outsiders: nothing in the prompt helps you unless you have actually tracked the roster across the series.",
+    "The rule-violation question is the widest single prompt on the page, because six sports each bring their own list of fouls and you can coast on whichever one you know best. The university prompt runs the other way — its pool is so large that the famous names are precisely the ones to skip if you want the score to move. Between them, underwear and the skin-on fruit are the low-stakes rounds where casual players can bank a few points before the harder retrieval starts."
+  ],
+  "faq": [],
+  "overrides": {}
+}
