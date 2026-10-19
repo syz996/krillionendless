@@ -8,7 +8,7 @@ import SiteHeader from '../components/SiteHeader';
 import SiteFooter from '../components/SiteFooter';
 
 type Round = { text: string; hint: string; answers: AnswerEntry[] };
-type RoundResult = { prompt: string; answer: string; accepted: boolean; tier?: string; points: number; timedOut?: boolean };
+type RoundResult = { prompt: string; answer: string; accepted: boolean; tier?: string; points: number; timedOut?: boolean; lockedOut?: boolean };
 
 export type LatestDive = { dive: number; date: string; prompts: { prompt: string; hint: string }[] };
 export type RecentDive = { dive: number; date: string };
@@ -36,6 +36,7 @@ export default function HomePage({ latestDive, recentDives = [] }: { latestDive?
   const [answer, setAnswer] = useState('');
   const [notice, setNotice] = useState('');
   const [feedback, setFeedback] = useState('');
+  const [wrongCount, setWrongCount] = useState(0);
   const [results, setResults] = useState<RoundResult[]>([]);
   const [finished, setFinished] = useState(false);
   const [started, setStarted] = useState(false);
@@ -52,6 +53,7 @@ export default function HomePage({ latestDive, recentDives = [] }: { latestDive?
     setNotice('');
     setFeedback('');
     setAnswer('');
+    setWrongCount(0);
     if (current + 1 >= rounds.length) {
       setFinished(true);
       setStarted(false);
@@ -63,7 +65,7 @@ export default function HomePage({ latestDive, recentDives = [] }: { latestDive?
 
   useEffect(() => {
     if (!started || finished) return;
-    const id = window.setInterval(() => setSeconds(s => Math.max(0, s - 1)), 1000);
+    const id = window.setInterval(() => { if (!lockRef.current) setSeconds(s => Math.max(0, s - 1)); }, 1000);
     return () => window.clearInterval(id);
   }, [started, finished, current]);
 
@@ -83,7 +85,7 @@ export default function HomePage({ latestDive, recentDives = [] }: { latestDive?
       : shuffle(PROMPTS).slice(0, 7).map(p => ({ text: p.text, hint: p.hint, answers: p.answers }));
     setMode(nextMode);
     setRounds(next);
-    setCurrent(0); setSeconds(25); setAnswer(''); setNotice(''); setFeedback(''); setResults([]);
+    setCurrent(0); setSeconds(25); setAnswer(''); setNotice(''); setFeedback(''); setResults([]); setWrongCount(0);
     setFinished(false); setStarted(true); setCopyState('idle'); lockRef.current = false;
   }
 
@@ -93,7 +95,16 @@ export default function HomePage({ latestDive, recentDives = [] }: { latestDive?
     if (!cleaned) { setNotice('Type an answer first.'); return; }
     const match = findAnswer(cleaned, currentPrompt.answers);
     if (!match) {
-      setNotice('Not in the accepted answer list. Try another answer while time remains.');
+      const misses = wrongCount + 1;
+      setWrongCount(misses);
+      if (misses >= 3) {
+        lockRef.current = true;
+        setNotice('Three misses — this prompt is locked.');
+        const locked: RoundResult = { prompt: currentPrompt.text, answer: '', accepted: false, points: 0, lockedOut: true };
+        window.setTimeout(() => { lockRef.current = false; moveNext(locked); }, 900);
+      } else {
+        setNotice(`Not in the accepted answer list. ${3 - misses} ${3 - misses === 1 ? 'try' : 'tries'} left.`);
+      }
       return;
     }
     lockRef.current = true;
@@ -161,13 +172,13 @@ export default function HomePage({ latestDive, recentDives = [] }: { latestDive?
             <details className="hint-reveal"><summary>Reveal hint</summary><div className="hint"><strong>Hint:</strong> {currentPrompt.hint}</div></details>
             {mode === 'practice' ? <ul className="tiers">{TIERS.map(tier => <li key={tier.name}>{tier.name} · {tier.points}</li>)}</ul> : null}
           </> : null}
-          {finished && mode === 'practice' ? <div className="results-state"><div className="game-top"><span className="dive">DIVE COMPLETE</span><span>7 / 7 prompts</span></div><div className="score-number">{score}<span> pts</span></div><p className="depth">Estimated practice depth: {score * 10} m</p><p className="disclaimer">Practice score only. The answer list and tiers are our own data, not official Krillion scoring or player statistics.</p><div className="result-list">{results.map((item, index) => <div className="result-row" key={`${item.prompt}-${index}`}><div><strong>{index + 1}. {item.prompt}</strong><p>{item.timedOut ? 'Time ran out' : item.accepted ? `Your answer: ${item.answer}` : 'No accepted answer'}</p></div><div className="result-points"><strong>{item.points}</strong><span>{item.tier || 'No Echo'}</span></div></div>)}</div><div className="intro-actions"><button className="btn" onClick={() => startGame('practice')}><RotateCcw size={16} /> Play another dive</button><button className="btn ghost" type="button" onClick={copyResult}>{copyState === 'ok' ? 'Copied!' : copyState === 'fail' ? 'Copy failed' : 'Copy result'}</button></div></div> : null}
+          {finished && mode === 'practice' ? <div className="results-state"><div className="game-top"><span className="dive">DIVE COMPLETE</span><span>7 / 7 prompts</span></div><div className="score-number">{score}<span> pts</span></div><p className="depth">Estimated practice depth: {score * 10} m</p><p className="disclaimer">Practice score only. The answer list and tiers are our own data, not official Krillion scoring or player statistics.</p><div className="result-list">{results.map((item, index) => { const bank = rounds[index]?.answers ?? []; const mine = item.accepted && bank.length ? findAnswer(normalizeAnswer(item.answer), bank) : undefined; return <div key={`${item.prompt}-${index}`}><div className="result-row"><div><strong>{index + 1}. {item.prompt}</strong><p>{item.timedOut ? 'Time ran out' : item.lockedOut ? 'Locked out after three misses' : item.accepted ? `Your answer: ${item.answer}` : 'No accepted answer'}</p></div><div className="result-points"><strong>{item.points}</strong><span>{item.tier || 'No Echo'}</span></div></div>{bank.length ? <details className="answer-reveal"><summary>Reveal all answers</summary><ul>{[...bank].sort((a, b) => b.points - a.points).map(entry => <li key={entry.aliases[0]} className={entry === mine ? 'mine' : undefined}>{entry.aliases[0]} · {entry.points}</li>)}</ul></details> : null}</div>; })}</div><div className="intro-actions"><button className="btn" onClick={() => startGame('practice')}><RotateCcw size={16} /> Play another dive</button><button className="btn ghost" type="button" onClick={copyResult}>{copyState === 'ok' ? 'Copied!' : copyState === 'fail' ? 'Copy failed' : 'Copy result'}</button></div></div> : null}
           {finished && mode === 'replay' ? <div className="results-state"><div className="game-top"><span className="dive">REPLAY COMPLETE</span><span>7 / 7 prompts</span></div><div className="score-number">{inTimeCount}<span> / 7 in time</span></div><p className="depth">Replay of Dive #{latestDive?.dive}</p><p className="disclaimer">Replay mode uses the archive&rsquo;s public prompts and hints only — there is no scoring in this mode.</p><div className="result-list">{results.map((item, index) => <div className="result-row" key={`${item.prompt}-${index}`}><div><strong>{index + 1}. {item.prompt}</strong><p>{item.timedOut ? 'Time ran out' : 'Answered in time'}</p></div></div>)}</div><div className="intro-actions"><button className="btn" onClick={() => startGame('replay')}><RotateCcw size={16} /> Replay again</button>{latestDive ? <a className="btn ghost" href={`/archive/dive-${latestDive.dive}/`}>Open Dive #{latestDive.dive} page <ArrowRight size={16} /></a> : null}</div></div> : null}
         </section>
 
         <nav className="quicklinks" aria-label="Explore more"><a href="#faq-section">Answers &amp; hints <ArrowRight size={15} /></a><a href="/archive/">Practice archive <ArrowRight size={15} /></a></nav>
 
-        <section className="content-section"><h2>How to play this practice dive</h2><p>Answer seven short, open-ended prompts. Each prompt has a 25-second timer. If your answer matches one of the accepted answers in the practice question bank, you earn its preset points. If it does not match, you can try again before time runs out. You can also replay the latest daily dive from the archive — same seven prompts, same timer, no scoring.</p><div className="steps-grid"><article><span>01</span><h3>Read the prompt</h3><p>Check the category carefully and think of a specific answer that fits.</p></article><article><span>02</span><h3>Submit one answer</h3><p>Accepted spelling variants are supported for a small number of answers.</p></article><article><span>03</span><h3>Review your score</h3><p>At the end, review your points and see which prompts you answered.</p></article></div>
+        <section className="content-section"><h2>How to play this practice dive</h2><p>Answer seven short, open-ended prompts. Each prompt has a 25-second timer. If your answer matches one of the accepted answers in the practice question bank, you earn its preset points. If it does not match, you can guess again — up to three attempts per prompt before it locks. You can also replay the latest daily dive from the archive — same seven prompts, same timer, no scoring.</p><div className="steps-grid"><article><span>01</span><h3>Read the prompt</h3><p>Check the category carefully and think of a specific answer that fits.</p></article><article><span>02</span><h3>Submit one answer</h3><p>Exact and close matches are accepted — a leading "the" or "a" will not sink an answer.</p></article><article><span>03</span><h3>Review your score</h3><p>At the end, review your points and see which prompts you answered.</p></article></div>
           <h3 className="subheading">Practice scoring tiers</h3><div className="table-wrap"><table><thead><tr><th>Tier</th><th>Practice label</th><th>Points</th></tr></thead><tbody>{TIERS.map(tier => <tr key={tier.name}><td>{tier.name}</td><td>{tier.points >= 85 ? 'Less obvious answer' : tier.points >= 30 ? 'Specific answer' : 'Common answer'}</td><td>{tier.points}</td></tr>)}</tbody></table></div>
         </section>
 

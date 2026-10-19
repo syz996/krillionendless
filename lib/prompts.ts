@@ -1124,6 +1124,7 @@ export function normalizeAnswer(value: string) {
 }
 
 // 先做完全匹配；命中不了再做包含匹配（取归一化后最长的别名，避免 "seven" 抢在 "seven samurai" 前面）。
+// "别名包含输入" 这个方向要求输入至少 4 个字符，防止单字母蹭到长别名刷分。
 export function findAnswer(cleaned: string, answers: AnswerEntry[]): AnswerEntry | undefined {
   const exact = answers.find(entry => entry.aliases.some(alias => normalizeAnswer(alias) === cleaned));
   if (exact) return exact;
@@ -1134,7 +1135,7 @@ export function findAnswer(cleaned: string, answers: AnswerEntry[]): AnswerEntry
     for (const alias of entry.aliases) {
       const na = normalizeAnswer(alias);
       if (na.length < 4) continue;
-      if (cleaned.includes(na) || na.includes(cleaned)) {
+      if (cleaned.includes(na) || (cleaned.length >= 4 && na.includes(cleaned))) {
         if (na.length > bestLen) {
           bestLen = na.length;
           best = entry;
