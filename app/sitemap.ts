@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { DIVES, SITE, diveSlug } from '../lib/archive';
+import { PROMPTS } from '../lib/prompts';
 
 export const dynamic = 'force-static';
 
@@ -10,6 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/`, priority: 1.0, lastModified: latestDate },
     { url: `${base}/archive/`, priority: 0.8, lastModified: latestDate },
     ...DIVES.map(d => ({ url: `${base}/archive/${diveSlug(d.dive)}/`, priority: 0.6, lastModified: d.date })),
+    { url: `${base}/prompts/`, priority: 0.6, lastModified: latestDate },
+    ...PROMPTS.map(p => ({ url: `${base}/prompts/${p.id}/`, priority: 0.5 })),
     { url: `${base}/about/`, priority: 0.3 },
     { url: `${base}/contact/`, priority: 0.3 },
     { url: `${base}/privacy/`, priority: 0.3 },
