@@ -662,6 +662,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['klimt', 'gustav klimt'], tier: 'Rare', points: 60 },
       { aliases: ['vermeer'], tier: 'Rare', points: 60 },
       { aliases: ['pollock', 'jackson pollock'], tier: 'Rare', points: 60 },
+      { aliases: ['raphael'], tier: 'Schooler', points: 30 },
+      { aliases: ['cezanne', 'paul cezanne'], tier: 'Schooler', points: 30 },
+      { aliases: ['matisse', 'henri matisse'], tier: 'Schooler', points: 30 },
+      { aliases: ['renoir', 'pierre auguste renoir'], tier: 'Schooler', points: 30 },
+      { aliases: ['degas', 'edgar degas'], tier: 'Schooler', points: 30 },
+      { aliases: ['goya', 'francisco goya'], tier: 'Schooler', points: 30 },
+      { aliases: ['munch', 'edvard munch'], tier: 'Schooler', points: 30 },
       { aliases: ['caravaggio'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -679,6 +686,14 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['coffee'], tier: 'Schooler', points: 30 },
       { aliases: ['cherry'], tier: 'Schooler', points: 30 },
       { aliases: ['butter pecan'], tier: 'Rare', points: 60 },
+      { aliases: ['neapolitan'], tier: 'Schooler', points: 30 },
+      { aliases: ['cookie dough', 'chocolate chip cookie dough'], tier: 'Schooler', points: 30 },
+      { aliases: ['fudge ripple', 'fudge swirl'], tier: 'Schooler', points: 30 },
+      { aliases: ['birthday cake'], tier: 'Schooler', points: 30 },
+      { aliases: ['mocha'], tier: 'Schooler', points: 30 },
+      { aliases: ['raspberry'], tier: 'Schooler', points: 30 },
+      { aliases: ['maple walnut'], tier: 'Rare', points: 60 },
+      { aliases: ['bubblegum', 'bubble gum'], tier: 'Rare', points: 60 },
       { aliases: ['spumoni'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -697,6 +712,17 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['psyduck'], tier: 'Schooler', points: 30 },
       { aliases: ['mew'], tier: 'Rare', points: 60 },
       { aliases: ['gyarados'], tier: 'Rare', points: 60 },
+      { aliases: ['charmander'], tier: 'Schooler', points: 30 },
+      { aliases: ['venusaur'], tier: 'Rare', points: 60 },
+      { aliases: ['blastoise'], tier: 'Rare', points: 60 },
+      { aliases: ['raichu'], tier: 'Schooler', points: 30 },
+      { aliases: ['meowth'], tier: 'Schooler', points: 30 },
+      { aliases: ['onix'], tier: 'Schooler', points: 30 },
+      { aliases: ['dragonite'], tier: 'Rare', points: 60 },
+      { aliases: ['lugia'], tier: 'Rare', points: 60 },
+      { aliases: ['lucario'], tier: 'Schooler', points: 30 },
+      { aliases: ['greninja'], tier: 'Schooler', points: 30 },
+      { aliases: ['mimikyu'], tier: 'Rare', points: 60 },
       { aliases: ['dunsparce'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -715,6 +741,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['independence day'], tier: 'Schooler', points: 30 },
       { aliases: ['ramadan'], tier: 'Schooler', points: 30 },
       { aliases: ['labor day'], tier: 'Schooler', points: 30 },
+      { aliases: ["st patrick's day", 'st patricks day'], tier: 'Schooler', points: 30 },
+      { aliases: ["mother's day", 'mothers day'], tier: 'Schooler', points: 30 },
+      { aliases: ["father's day", 'fathers day'], tier: 'Schooler', points: 30 },
+      { aliases: ['memorial day'], tier: 'Schooler', points: 30 },
+      { aliases: ['kwanzaa'], tier: 'Schooler', points: 30 },
+      { aliases: ["april fools' day", 'april fools day'], tier: 'Schooler', points: 30 },
+      { aliases: ['mardi gras'], tier: 'Schooler', points: 30 },
       { aliases: ['boxing day'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -733,6 +766,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['hummingbird'], tier: 'Schooler', points: 30 },
       { aliases: ['robin'], tier: 'Schooler', points: 30 },
       { aliases: ['seagull'], tier: 'Schooler', points: 30 },
+      { aliases: ['swan'], tier: 'Schooler', points: 30 },
+      { aliases: ['woodpecker'], tier: 'Schooler', points: 30 },
+      { aliases: ['ostrich'], tier: 'Schooler', points: 30 },
+      { aliases: ['toucan'], tier: 'Schooler', points: 30 },
+      { aliases: ['hawk'], tier: 'Schooler', points: 30 },
+      { aliases: ['vulture'], tier: 'Schooler', points: 30 },
+      { aliases: ['raven'], tier: 'Schooler', points: 30 },
       { aliases: ['puffin'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -751,6 +791,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['crush'], tier: 'Rare', points: 60 },
       { aliases: ['sunkist'], tier: 'Rare', points: 60 },
       { aliases: ['fresca'], tier: 'Deep Cut', points: 85 },
+      { aliases: ['sierra mist', 'starry'], tier: 'Rare', points: 60 },
+      { aliases: ['mello yello'], tier: 'Rare', points: 60 },
+      { aliases: ["barq's", 'barqs'], tier: 'Rare', points: 60 },
+      { aliases: ['mr pibb', 'pibb xtra'], tier: 'Deep Cut', points: 85 },
+      { aliases: ['rc cola'], tier: 'Rare', points: 60 },
+      { aliases: ['squirt'], tier: 'Rare', points: 60 },
+      { aliases: ['jarritos'], tier: 'Rare', points: 60 },
       { aliases: ['moxie'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -771,6 +818,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['vietnamese'], tier: 'Schooler', points: 30 },
       { aliases: ['brazilian'], tier: 'Rare', points: 60 },
       { aliases: ['caribbean'], tier: 'Rare', points: 60 },
+      { aliases: ['german'], tier: 'Schooler', points: 30 },
+      { aliases: ['turkish'], tier: 'Schooler', points: 30 },
+      { aliases: ['lebanese'], tier: 'Schooler', points: 30 },
+      { aliases: ['portuguese'], tier: 'Schooler', points: 30 },
+      { aliases: ['moroccan'], tier: 'Rare', points: 60 },
+      { aliases: ['ethiopian'], tier: 'Rare', points: 60 },
+      { aliases: ['persian', 'iranian'], tier: 'Schooler', points: 30 },
       { aliases: ['laotian'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -791,6 +845,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['zimbabwe'], tier: 'Rare', points: 60 },
       { aliases: ['libya'], tier: 'Rare', points: 60 },
       { aliases: ['algeria'], tier: 'Rare', points: 60 },
+      { aliases: ['sudan'], tier: 'Rare', points: 60 },
+      { aliases: ['tunisia'], tier: 'Rare', points: 60 },
+      { aliases: ['cameroon'], tier: 'Rare', points: 60 },
+      { aliases: ['ivory coast', 'cote d ivoire'], tier: 'Rare', points: 60 },
+      { aliases: ['mali'], tier: 'Rare', points: 60 },
+      { aliases: ['mozambique'], tier: 'Rare', points: 60 },
+      { aliases: ['botswana'], tier: 'Rare', points: 60 },
       { aliases: ['eswatini'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -811,6 +872,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['rnb', 'r b', 'r and b'], tier: 'Schooler', points: 30 },
       { aliases: ['punk'], tier: 'Schooler', points: 30 },
       { aliases: ['indie'], tier: 'Schooler', points: 30 },
+      { aliases: ['soul'], tier: 'Schooler', points: 30 },
+      { aliases: ['funk'], tier: 'Schooler', points: 30 },
+      { aliases: ['disco'], tier: 'Schooler', points: 30 },
+      { aliases: ['techno'], tier: 'Schooler', points: 30 },
+      { aliases: ['house'], tier: 'Schooler', points: 30 },
+      { aliases: ['gospel'], tier: 'Schooler', points: 30 },
+      { aliases: ['grunge'], tier: 'Schooler', points: 30 },
       { aliases: ['shoegaze'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -829,6 +897,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['archimedes'], tier: 'Rare', points: 60 },
       { aliases: ['pythagoras'], tier: 'Rare', points: 60 },
       { aliases: ['da vinci', 'leonardo da vinci'], tier: 'Schooler', points: 30 },
+      { aliases: ['faraday', 'michael faraday'], tier: 'Schooler', points: 30 },
+      { aliases: ['bohr', 'niels bohr'], tier: 'Schooler', points: 30 },
+      { aliases: ['kepler', 'johannes kepler'], tier: 'Schooler', points: 30 },
+      { aliases: ['copernicus'], tier: 'Schooler', points: 30 },
+      { aliases: ['mendel', 'gregor mendel'], tier: 'Schooler', points: 30 },
+      { aliases: ['turing', 'alan turing'], tier: 'Rare', points: 60 },
+      { aliases: ['sagan', 'carl sagan'], tier: 'Schooler', points: 30 },
       { aliases: ['feynman', 'richard feynman'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -848,6 +923,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['bowling'], tier: 'Schooler', points: 30 },
       { aliases: ['handball'], tier: 'Schooler', points: 30 },
       { aliases: ['lacrosse'], tier: 'Rare', points: 60 },
+      { aliases: ['ice hockey', 'hockey'], tier: 'Schooler', points: 30 },
+      { aliases: ['softball'], tier: 'Schooler', points: 30 },
+      { aliases: ['badminton'], tier: 'Schooler', points: 30 },
+      { aliases: ['water polo'], tier: 'Rare', points: 60 },
+      { aliases: ['polo'], tier: 'Rare', points: 60 },
+      { aliases: ['billiards', 'pool'], tier: 'Schooler', points: 30 },
+      { aliases: ['croquet'], tier: 'Deep Cut', points: 85 },
       { aliases: ['jai alai'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -866,6 +948,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['ballet flats'], tier: 'Rare', points: 60 },
       { aliases: ['clogs', 'clog'], tier: 'Rare', points: 60 },
       { aliases: ['moccasins', 'moccasin'], tier: 'Rare', points: 60 },
+      { aliases: ['cleats'], tier: 'Schooler', points: 30 },
+      { aliases: ['wedges'], tier: 'Rare', points: 60 },
+      { aliases: ['stilettos'], tier: 'Rare', points: 60 },
+      { aliases: ['platforms'], tier: 'Rare', points: 60 },
+      { aliases: ['mules'], tier: 'Rare', points: 60 },
+      { aliases: ['galoshes'], tier: 'Deep Cut', points: 85 },
+      { aliases: ['mary janes'], tier: 'Deep Cut', points: 85 },
       { aliases: ['espadrilles', 'espadrille'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -884,6 +973,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['mixer'], tier: 'Schooler', points: 30 },
       { aliases: ['kettle'], tier: 'Schooler', points: 30 },
       { aliases: ['slow cooker'], tier: 'Rare', points: 60 },
+      { aliases: ['pressure cooker'], tier: 'Schooler', points: 30 },
+      { aliases: ['rice cooker'], tier: 'Schooler', points: 30 },
+      { aliases: ['food processor'], tier: 'Schooler', points: 30 },
+      { aliases: ['juicer'], tier: 'Schooler', points: 30 },
+      { aliases: ['waffle maker'], tier: 'Schooler', points: 30 },
+      { aliases: ['deep fryer'], tier: 'Schooler', points: 30 },
+      { aliases: ['espresso machine'], tier: 'Rare', points: 60 },
       { aliases: ['sous vide'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -902,6 +998,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['pinterest'], tier: 'Schooler', points: 30 },
       { aliases: ['discord'], tier: 'Schooler', points: 30 },
       { aliases: ['wechat'], tier: 'Schooler', points: 30 },
+      { aliases: ['telegram'], tier: 'Schooler', points: 30 },
+      { aliases: ['twitch'], tier: 'Schooler', points: 30 },
+      { aliases: ['threads'], tier: 'Schooler', points: 30 },
+      { aliases: ['tumblr'], tier: 'Rare', points: 60 },
+      { aliases: ['quora'], tier: 'Rare', points: 60 },
+      { aliases: ['myspace'], tier: 'Rare', points: 60 },
+      { aliases: ['mastodon'], tier: 'Deep Cut', points: 85 },
       { aliases: ['clubhouse'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -920,6 +1023,14 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['halo'], tier: 'Schooler', points: 30 },
       { aliases: ['god of war'], tier: 'Schooler', points: 30 },
       { aliases: ['animal crossing'], tier: 'Schooler', points: 30 },
+      { aliases: ['roblox'], tier: 'Plankton', points: 10 },
+      { aliases: ['among us'], tier: 'Schooler', points: 30 },
+      { aliases: ['league of legends'], tier: 'Schooler', points: 30 },
+      { aliases: ['skyrim', 'elder scrolls'], tier: 'Schooler', points: 30 },
+      { aliases: ['doom'], tier: 'Schooler', points: 30 },
+      { aliases: ['portal'], tier: 'Schooler', points: 30 },
+      { aliases: ['mario kart'], tier: 'Schooler', points: 30 },
+      { aliases: ['overwatch'], tier: 'Schooler', points: 30 },
       { aliases: ['celeste'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -938,6 +1049,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['stonehenge'], tier: 'Schooler', points: 30 },
       { aliases: ['mount rushmore'], tier: 'Schooler', points: 30 },
       { aliases: ['burj khalifa'], tier: 'Schooler', points: 30 },
+      { aliases: ['leaning tower of pisa'], tier: 'Schooler', points: 30 },
+      { aliases: ['grand canyon'], tier: 'Schooler', points: 30 },
+      { aliases: ['machu picchu'], tier: 'Schooler', points: 30 },
+      { aliases: ['christ the redeemer'], tier: 'Schooler', points: 30 },
+      { aliases: ['acropolis'], tier: 'Rare', points: 60 },
+      { aliases: ['angkor wat'], tier: 'Rare', points: 60 },
+      { aliases: ['niagara falls'], tier: 'Schooler', points: 30 },
       { aliases: ['petra'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -956,6 +1074,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['glacier'], tier: 'Schooler', points: 30 },
       { aliases: ['lagoon'], tier: 'Rare', points: 60 },
       { aliases: ['fjord'], tier: 'Rare', points: 60 },
+      { aliases: ['creek'], tier: 'Schooler', points: 30 },
+      { aliases: ['canal'], tier: 'Schooler', points: 30 },
+      { aliases: ['reservoir'], tier: 'Rare', points: 60 },
+      { aliases: ['delta'], tier: 'Rare', points: 60 },
+      { aliases: ['strait'], tier: 'Rare', points: 60 },
+      { aliases: ['swamp'], tier: 'Schooler', points: 30 },
+      { aliases: ['marsh'], tier: 'Schooler', points: 30 },
       { aliases: ['estuary'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -976,6 +1101,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['cheetah'], tier: 'Schooler', points: 30 },
       { aliases: ['rhino', 'rhinoceros'], tier: 'Schooler', points: 30 },
       { aliases: ['leopard'], tier: 'Schooler', points: 30 },
+      { aliases: ['fox'], tier: 'Schooler', points: 30 },
+      { aliases: ['deer'], tier: 'Schooler', points: 30 },
+      { aliases: ['raccoon'], tier: 'Schooler', points: 30 },
+      { aliases: ['squirrel'], tier: 'Schooler', points: 30 },
+      { aliases: ['hedgehog'], tier: 'Schooler', points: 30 },
+      { aliases: ['hyena'], tier: 'Schooler', points: 30 },
+      { aliases: ['hippopotamus', 'hippo'], tier: 'Schooler', points: 30 },
       { aliases: ['pangolin'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -996,6 +1128,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['singapore'], tier: 'Schooler', points: 30 },
       { aliases: ['bangladesh'], tier: 'Rare', points: 60 },
       { aliases: ['turkey'], tier: 'Schooler', points: 30 },
+      { aliases: ['united arab emirates', 'uae'], tier: 'Schooler', points: 30 },
+      { aliases: ['iran'], tier: 'Schooler', points: 30 },
+      { aliases: ['israel'], tier: 'Schooler', points: 30 },
+      { aliases: ['nepal'], tier: 'Schooler', points: 30 },
+      { aliases: ['sri lanka'], tier: 'Schooler', points: 30 },
+      { aliases: ['myanmar', 'burma'], tier: 'Rare', points: 60 },
+      { aliases: ['cambodia'], tier: 'Rare', points: 60 },
       { aliases: ['bhutan'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -1016,6 +1155,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['architect'], tier: 'Schooler', points: 30 },
       { aliases: ['electrician'], tier: 'Schooler', points: 30 },
       { aliases: ['pharmacist'], tier: 'Rare', points: 60 },
+      { aliases: ['plumber'], tier: 'Schooler', points: 30 },
+      { aliases: ['carpenter'], tier: 'Schooler', points: 30 },
+      { aliases: ['mechanic'], tier: 'Schooler', points: 30 },
+      { aliases: ['journalist'], tier: 'Schooler', points: 30 },
+      { aliases: ['veterinarian'], tier: 'Schooler', points: 30 },
+      { aliases: ['programmer', 'software developer'], tier: 'Schooler', points: 30 },
+      { aliases: ['farmer'], tier: 'Schooler', points: 30 },
       { aliases: ['cartographer'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -1035,6 +1181,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['creme brulee'], tier: 'Rare', points: 60 },
       { aliases: ['macaron', 'macarons'], tier: 'Rare', points: 60 },
       { aliases: ['cannoli'], tier: 'Rare', points: 60 },
+      { aliases: ['gelato'], tier: 'Schooler', points: 30 },
+      { aliases: ['eclair'], tier: 'Schooler', points: 30 },
+      { aliases: ['mousse'], tier: 'Rare', points: 60 },
+      { aliases: ['flan'], tier: 'Rare', points: 60 },
+      { aliases: ['sorbet'], tier: 'Rare', points: 60 },
+      { aliases: ['souffle'], tier: 'Rare', points: 60 },
+      { aliases: ['pavlova'], tier: 'Deep Cut', points: 85 },
       { aliases: ['baklava'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -1054,6 +1207,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['acdc', 'ac dc'], tier: 'Schooler', points: 30 },
       { aliases: ['green day'], tier: 'Schooler', points: 30 },
       { aliases: ['radiohead'], tier: 'Schooler', points: 30 },
+      { aliases: ['red hot chili peppers'], tier: 'Schooler', points: 30 },
+      { aliases: ['linkin park'], tier: 'Schooler', points: 30 },
+      { aliases: ['guns n roses', 'guns and roses'], tier: 'Schooler', points: 30 },
+      { aliases: ['aerosmith'], tier: 'Schooler', points: 30 },
+      { aliases: ['fleetwood mac'], tier: 'Schooler', points: 30 },
+      { aliases: ['the beach boys', 'beach boys'], tier: 'Schooler', points: 30 },
+      { aliases: ['the who'], tier: 'Rare', points: 60 },
       { aliases: ['the smiths', 'smiths'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -1072,6 +1232,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['house'], tier: 'Schooler', points: 30 },
       { aliases: ['lost'], tier: 'Schooler', points: 30 },
       { aliases: ['csi'], tier: 'Schooler', points: 30 },
+      { aliases: ['seinfeld'], tier: 'Schooler', points: 30 },
+      { aliases: ['the big bang theory'], tier: 'Schooler', points: 30 },
+      { aliases: ['south park'], tier: 'Schooler', points: 30 },
+      { aliases: ['family guy'], tier: 'Schooler', points: 30 },
+      { aliases: ['spongebob', 'spongebob squarepants'], tier: 'Schooler', points: 30 },
+      { aliases: ['better call saul'], tier: 'Schooler', points: 30 },
+      { aliases: ['rick and morty'], tier: 'Schooler', points: 30 },
       { aliases: ['the wire'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -1090,6 +1257,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['five guys'], tier: 'Schooler', points: 30 },
       { aliases: ['in n out'], tier: 'Schooler', points: 30 },
       { aliases: ["popeye's", 'popeyes'], tier: 'Schooler', points: 30 },
+      { aliases: ['chick fil a', 'chickfila'], tier: 'Schooler', points: 30 },
+      { aliases: ["arby's", 'arbys'], tier: 'Schooler', points: 30 },
+      { aliases: ['sonic'], tier: 'Schooler', points: 30 },
+      { aliases: ['jack in the box'], tier: 'Schooler', points: 30 },
+      { aliases: ['dairy queen'], tier: 'Schooler', points: 30 },
+      { aliases: ['panda express'], tier: 'Schooler', points: 30 },
+      { aliases: ["papa john's", 'papa johns'], tier: 'Schooler', points: 30 },
       { aliases: ['white castle'], tier: 'One in a Krillion', points: 100 }
     ]
   },
@@ -1108,6 +1282,13 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['redwood'], tier: 'Schooler', points: 30 },
       { aliases: ['spruce'], tier: 'Rare', points: 60 },
       { aliases: ['fir'], tier: 'Rare', points: 60 },
+      { aliases: ['ash'], tier: 'Schooler', points: 30 },
+      { aliases: ['beech'], tier: 'Rare', points: 60 },
+      { aliases: ['aspen'], tier: 'Rare', points: 60 },
+      { aliases: ['sycamore'], tier: 'Rare', points: 60 },
+      { aliases: ['chestnut'], tier: 'Rare', points: 60 },
+      { aliases: ['magnolia'], tier: 'Schooler', points: 30 },
+      { aliases: ['cypress'], tier: 'Rare', points: 60 },
       { aliases: ['baobab'], tier: 'One in a Krillion', points: 100 }
     ]
   }
