@@ -123,7 +123,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
       <main className="wrap">
         <nav className="crumbs"><a href="/">Home</a> › <a href="/archive/">Archive</a> › Dive #{dive.dive}</nav>
 
-        <h1>Krillion Dive #{dive.dive} Prompts &amp; Hints</h1>
+        <h1>Krillion Dive #{dive.dive} {showAnswers ? 'Answers, Prompts &amp; Hints' : 'Prompts &amp; Hints'}</h1>
         <p className="meta">{displayDate} · {dive.prompts.length} prompts · 25 seconds each</p>
 
         <section>

@@ -1295,9 +1295,12 @@ export const PROMPTS: Prompt[] = [
 ];
 
 export const TIERS = [
-  { name: 'Plankton', points: 10 }, { name: 'Too Clever', points: 15 },
-  { name: 'Schooler', points: 30 }, { name: 'Rare', points: 60 },
-  { name: 'Deep Cut', points: 85 }, { name: 'One in a Krillion', points: 100 }
+  { name: 'Plankton', points: 10, label: 'Most common' },
+  { name: 'Too Clever', points: 15, label: 'Common' },
+  { name: 'Schooler', points: 30, label: 'Familiar' },
+  { name: 'Rare', points: 60, label: 'Uncommon' },
+  { name: 'Deep Cut', points: 85, label: 'Rare' },
+  { name: 'One in a Krillion', points: 100, label: 'Rarest' },
 ];
 
 export function normalizeAnswer(value: string) {

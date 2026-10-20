@@ -1,9 +1,15 @@
 import type { Metadata } from 'next';
-import { DIVES, SITE, fmtDate, diveSlug, getArchiveGroups } from '../../lib/archive';
+import { DIVES, SITE, hasAnswers, fmtDate, diveSlug, getArchiveGroups } from '../../lib/archive';
 import SiteHeader from '../../components/SiteHeader';
 import SiteFooter from '../../components/SiteFooter';
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
+
+// 从数据算「有多少期已带官方答案」，文案跟着数据走，避免手写承诺超前于实际。
+const count = DIVES.length;
+const withAnswers = DIVES.filter(hasAnswers).length;
+const allHaveAnswers = withAnswers === count;
+const firstWithAnswers = withAnswers > 0 ? DIVES.find(hasAnswers)!.dive : undefined;
 
 const firstSentence = (s: string) => {
   const m = s?.match(/^.*?[.!?](?:\s|$)/);
@@ -11,15 +17,19 @@ const firstSentence = (s: string) => {
 };
 
 export function generateMetadata(): Metadata {
-  const count = DIVES.length;
   const title = count === 1
-    ? 'Krillion Dive Archive — Past Dive Prompts, Hints & Answers'
-    : `Krillion Dive Archive — All ${count} Past Dives, Prompts, Hints & Answers`;
+    ? (allHaveAnswers ? 'Krillion Dive Archive — Past Dive Prompts, Hints & Answers' : 'Krillion Dive Archive — Past Dive Prompts & Hints')
+    : (allHaveAnswers ? `Krillion Dive Archive — All ${count} Past Dives, Prompts, Hints & Answers` : `Krillion Dive Archive — All ${count} Past Dives, Prompts & Hints`);
+  const description = count === 1
+    ? (allHaveAnswers ? 'The one Krillion dive so far, with its seven prompts, hints and the full official answer list.' : 'The one Krillion dive so far, with its seven prompts and hints.')
+    : (allHaveAnswers
+      ? `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and the full official answer list.`
+      : (firstWithAnswers
+        ? `Every Krillion dive so far — all ${count} of them, each with its seven prompts and hints; dives from #${firstWithAnswers} on also include the full official answer list.`
+        : `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes.`));
   return {
     title,
-    description: count === 1
-      ? 'The one Krillion dive so far, with its seven prompts, hints and notes. Replay it in the unlimited version.'
-      : `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes; dives from #97 on include the full official answer list.`,
+    description,
     alternates: { canonical: `${BASE}/archive/` },
     robots: { index: true, follow: true },
     openGraph: { type: 'website', title: 'Krillion Dive Archive', url: `${BASE}/archive/` },
@@ -28,11 +38,10 @@ export function generateMetadata(): Metadata {
 
 export default function ArchivePage() {
   const groups = getArchiveGroups();
-  const count = DIVES.length;
 
   const description = count === 1
-    ? 'The one Krillion dive so far, with its seven prompts and hints.'
-    : `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes.`;
+    ? (allHaveAnswers ? 'The one Krillion dive so far, with its seven prompts, hints and the full official answer list.' : 'The one Krillion dive so far, with its seven prompts and hints.')
+    : (allHaveAnswers ? `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and the full official answer list.` : `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes.`);
 
   const collectionJsonLd = {
     '@context': 'https://schema.org',
@@ -72,7 +81,7 @@ export default function ArchivePage() {
         <h1>Krillion Dive Archive</h1>
         <p className="meta">{count === 1 ? 'One dive' : `All ${count} dives`} · newest first</p>
 
-        <p>Every Krillion dive that has run so far, newest first. Pick any date to see that dive&rsquo;s seven prompts, a hint for each one, a note on what made it hard, and — from Dive #97 onward — the full official answer list, collapsed prompt by prompt. Or open the <a href="/">unlimited version</a> and replay it with the same 25-second timer.</p>
+        <p>Every Krillion dive that has run so far, newest first. Pick any date to see that dive&rsquo;s seven prompts, a hint for each one, a note on what made it hard, and {allHaveAnswers ? <>the full official answer list for every dive</> : firstWithAnswers ? <>the full official answer list from Dive #{firstWithAnswers} onward</> : <>its prompts and hints</>}, collapsed prompt by prompt. Or open the <a href="/">unlimited version</a> and replay it with the same 25-second timer.</p>
 
         <section className="groups">
           {count === 0 ? (

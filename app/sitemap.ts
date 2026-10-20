@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/archive/`, priority: 0.8, lastModified: latestDate },
     ...DIVES.map(d => ({ url: `${base}/archive/${diveSlug(d.dive)}/`, priority: 0.6, lastModified: d.date })),
     { url: `${base}/prompts/`, priority: 0.6, lastModified: latestDate },
-    ...PROMPTS.map(p => ({ url: `${base}/prompts/${p.id}/`, priority: 0.5 })),
+    ...PROMPTS.map(p => ({ url: `${base}/prompts/${p.id}/`, priority: 0.5, lastModified: latestDate })),
     { url: `${base}/about/`, priority: 0.3 },
     { url: `${base}/contact/`, priority: 0.3 },
     { url: `${base}/privacy/`, priority: 0.3 },

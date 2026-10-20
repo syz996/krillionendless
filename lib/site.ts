@@ -10,7 +10,7 @@ export const SITE = {
     },
     {
       q: 'Do these pages include the official answers?',
-      a: 'Yes — every dive page carries the full official answer list with rarity tiers and scores, collapsed prompt by prompt so nothing is spoiled until you open it. Answer capture began with Dive #97; earlier dives were archived before this data was kept and cannot be backfilled.',
+      a: 'Yes — every dive page carries the full official answer list with rarity tiers and scores, collapsed prompt by prompt so nothing is spoiled until you open it.',
     },
     {
       q: 'Can I replay this dive?',
