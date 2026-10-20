@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import { SITE } from './site';
 export { SITE };
 
@@ -19,6 +20,11 @@ const ROOT = process.cwd();
 const CONTENT = path.join(ROOT, 'content');
 const DIVE_DIR = path.join(CONTENT, 'dives');
 
+// 正式期数据为 gzip 存档（content/dives/dive-N.json.gz），
+// 由 node fetch-dive.mjs --pack <draft.json> 打包生成；草稿目录仍是明文 JSON。
+const readDiveFile = (f: string): Dive =>
+  JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(DIVE_DIR, f))).toString('utf8')) as Dive;
+
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -29,19 +35,10 @@ export const fmtDate = (iso: string): string => {
 
 export const diveSlug = (n: number) => `dive-${n}`;
 
-// 纽约时区「今天」的 ISO 日期（构建时求值）。官方答案只在该期过期后发布。
-export function todayInNewYork(): string {
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/New_York',
-    year: 'numeric', month: '2-digit', day: '2-digit',
-  }).formatToParts(new Date());
-  const get = (t: string) => parts.find(p => p.type === t)!.value;
-  return `${get('year')}-${get('month')}-${get('day')}`;
-}
-
-// 该期答案是否可发布：日期早于纽约今天（当期已过），且至少落地了一条答案。
-export function answersPublished(dive: Dive): boolean {
-  return dive.date < todayInNewYork() && dive.prompts.some(p => (p.answers?.length ?? 0) > 0);
+// 该期是否带官方答案数据（94~96 期未采集；官方接口仅当日开放，无法回填）。
+// 展示层按题折叠防剧透，含当期当天。
+export function hasAnswers(dive: Dive): boolean {
+  return dive.prompts.some(p => (p.answers?.length ?? 0) > 0);
 }
 
 const wc = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
@@ -55,9 +52,9 @@ const jac = (a: string[], b: string[]) => {
 
 function loadDives(): Dive[] {
   if (!fs.existsSync(DIVE_DIR)) return [];
-  const files = fs.readdirSync(DIVE_DIR).filter(f => f.endsWith('.json'));
+  const files = fs.readdirSync(DIVE_DIR).filter(f => f.endsWith('.json.gz'));
   const dives = files
-    .map(f => JSON.parse(fs.readFileSync(path.join(DIVE_DIR, f), 'utf8')) as Dive)
+    .map(readDiveFile)
     .sort((a, b) => a.dive - b.dive);
 
   // ── 闸门 1：字段 / 期号 / 日期 / 7 条 / 正文长度 ──
@@ -89,8 +86,8 @@ function loadDives(): Dive[] {
 
   // ── 闸门 3：文件名 = 期号 + 日期连续 ──
   for (const f of files) {
-    const d = JSON.parse(fs.readFileSync(path.join(DIVE_DIR, f), 'utf8')) as Dive;
-    if (f !== `${diveSlug(d.dive)}.json`) throw new Error(`文件名 ${f} 与期号 #${d.dive} 不一致`);
+    const d = readDiveFile(f);
+    if (f !== `${diveSlug(d.dive)}.json.gz`) throw new Error(`文件名 ${f} 与期号 #${d.dive} 不一致`);
   }
   for (let i = 1; i < dives.length; i++) {
     const gap = (new Date(dives[i].date).getTime() - new Date(dives[i - 1].date).getTime()) / 86400000;

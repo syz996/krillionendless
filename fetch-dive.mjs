@@ -6,12 +6,13 @@
 //   1. 按纽约时区算出「今天」是哪一期（Dive #1 = 2026-07-16，每天一期）。
 //   2. 调用第三方接口抓取当天公开的 7 道题目与答案（见 fetchDivePrompts）。
 //   3. 把题目生成草稿到 content/drafts/dive-N.json。
-//   4. 人工补全 hint 与 analysis 后，把文件移入 content/dives/ 才参与构建。
+//   4. 人工补全 hint 与 analysis 后，打包为 content/dives/dive-N.json.gz 才参与构建：
+//      node fetch-dive.mjs --pack content/drafts/dive-N.json
+//      （草稿是明文 JSON 便于编辑；正式数据 gzip 存档，仓库体积约 -85%）
 //
 // 注意：hint 与 analysis 是人工撰写的方向性提示和特点分析，
 //       不是本脚本编造；否则 build 的质检闸门（正文 <500 词 / analysis <2 段）会拦截。
-//       answers 随草稿一并落地，但归档页只在「该期已过期」（日期早于纽约今天）时
-//       才渲染答案区 —— 即次日发布，不剧透在玩的当期。
+//       answers 随草稿一并落地；归档页按题折叠展示全量答案（点开才剧透，含当期当天）。
 //
 // ── 接口数据结构（GET https://krillion.io/api/reveal?date=YYYY-MM-DD，无需鉴权）──
 // 响应顶层
@@ -30,6 +31,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import zlib from 'node:zlib';
 
 const ROOT = process.cwd();
 const DRAFT_DIR = path.join(ROOT, 'content', 'drafts');
@@ -94,12 +96,15 @@ function buildDraft(number, isoDate, prompts) {
   };
 }
 
-function readJsonDir(dir) {
+// 读取目录下的 JSON；gzipped=true 时按 gzip 存档解压（正式数据）。
+function readJsonDir(dir, gzipped = false) {
   if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir).filter(f => f.endsWith('.json')).map(f => {
+  const ext = gzipped ? '.json.gz' : '.json';
+  return fs.readdirSync(dir).filter(f => f.endsWith(ext)).map(f => {
     const file = path.join(dir, f);
     try {
-      return { file: f, data: JSON.parse(fs.readFileSync(file, 'utf8')) };
+      const raw = gzipped ? zlib.gunzipSync(fs.readFileSync(file)) : fs.readFileSync(file, 'utf8');
+      return { file: f, data: JSON.parse(raw.toString('utf8')) };
     } catch (e) {
       return { file: f, error: e.message };
     }
@@ -109,7 +114,7 @@ function readJsonDir(dir) {
 // 校验 content/ 下的正式数据与草稿，打印提示；正式数据不达标则退出码 1。
 function verifyContent() {
   console.log('=== 内容校验 ===');
-  const dives = readJsonDir(DIVE_DIR);
+  const dives = readJsonDir(DIVE_DIR, true);
   const drafts = readJsonDir(DRAFT_DIR);
 
   let bad = 0;
@@ -155,14 +160,36 @@ function verifyContent() {
   }
 }
 
+// 把补全好的草稿打包为正式 gzip 存档（content/dives/dive-N.json.gz）。
+// 打包前做基础质检，未达标直接失败，别把半成品推进构建。
+function packDraft(draftPath) {
+  if (!fs.existsSync(draftPath)) throw new Error(`草稿不存在：${draftPath}`);
+  const d = JSON.parse(fs.readFileSync(draftPath, 'utf8'));
+  const problems = [];
+  if (!Number.isInteger(d.dive)) problems.push(`期号不是整数: ${d.dive}`);
+  if (!Array.isArray(d.prompts) || d.prompts.length !== 7) problems.push('prompts 须 7 条');
+  else d.prompts.forEach((p, i) => { if (!p.prompt || !p.hint) problems.push(`第 ${i + 1} 题缺 prompt 或 hint`); });
+  if (!Array.isArray(d.analysis) || d.analysis.length < 2) problems.push('analysis 须至少 2 段');
+  if (problems.length) {
+    console.error(`草稿未达标，未打包：${problems.join('; ')}`);
+    process.exitCode = 1;
+    return;
+  }
+  const dst = path.join(DIVE_DIR, `dive-${d.dive}.json.gz`);
+  const raw = fs.readFileSync(draftPath);
+  fs.mkdirSync(DIVE_DIR, { recursive: true });
+  fs.writeFileSync(dst, zlib.gzipSync(raw, { level: 9 }));
+  console.log(`已打包：${dst}（${raw.length} → ${fs.statSync(dst).size} 字节）`);
+}
+
 async function main() {
   const isoDate = todayInNewYork();
   const number = diveNumberFor(isoDate);
   const slug = `dive-${number}`;
 
-  const existing = path.join(DIVE_DIR, `${slug}.json`);
+  const existing = path.join(DIVE_DIR, `${slug}.json.gz`);
   if (fs.existsSync(existing)) {
-    console.log(`已存在 ${slug}.json，跳过抓取`);
+    console.log(`已存在 ${slug}.json.gz，跳过抓取`);
     return;
   }
 
@@ -184,6 +211,14 @@ async function main() {
 
 if (process.argv.includes('--verify')) {
   verifyContent();
+} else if (process.argv.includes('--pack')) {
+  const i = process.argv.indexOf('--pack');
+  const draft = process.argv[i + 1];
+  if (!draft) {
+    console.error('用法：node fetch-dive.mjs --pack content/drafts/dive-N.json');
+    process.exit(1);
+  }
+  packDraft(draft);
 } else {
   main().catch(err => {
     console.error(err);
