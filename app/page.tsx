@@ -55,8 +55,10 @@ const siteJsonLd = {
 
 export default function Page() {
   const last = DIVES.length ? DIVES[DIVES.length - 1] : undefined;
+  // 只传 prompt/hint 给客户端：官方 answers 体量大且 replay 模式（不计分）用不到，
+  // 更不能把当期答案序列化进首页 HTML（剧透 + 1MB+ 死重）。
   const latestDive: LatestDive | undefined = last
-    ? { dive: last.dive, date: last.date, prompts: last.prompts }
+    ? { dive: last.dive, date: last.date, prompts: last.prompts.map(p => ({ prompt: p.prompt, hint: p.hint })) }
     : undefined;
   // 最近 5 期（倒序），供首页存档区块直链使用
   const recentDives = [...DIVES]
