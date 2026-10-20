@@ -13,13 +13,13 @@ const firstSentence = (s: string) => {
 export function generateMetadata(): Metadata {
   const count = DIVES.length;
   const title = count === 1
-    ? 'Krillion Dive Archive — Past Dive Prompts & Hints'
-    : `Krillion Dive Archive — All ${count} Past Dives, Prompts & Hints`;
+    ? 'Krillion Dive Archive — Past Dive Prompts, Hints & Answers'
+    : `Krillion Dive Archive — All ${count} Past Dives, Prompts, Hints & Answers`;
   return {
     title,
     description: count === 1
-      ? 'The one Krillion dive so far, with its seven prompts and hints. Replay it in the unlimited version.'
-      : `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes. Pick any past dive and replay it in the unlimited version.`,
+      ? 'The one Krillion dive so far, with its seven prompts, hints and notes. Replay it in the unlimited version.'
+      : `Every Krillion dive so far — all ${count} of them, each with its seven prompts, hints and notes; dives from #97 on include the full official answer list.`,
     alternates: { canonical: `${BASE}/archive/` },
     robots: { index: true, follow: true },
     openGraph: { type: 'website', title: 'Krillion Dive Archive', url: `${BASE}/archive/` },
@@ -72,7 +72,7 @@ export default function ArchivePage() {
         <h1>Krillion Dive Archive</h1>
         <p className="meta">{count === 1 ? 'One dive' : `All ${count} dives`} · newest first</p>
 
-        <p>Every Krillion dive that has run so far, newest first. Pick any date to see that dive&rsquo;s seven prompts, a hint for each one, and a note on what made it hard — or open the <a href="/">unlimited version</a> and replay it with the same 25-second timer.</p>
+        <p>Every Krillion dive that has run so far, newest first. Pick any date to see that dive&rsquo;s seven prompts, a hint for each one, a note on what made it hard, and — from Dive #97 onward — the full official answer list, collapsed prompt by prompt. Or open the <a href="/">unlimited version</a> and replay it with the same 25-second timer.</p>
 
         <section className="groups">
           {count === 0 ? (

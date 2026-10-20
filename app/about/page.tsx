@@ -25,7 +25,7 @@ export default function AboutPage() {
         <p>We built it because the official game runs once a day and, once you have played it, there is no easy way to review what came up or to keep practicing. The practice dive here fills that gap: same seven-prompt, 25-second format, playable back to back.</p>
         <p>A few things we deliberately do <strong>not</strong> do:</p>
         <ul>
-          <li>We publish each dive&rsquo;s answer list only after that dive is no longer live, so nothing is spoiled while you can still play it.</li>
+          <li>Answer lists stay collapsed on every dive page — nothing is spoiled unless you open a prompt&rsquo;s answers yourself.</li>
           <li>We do not run an account system — nothing you type here is sent to a server.</li>
           <li>We do not claim any affiliation with the official game.</li>
         </ul>

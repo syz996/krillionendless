@@ -10,7 +10,7 @@ export const SITE = {
     },
     {
       q: 'Do these pages include the official answers?',
-      a: 'A dive’s full answer list is published once that dive is no longer live — normally the day after. While a dive is still current, its page shows the prompts and hints only, so nothing is spoiled.',
+      a: 'Yes — every dive page carries the full official answer list with rarity tiers and scores, collapsed prompt by prompt so nothing is spoiled until you open it. Answer capture began with Dive #97; earlier dives were archived before this data was kept and cannot be backfilled.',
     },
     {
       q: 'Can I replay this dive?',
