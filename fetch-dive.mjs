@@ -1,15 +1,17 @@
 #!/usr/bin/env node
-// 抓取当日 Krillion dive 的 7 道公开题目，生成草稿 JSON。
+// 抓取当日 Krillion dive 的 7 道公开题目与全量答案，生成草稿 JSON。
 // 用法：node fetch-dive.mjs
 //
 // 流程：
 //   1. 按纽约时区算出「今天」是哪一期（Dive #1 = 2026-07-16，每天一期）。
-//   2. 调用第三方接口抓取当天公开的 7 道题目（见 fetchDivePrompts）。
+//   2. 调用第三方接口抓取当天公开的 7 道题目与答案（见 fetchDivePrompts）。
 //   3. 把题目生成草稿到 content/drafts/dive-N.json。
 //   4. 人工补全 hint 与 analysis 后，把文件移入 content/dives/ 才参与构建。
 //
 // 注意：hint 与 analysis 是人工撰写的方向性提示和特点分析，
 //       不是本脚本编造；否则 build 的质检闸门（正文 <500 词 / analysis <2 段）会拦截。
+//       answers 随草稿一并落地，但归档页只在「该期已过期」（日期早于纽约今天）时
+//       才渲染答案区 —— 即次日发布，不剧透在玩的当期。
 //
 // ── 接口数据结构（GET https://krillion.io/api/reveal?date=YYYY-MM-DD，无需鉴权）──
 // 响应顶层
@@ -57,10 +59,10 @@ function diveNumberFor(isoDate) {
 }
 
 /**
- * 调用 Krillion 官方 reveal 接口抓取当天 7 道题目。
+ * 调用 Krillion 官方 reveal 接口抓取当天 7 道题目与全量答案。
  * 端点：https://krillion.io/api/reveal?date=YYYY-MM-DD（无需鉴权）。
  * 只在纽约当日开放，其他日期返回 403。
- * 只取「题目」text，不落地 answers（答案/稀有度数据）。
+ * 落地 text + answers（answer/tier/score）；quip 是官方俏皮注释，刻意丢弃。
  */
 async function fetchDivePrompts(isoDate) {
   const url = `https://krillion.io/api/reveal?date=${isoDate}`;
@@ -75,14 +77,19 @@ async function fetchDivePrompts(isoDate) {
   if (!Array.isArray(data.prompts)) {
     throw new Error('接口响应缺少 prompts 数组');
   }
-  return data.prompts.map(p => p.text);
+  return data.prompts.map(p => ({
+    text: p.text,
+    answers: Array.isArray(p.answers)
+      ? p.answers.map(a => ({ answer: a.answer, tier: a.tier, score: a.score }))
+      : [],
+  }));
 }
 
 function buildDraft(number, isoDate, prompts) {
   return {
     dive: number,
     date: isoDate,
-    prompts: prompts.map(prompt => ({ prompt, hint: '' })),
+    prompts: prompts.map(p => ({ prompt: p.text, hint: '', answers: p.answers })),
     analysis: [],
   };
 }

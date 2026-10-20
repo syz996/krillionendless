@@ -4,7 +4,8 @@ import { SITE } from './site';
 export { SITE };
 
 // ═══ 单期数据类型（与 content/dives/*.json 对齐）═══
-export type DivePrompt = { prompt: string; hint: string };
+export type DiveAnswer = { answer: string; tier: string; score: number };
+export type DivePrompt = { prompt: string; hint: string; answers?: DiveAnswer[] };
 export type Dive = {
   dive: number;
   date: string;            // YYYY-MM-DD
@@ -27,6 +28,21 @@ export const fmtDate = (iso: string): string => {
 };
 
 export const diveSlug = (n: number) => `dive-${n}`;
+
+// 纽约时区「今天」的 ISO 日期（构建时求值）。官方答案只在该期过期后发布。
+export function todayInNewYork(): string {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(new Date());
+  const get = (t: string) => parts.find(p => p.type === t)!.value;
+  return `${get('year')}-${get('month')}-${get('day')}`;
+}
+
+// 该期答案是否可发布：日期早于纽约今天（当期已过），且至少落地了一条答案。
+export function answersPublished(dive: Dive): boolean {
+  return dive.date < todayInNewYork() && dive.prompts.some(p => (p.answers?.length ?? 0) > 0);
+}
 
 const wc = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 3);

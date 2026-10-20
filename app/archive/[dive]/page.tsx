@@ -1,10 +1,24 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { DIVES, SITE, fmtDate, diveSlug, getDiveByNumber } from '../../../lib/archive';
+import { DIVES, SITE, answersPublished, fmtDate, diveSlug, getDiveByNumber, type DiveAnswer } from '../../../lib/archive';
 import SiteHeader from '../../../components/SiteHeader';
 import SiteFooter from '../../../components/SiteFooter';
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
+
+// 官方答案里 deepcut 档可能是物种级/公司级穷举（单题几千条），渲染时封顶避免页面过重。
+// 其余档位（krillion / rare / schooler / plankton）始终全量展示。
+const DEEPCUT_CAP = 150;
+
+function layoutAnswers(answers: DiveAnswer[]): { shown: DiveAnswer[]; hidden: number } {
+  const deepcut = answers.filter(a => a.tier === 'deepcut');
+  const others = answers.filter(a => a.tier !== 'deepcut');
+  const kept = deepcut.slice(0, DEEPCUT_CAP);
+  return {
+    shown: [...others, ...kept].sort((a, b) => b.score - a.score),
+    hidden: deepcut.length - kept.length,
+  };
+}
 
 export const dynamicParams = false;
 
@@ -25,9 +39,14 @@ export async function generateMetadata({ params }: { params: Promise<{ dive: str
 
   const displayDate = fmtDate(dive.date);
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
-  const title = dive.overrides?.title || `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`;
+  const showAnswers = answersPublished(dive);
+  const title = dive.overrides?.title || (showAnswers
+    ? `Krillion Dive #${dive.dive} Answers, Prompts & Hints (${displayDate})`
+    : `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`);
   const description = dive.overrides?.description
-    || `What were the prompts in Krillion Dive #${dive.dive}? Here are all seven prompts from ${displayDate}, with a hint for each — plus how to replay the dive.`;
+    || (showAnswers
+      ? `What were the answers in Krillion Dive #${dive.dive}? All seven prompts from ${displayDate} with hints and the full official answer list, published once the dive was no longer live.`
+      : `What were the prompts in Krillion Dive #${dive.dive}? Here are all seven prompts from ${displayDate}, with a hint for each — plus how to replay the dive.`);
 
   const ogImage = {
     url: `${BASE}/og.png`,
@@ -67,9 +86,14 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
   const faq = [...(dive.faq || []), ...SITE.defaultFaq];
 
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
-  const title = dive.overrides?.title || `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`;
+  const showAnswers = answersPublished(dive);
+  const title = dive.overrides?.title || (showAnswers
+    ? `Krillion Dive #${dive.dive} Answers, Prompts & Hints (${displayDate})`
+    : `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`);
   const description = dive.overrides?.description
-    || `What were the prompts in Krillion Dive #${dive.dive}? Here are all seven prompts from ${displayDate}, with a hint for each — plus how to replay the dive.`;
+    || (showAnswers
+      ? `What were the answers in Krillion Dive #${dive.dive}? All seven prompts from ${displayDate} with hints and the full official answer list, published once the dive was no longer live.`
+      : `What were the prompts in Krillion Dive #${dive.dive}? Here are all seven prompts from ${displayDate}, with a hint for each — plus how to replay the dive.`);
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -128,6 +152,27 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
             ))}
           </ol>
         </section>
+
+        {showAnswers ? (
+          <section>
+            <h2>Dive #{dive.dive} answers</h2>
+            <p>This dive is no longer live, so the full official answer list is published below — each answer with its rarity tier and score. The prompts and hints above stay spoiler-free for anyone still catching up.</p>
+            {dive.prompts.map((p, i) => p.answers?.length ? (
+              <details key={i}>
+                <summary>{i + 1}. {p.prompt} ({p.answers.length} answers)</summary>
+                {(() => { const { shown, hidden } = layoutAnswers(p.answers!); return <>
+                  <div className="table-wrap"><table>
+                    <thead><tr><th>Answer</th><th>Tier</th><th>Score</th></tr></thead>
+                    <tbody>{shown.map(a => (
+                      <tr key={a.answer}><td>{a.answer}</td><td>{a.tier}</td><td>{a.score}</td></tr>
+                    ))}</tbody>
+                  </table></div>
+                  {hidden > 0 ? <p className="small-note">+ {hidden.toLocaleString('en-US')} more Deep Cut answers not shown. Every tier above Deep Cut is complete.</p> : null}
+                </>; })()}
+              </details>
+            ) : null)}
+          </section>
+        ) : null}
 
         <section>
           <h2>What made this dive hard</h2>

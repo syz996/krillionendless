@@ -10,7 +10,7 @@ export const SITE = {
     },
     {
       q: 'Do these pages include the official answers?',
-      a: 'No. Each archive page lists a dive’s public prompts and original hints only — it does not reproduce the official answer key or rarity scores.',
+      a: 'A dive’s full answer list is published once that dive is no longer live — normally the day after. While a dive is still current, its page shows the prompts and hints only, so nothing is spoiled.',
     },
     {
       q: 'Can I replay this dive?',
