@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { DIVES, SITE, hasAnswers, fmtDate, diveSlug, getDiveByNumber } from '../../../lib/archive';
 import SiteHeader from '../../../components/SiteHeader';
 import SiteFooter from '../../../components/SiteFooter';
+import DeepcutReveal from '../../../components/DeepcutReveal';
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
 
@@ -143,17 +144,23 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
           <section>
             <h2>Dive #{dive.dive} answers</h2>
             <p>The full official answer list for this dive, with every answer&rsquo;s rarity tier and score. Each prompt is collapsed — open one only when you are ready to see its answers. The prompts and hints above stay spoiler-free.</p>
-            {dive.prompts.map((p, i) => p.answers?.length ? (
-              <details key={i}>
-                <summary>{i + 1}. {p.prompt} ({p.answers.length} answers)</summary>
-                <div className="table-wrap"><table>
-                  <thead><tr><th>Answer</th><th>Tier</th><th>Score</th></tr></thead>
-                  <tbody>{[...p.answers].sort((a, b) => b.score - a.score).map((a, n) => (
-                    <tr key={`${a.answer}-${n}`}><td>{a.answer}</td><td>{a.tier}</td><td>{a.score}</td></tr>
-                  ))}</tbody>
-                </table></div>
-              </details>
-            ) : null)}
+            {dive.prompts.map((p, i) => {
+              const nonDeepcut = (p.answers || []).filter(a => a.tier !== 'deepcut');
+              const deepcutCount = (p.answers?.length || 0) - nonDeepcut.length;
+              if (!p.answers?.length) return null;
+              return (
+                <details key={i}>
+                  <summary>{i + 1}. {p.prompt} ({p.answers.length} answers)</summary>
+                  <div className="table-wrap"><table>
+                    <thead><tr><th>Answer</th><th>Tier</th><th>Score</th></tr></thead>
+                    <tbody>{nonDeepcut.sort((a, b) => b.score - a.score).map(a => (
+                      <tr key={a.answer}><td>{a.answer}</td><td>{a.tier}</td><td>{a.score}</td></tr>
+                    ))}</tbody>
+                  </table></div>
+                  <DeepcutReveal dive={dive.dive} promptIndex={i} count={deepcutCount} />
+                </details>
+              );
+            })}
           </section>
         ) : null}
 
