@@ -70,10 +70,21 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
   const prev = idx > 0 ? DIVES[idx - 1] : undefined;
   const next = idx >= 0 && idx < DIVES.length - 1 ? DIVES[idx + 1] : undefined;
 
-  const faq = [...(dive.faq || []), ...SITE.defaultFaq];
+  const showAnswers = answersPublished(dive);
+
+  // 当期未揭晓答案时，把「答案」FAQ 换成次日揭晓的说法，避免同页与 H1 自相矛盾。
+  const answersFaq = showAnswers
+    ? {
+        q: 'Do these pages include the official answers?',
+        a: 'Yes — this dive carries the full official answer list with rarity tiers and scores, collapsed prompt by prompt so nothing is spoiled until you open it.',
+      }
+    : {
+        q: 'When do the official answers appear?',
+        a: 'This is the newest dive, so only its prompts and hints are shown. The full official answer list publishes the following day — previous dives already include theirs.',
+      };
+  const faq = [...(dive.faq || []), SITE.defaultFaq[0], answersFaq, ...SITE.defaultFaq.slice(1)];
 
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
-  const showAnswers = answersPublished(dive);
   const title = dive.overrides?.title || (showAnswers
     ? `Krillion Dive #${dive.dive} Answers, Prompts & Hints (${displayDate})`
     : `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`);

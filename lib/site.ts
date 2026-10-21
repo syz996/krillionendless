@@ -9,10 +9,6 @@ export const SITE = {
       a: 'No. This is an independent, fan-made archive — not affiliated with the official game at krillion.io.',
     },
     {
-      q: 'Do these pages include the official answers?',
-      a: 'Yes — every dive page carries the full official answer list with rarity tiers and scores, collapsed prompt by prompt so nothing is spoiled until you open it.',
-    },
-    {
       q: 'Can I replay this dive?',
       a: 'Yes. Open the unlimited version to replay with the same 25-second timer, or come back here to review the prompts again.',
     },
