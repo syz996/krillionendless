@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { DIVES, SITE, hasAnswers, fmtDate, diveSlug, getDiveByNumber } from '../../../lib/archive';
+import { DIVES, SITE, answersPublished, isCurrentDive, fmtDate, diveSlug, getDiveByNumber } from '../../../lib/archive';
 import SiteHeader from '../../../components/SiteHeader';
 import SiteFooter from '../../../components/SiteFooter';
 import DeepcutReveal from '../../../components/DeepcutReveal';
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ dive: str
 
   const displayDate = fmtDate(dive.date);
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
-  const showAnswers = hasAnswers(dive);
+  const showAnswers = answersPublished(dive);
   const title = dive.overrides?.title || (showAnswers
     ? `Krillion Dive #${dive.dive} Answers, Prompts & Hints (${displayDate})`
     : `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`);
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ dive: str
     title,
     description,
     alternates: { canonical },
-    robots: { index: true, follow: true },
+    robots: isCurrentDive(dive) ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: { type: 'article', title, description, url: canonical, images: [ogImage] },
     twitter: { card: 'summary_large_image', title, description, images: [ogImage] },
   };
@@ -73,7 +73,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
   const faq = [...(dive.faq || []), ...SITE.defaultFaq];
 
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
-  const showAnswers = hasAnswers(dive);
+  const showAnswers = answersPublished(dive);
   const title = dive.overrides?.title || (showAnswers
     ? `Krillion Dive #${dive.dive} Answers, Prompts & Hints (${displayDate})`
     : `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`);
@@ -124,7 +124,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
       <main className="wrap">
         <nav className="crumbs"><a href="/">Home</a> › <a href="/archive/">Archive</a> › Dive #{dive.dive}</nav>
 
-        <h1>Krillion Dive #{dive.dive} {showAnswers ? 'Answers, Prompts &amp; Hints' : 'Prompts &amp; Hints'}</h1>
+        <h1>Krillion Dive #{dive.dive} {showAnswers ? 'Answers, Prompts & Hints' : 'Prompts & Hints'}</h1>
         <p className="meta">{displayDate} · {dive.prompts.length} prompts · 25 seconds each</p>
 
         <section>

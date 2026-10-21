@@ -83,6 +83,8 @@ export default function ArchivePage() {
 
         <p>Every Krillion dive that has run so far, newest first. Pick any date to see that dive&rsquo;s seven prompts, a hint for each one, a note on what made it hard, and {allHaveAnswers ? <>the full official answer list for every dive</> : firstWithAnswers ? <>the full official answer list from Dive #{firstWithAnswers} onward</> : <>its prompts and hints</>}, collapsed prompt by prompt. Or open the <a href="/">unlimited version</a> and replay it with the same 25-second timer.</p>
 
+        {count > 0 ? <p className="small-note">The newest dive publishes with its prompts and hints only — the official answer list is added the following day.</p> : null}
+
         <section className="groups">
           {count === 0 ? (
             <p className="small-note">Archive data is being prepared. Check back soon.</p>

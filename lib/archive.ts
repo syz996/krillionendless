@@ -35,8 +35,7 @@ export const fmtDate = (iso: string): string => {
 
 export const diveSlug = (n: number) => `dive-${n}`;
 
-// 该期是否带官方答案数据（94~96 期未采集；官方接口仅当日开放，无法回填）。
-// 展示层按题折叠防剧透，含当期当天。
+// 该期是否带官方答案数据（原始数据层面；是否「可展示」另见 answersPublished）。
 export function hasAnswers(dive: Dive): boolean {
   return dive.prompts.some(p => (p.answers?.length ?? 0) > 0);
 }
@@ -98,6 +97,19 @@ function loadDives(): Dive[] {
 }
 
 export const DIVES: Dive[] = loadDives();
+
+// 最新一期 = 仍处「当日进行中」的 live 期。官方答案在次日揭晓前不应公开：
+// 当期页面不渲染答案、noindex、不进 sitemap；次日新一期入库后自动转为可展示。
+export const LATEST_DIVE: Dive | undefined = DIVES.length ? DIVES[DIVES.length - 1] : undefined;
+
+export function isCurrentDive(dive: Dive): boolean {
+  return LATEST_DIVE !== undefined && dive.dive === LATEST_DIVE.dive;
+}
+
+// 该期答案是否「已公开」：有答案数据，且不是仍处当日进行的当前期。
+export function answersPublished(dive: Dive): boolean {
+  return hasAnswers(dive) && !isCurrentDive(dive);
+}
 
 export type ArchiveGroup = { key: string; label: string; dives: Dive[] };
 
