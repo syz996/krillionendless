@@ -14,9 +14,6 @@
 .env
 .env*.local
 
-# build-time generated deepcut answer data (produced by generate-deepcut.mjs)
-/public/data/
-
 # misc
 .DS_Store
 *.tsbuildinfo

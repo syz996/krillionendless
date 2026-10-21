@@ -20,10 +20,11 @@ jobs:
       - run: node --check fetch-dive.mjs
       - run: node fetch-dive.mjs
       - run: node fetch-dive.mjs --verify
+      - run: node generate-deepcut.mjs
       - run: |
           git config user.name  "dive-bot"
           git config user.email "bot@krillionendless.org"
-          git add content/
+          git add content/ public/data/
           git diff --cached --quiet || git commit -m "dive: $(date -u +%F)"
           git push
       # 任一步骤失败时自动开 issue：数据断档必须人工介入，不能静默失败
