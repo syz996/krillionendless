@@ -104,6 +104,9 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
     mainEntityOfPage: canonical,
     author: { '@type': 'Organization', name: SITE.brand },
     publisher: { '@type': 'Organization', name: SITE.brand },
+    hasPart: dive.prompts
+      .filter(p => p.explanation)
+      .map(p => ({ '@type': 'Article', headline: p.prompt, description: p.explanation })),
   };
 
   const breadcrumbJsonLd = {
@@ -162,6 +165,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
               return (
                 <details key={i}>
                   <summary>{i + 1}. {p.prompt} ({p.answers.length} answers)</summary>
+                  {p.explanation ? <p className="answer-note"><strong>Why this one is tricky:</strong> {p.explanation}</p> : null}
                   <div className="table-wrap"><table>
                     <thead><tr><th>Answer</th><th>Tier</th><th>Score</th></tr></thead>
                     <tbody>{nonDeepcut.sort((a, b) => b.score - a.score).map(a => (

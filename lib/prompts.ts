@@ -1295,12 +1295,12 @@ export const PROMPTS: Prompt[] = [
 ];
 
 export const TIERS = [
-  { name: 'Plankton', points: 10, label: 'Most common' },
-  { name: 'Too Clever', points: 15, label: 'Common' },
-  { name: 'Schooler', points: 30, label: 'Familiar' },
-  { name: 'Rare', points: 60, label: 'Uncommon' },
-  { name: 'Deep Cut', points: 85, label: 'Rare' },
-  { name: 'One in a Krillion', points: 100, label: 'Rarest' },
+  { name: 'Plankton', points: 10, label: 'Most common', blurb: 'The first thing most players type — safe, but it barely scores.' },
+  { name: 'Too Clever', points: 15, label: 'Common', blurb: 'A cheeky borderline answer that edges just above the obvious.' },
+  { name: 'Schooler', points: 30, label: 'Familiar', blurb: 'Familiar to most players, though not the very first guess.' },
+  { name: 'Rare', points: 60, label: 'Uncommon', blurb: 'Uncommon — most people won’t pull it in the time limit.' },
+  { name: 'Deep Cut', points: 85, label: 'Rare', blurb: 'A genuine deep-catalogue pull that few players get.' },
+  { name: 'One in a Krillion', points: 100, label: 'Rarest', blurb: 'Almost nobody names it — the deepest score on the board.' },
 ];
 
 export function normalizeAnswer(value: string) {

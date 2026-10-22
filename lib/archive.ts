@@ -6,7 +6,7 @@ export { SITE };
 
 // ═══ 单期数据类型（与 content/dives/*.json 对齐）═══
 export type DiveAnswer = { answer: string; tier: string; score: number };
-export type DivePrompt = { prompt: string; hint: string; answers?: DiveAnswer[] };
+export type DivePrompt = { prompt: string; hint: string; answers?: DiveAnswer[]; explanation?: string };
 export type Dive = {
   dive: number;
   date: string;            // YYYY-MM-DD
