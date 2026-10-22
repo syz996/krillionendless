@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import GameClient, { type LatestDive } from "./GameClient";
-import { homeFaqs } from "@/content/faq";
-import { DIVES } from "@/lib/archive";
+import { getHomeFaqs } from "@/content/faq";
+import { DIVES, answersPublished } from "@/lib/archive";
 
 const ogImage = {
   url: "https://krillionendless.org/og.png",
@@ -36,10 +36,14 @@ export const metadata: Metadata = {
 };
 
 
+const totalDives = DIVES.length;
+const answeredCount = DIVES.filter(answersPublished).length;
+const faqs = getHomeFaqs(answeredCount, totalDives);
+
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: homeFaqs.map((f) => ({
+  mainEntity: faqs.map((f) => ({
     "@type": "Question",
     name: f.q,
     acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -75,7 +79,7 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
       />
-      <GameClient latestDive={latestDive} recentDives={recentDives} />
+      <GameClient latestDive={latestDive} recentDives={recentDives} faqs={faqs} />
     </>
   );
 }

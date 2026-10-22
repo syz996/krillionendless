@@ -12,6 +12,7 @@ type RoundResult = { prompt: string; answer: string; accepted: boolean; tier?: s
 
 export type LatestDive = { dive: number; date: string; prompts: { prompt: string; hint: string }[] };
 export type RecentDive = { dive: number; date: string };
+type Faq = { q: string; a: string };
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const fmtDate = (iso: string) => {
@@ -28,7 +29,7 @@ function shuffle<T,>(items: T[]): T[] {
   return out;
 }
 
-export default function HomePage({ latestDive, recentDives = [] }: { latestDive?: LatestDive; recentDives?: RecentDive[] }) {
+export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { latestDive?: LatestDive; recentDives?: RecentDive[]; faqs?: Faq[] }) {
   const [mode, setMode] = useState<'practice' | 'replay'>('practice');
   const [rounds, setRounds] = useState<Round[]>(() => shuffle(PROMPTS).slice(0, 7).map(p => ({ text: p.text, hint: p.hint, answers: p.answers, id: p.id })));
   const [current, setCurrent] = useState(0);
@@ -201,7 +202,7 @@ export default function HomePage({ latestDive, recentDives = [] }: { latestDive?
         </section>
 
         <section className="content-section" id="archive-section"><h2>Practice archive</h2><p>Every dive we have logged is collected in the archive — each with its seven prompts, a hint for each one, a short note on what made that dive hard, and the official answer list once the day has passed. A new page is added every day.</p>{recentDives.length ? <ul className="recent-dives">{recentDives.map(d => <li key={d.dive}><a href={`/archive/dive-${d.dive}/`}>Dive #{d.dive} — {fmtDate(d.date)}</a></li>)}</ul> : null}<div className="archive-live"><strong>The archive is live</strong><a className="btn" href="/archive/">Browse all dives <ArrowRight size={16} /></a></div></section>
-        <section className="content-section" id="faq-section"><h2>Frequently asked questions</h2><details open><summary>Is this the official Krillion game?</summary><p>No. This is an independent practice site. It is not affiliated with or endorsed by the operator of the official game.</p></details><details><summary>Are these official answers or rarity scores?</summary><p>The practice dive uses our own question bank and practice points. The archive is different — each dive page publishes the official answer list with rarity tiers and scores, collapsed prompt by prompt.</p></details><details><summary>Why might my correct answer be rejected?</summary><p>This is a curated question bank, not a complete knowledge database. A factually valid answer can be missing until the bank is expanded.</p></details><details><summary>Can I replay it?</summary><p>Yes. The homepage offers a randomized practice dive, plus a replay of the latest daily dive from the archive — same seven prompts and 25-second timer, with no scoring.</p></details><details><summary>Does this site store my answers?</summary><p>The game checks answers in your browser and does not send them to a server.</p></details><details><summary>Is it free?</summary><p>Yes — free to play. No account, no download, no paywall.</p></details><details><summary>When does the official daily dive reset?</summary><p>At midnight New York time — that is when the official board flips to a new dive. Our archive adds each dive’s page the same day, so you can cross-check against the <a href="/archive/">archive</a>.</p></details><details><summary>Can I share my result?</summary><p>Yes. After a dive, copy the result line and paste it anywhere — it lists your answers and your score without spoiling the prompts.</p></details></section>
+        <section className="content-section" id="faq-section"><h2>Frequently asked questions</h2>{faqs.map((f, n) => <details key={f.q} open={n === 0}><summary>{f.q}</summary><p>{f.a}</p></details>)}</section>
         </main>
       <SiteFooter />
     </>
