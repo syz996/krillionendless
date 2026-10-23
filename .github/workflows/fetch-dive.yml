@@ -2,7 +2,8 @@ name: fetch dive
 
 on:
   schedule:
-    - cron: '0 17 * * *'   # UTC 17:00 = 纽约 13:00（夏令时），翻期后抓取
+    - cron: '0 17 * * *'   # UTC 17:00 = 纽约 13:00（夏令时），翻期后首抓（草稿）
+    - cron: '0 1 * * *'    # UTC 1:00 = 纽约 21:00（夏令时），晚间重抓补全当日答案池
   workflow_dispatch:
 
 permissions:
@@ -19,6 +20,8 @@ jobs:
           node-version: 20
       - run: node --check fetch-dive.mjs
       - run: node fetch-dive.mjs
+      # 晚间 cron 触发时重抓覆盖当日「薄」答案（脚本自带 20:00–23:00 纽约窗口守卫，白天运行自动跳过）
+      - run: node fetch-dive.mjs --refetch
       - run: node fetch-dive.mjs --verify
       - run: node generate-deepcut.mjs
       - run: |

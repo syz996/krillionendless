@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // 抓取当日 Krillion dive 的 7 道公开题目与全量答案，生成草稿 JSON。
 // 用法：node fetch-dive.mjs
+//       node fetch-dive.mjs --refetch   # 仅纽约 20:00–23:00 重抓覆盖当日答案（--force 调试用）
 //
 // 流程：
 //   1. 按纽约时区算出「今天」是哪一期（Dive #1 = 2026-07-16，每天一期）。
@@ -58,6 +59,14 @@ function todayInNewYork() {
 function diveNumberFor(isoDate) {
   const t = new Date(`${isoDate}T00:00:00Z`).getTime();
   return Math.round((t - DIVE_ONE) / DAY_MS) + 1;
+}
+
+// 当前纽约本地钟点（小时/分钟），用于「20:00–23:00 才准重抓」守卫。
+function nyClock() {
+  const dtf = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: false });
+  const parts = dtf.formatToParts(new Date());
+  const get = t => parts.find(p => p.type === t).value;
+  return { hour: Number(get('hour')), minute: Number(get('minute')) };
 }
 
 /**
@@ -209,8 +218,56 @@ async function main() {
   console.log('下一步：人工补全 hint / analysis 后，把文件移入 content/dives/。');
 }
 
+// 重抓当日 dive 并覆盖更早抓到的「薄」答案（答案池在一天内持续增长）。
+// 只在纽约 20:00–23:00 之间执行；覆盖时保留 hint / explanation / analysis，仅换 answers。
+async function refetch() {
+  const { hour, minute } = nyClock();
+  const force = process.argv.includes('--force');
+  if (!force && (hour < 20 || hour >= 23)) {
+    console.log(`当前纽约 ${hour}:${String(minute).padStart(2, '0')}，不在 20:00–23:00 窗口，跳过（--force 可强制）。`);
+    return;
+  }
+
+  const isoDate = todayInNewYork();
+  const number = diveNumberFor(isoDate);
+  const slug = `dive-${number}`;
+  const prompts = await fetchDivePrompts(isoDate);
+  if (!Array.isArray(prompts) || prompts.length !== 7) {
+    throw new Error(`重抓到 ${prompts?.length ?? 0} 条题目（应为 7），日期 ${isoDate}`);
+  }
+
+  const gz = path.join(DIVE_DIR, `${slug}.json.gz`);
+  const draft = path.join(DRAFT_DIR, `${slug}.json`);
+
+  if (fs.existsSync(gz)) {
+    const d = JSON.parse(zlib.gunzipSync(fs.readFileSync(gz)).toString('utf8'));
+    let before = 0, after = 0;
+    d.prompts.forEach((p, i) => {
+      before += (p.answers || []).length;
+      p.answers = prompts[i].answers;
+      after += prompts[i].answers.length;
+    });
+    fs.writeFileSync(gz, zlib.gzipSync(JSON.stringify(d), { level: 9 }));
+    console.log(`已覆盖 ${slug}.json.gz：答案 ${before} → ${after} 条（hint / explanation / analysis 保留）。`);
+  } else if (fs.existsSync(draft)) {
+    const d = JSON.parse(fs.readFileSync(draft, 'utf8'));
+    d.prompts.forEach((p, i) => { p.answers = prompts[i].answers; });
+    fs.writeFileSync(draft, JSON.stringify(d, null, 2) + '\n');
+    console.log(`已覆盖草稿 ${slug}.json 的答案。`);
+  } else {
+    fs.mkdirSync(DRAFT_DIR, { recursive: true });
+    fs.writeFileSync(draft, JSON.stringify(buildDraft(number, isoDate, prompts), null, 2) + '\n');
+    console.log(`草稿已生成：${draft}（当日尚无内容，按首次抓取处理）。`);
+  }
+}
+
 if (process.argv.includes('--verify')) {
   verifyContent();
+} else if (process.argv.includes('--refetch')) {
+  refetch().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
 } else if (process.argv.includes('--pack')) {
   const i = process.argv.indexOf('--pack');
   const draft = process.argv[i + 1];
