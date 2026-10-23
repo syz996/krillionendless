@@ -137,3 +137,14 @@ export function getSortedDives(): Dive[] {
 export function getDiveByNumber(n: number): Dive | undefined {
   return DIVES.find(d => d.dive === n);
 }
+
+// sitemap 用的「内容修改日」清单（由 prebuild 的 generate-deepcut.mjs 从 git 提交日生成；
+// 文件缺失或不可读时回退空表，由调用方按期日期兜底）。
+export type LastmodMap = { dives: Record<string, string>; prompts?: string; site?: string };
+export function getLastmod(): LastmodMap {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(CONTENT, 'generated', 'lastmod.json'), 'utf8')) as LastmodMap;
+  } catch {
+    return { dives: {} };
+  }
+}

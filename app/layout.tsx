@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
+// 根布局只留 metadataBase：title/description/robots 由各页面自带，
+// 避免 404 页同时渲染框架自带 meta 与布局 meta 造成的重复。
 export const metadata: Metadata = {
-  metadataBase: new URL("https://krillionendless.org"), 
-  title: 'Krillion Unlimited Game — Independent Practice Dive',
-  description: 'Play an independent rare-answer trivia practice game with seven prompts, a 25-second timer, and an original starter question bank.',
-  robots: { index: true, follow: true }
+  metadataBase: new URL("https://krillionendless.org"),
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
