@@ -138,13 +138,11 @@ export function getDiveByNumber(n: number): Dive | undefined {
   return DIVES.find(d => d.dive === n);
 }
 
-// sitemap 用的「内容修改日」清单（由 prebuild 的 generate-deepcut.mjs 从 git 提交日生成；
-// 文件缺失或不可读时回退空表，由调用方按期日期兜底）。
-export type LastmodMap = { dives: Record<string, string>; prompts?: string; site?: string };
-export function getLastmod(): LastmodMap {
-  try {
-    return JSON.parse(fs.readFileSync(path.join(CONTENT, 'generated', 'lastmod.json'), 'utf8')) as LastmodMap;
-  } catch {
-    return { dives: {} };
-  }
+// 该期内容的「最后修改日」：max(期数日, 补答案日)。
+// 答案在下一期入库当日揭晓并回填（晚间 refetch 同步补全），故补答案日 = 下一期的日期；
+// 末期（当期）答案尚未揭晓，取期数日本身。纯数据驱动，不依赖 git / 构建环境。
+export function contentModifiedDate(dive: Dive): string {
+  const idx = DIVES.findIndex(d => d.dive === dive.dive);
+  const next = idx >= 0 ? DIVES[idx + 1] : undefined;
+  return next && next.date > dive.date ? next.date : dive.date;
 }

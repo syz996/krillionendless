@@ -9,7 +9,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
-import { execSync } from 'node:child_process';
 
 const ROOT = process.cwd();
 const DIVE_DIR = path.join(ROOT, 'content', 'dives');
@@ -44,38 +43,6 @@ function main() {
     written++;
   }
   console.log(`共导出 ${written} 期 deepcut 数据${latest ? `（当期 dive-${latest} 待次日揭晓）` : ''}。`);
-
-  writeLastmod(dives);
-}
-
-// ── lastmod 清单：按 git 最后提交日给出各内容的「内容修改日」，供 sitemap 使用 ──
-// 写入 content/generated/lastmod.json（已 gitignore，构建时生成、不入库）。
-// 无 git 历史时（浅克隆 / 本地无 git）回退为数据驱动日期：
-//   dive 页 = 下一期入库日（答案揭晓日），聚合页 = 全部内容中最晚的日期。
-function gitDate(file) {
-  try {
-    return execSync(`git log -1 --format=%cI -- "${file}"`, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || undefined;
-  } catch {
-    return undefined;
-  }
-}
-
-function writeLastmod(divesUnsorted) {
-  const dives = [...divesUnsorted].sort((a, b) => a.dive - b.dive);
-  const diveDates = {};
-  dives.forEach((d, i) => {
-    const git = gitDate(`content/dives/dive-${d.dive}.json.gz`);
-    const next = dives[i + 1];
-    diveDates[d.dive] = git || (next ? next.date : d.date);
-  });
-  const promptsGit = gitDate('lib/prompts.ts');
-  const site = Object.values(diveDates).concat(promptsGit ? [promptsGit] : []).sort().pop();
-  const map = { dives: diveDates, prompts: promptsGit, site };
-
-  const genDir = path.join(ROOT, 'content', 'generated');
-  fs.mkdirSync(genDir, { recursive: true });
-  fs.writeFileSync(path.join(genDir, 'lastmod.json'), JSON.stringify(map));
-  console.log(`lastmod 清单已生成：content/generated/lastmod.json（site=${site || '无'}，git 可用=${Object.values(diveDates).some(v => v.includes('T')) ? '是' : '否，走回退日期'}）`);
 }
 
 main();

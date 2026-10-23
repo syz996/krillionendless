@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { DIVES, SITE, answersPublished, isCurrentDive, fmtDate, diveSlug, getDiveByNumber } from '../../../lib/archive';
+import { DIVES, SITE, answersPublished, contentModifiedDate, isCurrentDive, fmtDate, diveSlug, getDiveByNumber } from '../../../lib/archive';
 import SiteHeader from '../../../components/SiteHeader';
 import SiteFooter from '../../../components/SiteFooter';
 import DeepcutReveal from '../../../components/DeepcutReveal';
@@ -100,7 +100,8 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
     description,
     image: [`${BASE}/og.png`],
     datePublished: dive.date,
-    dateModified: dive.date,
+    // 与 sitemap lastmod 同源：答案在下一期入库日揭晓回填，dateModified 取该日。
+    dateModified: contentModifiedDate(dive),
     mainEntityOfPage: canonical,
     author: { '@type': 'Organization', name: SITE.brand },
     publisher: { '@type': 'Organization', name: SITE.brand },

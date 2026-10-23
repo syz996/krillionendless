@@ -20,6 +20,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# 构建期生成的派生数据（lastmod 清单等，不入库）
-/content/generated/
