@@ -6,7 +6,7 @@ import SiteFooter from '../../components/SiteFooter';
 export function generateMetadata(): Metadata {
   return {
     title: `Privacy Policy — ${SITE.domain}`,
-    description: `What data ${SITE.domain} does and does not collect: no accounts, no server-side answer storage, standard ad provider cookies once ads are active.`,
+    description: `What data ${SITE.domain} does and does not collect: no accounts, no server-side answer storage, and cookie-free Cloudflare analytics.`,
     alternates: { canonical: `${SITE.baseUrl.replace(/\/+$/, '')}/privacy/` },
     robots: { index: true, follow: true },
   };
@@ -28,10 +28,11 @@ export default function PrivacyPage() {
         <ul>
           <li><strong>Answers and scores:</strong> processed locally in your browser only. Nothing you type in the practice dive is transmitted anywhere.</li>
           <li><strong>Standard hosting logs:</strong> our hosting provider may keep short-lived request logs (IP address, URL, timestamp) for security and abuse prevention, as most websites do.</li>
+          <li><strong>Aggregate analytics:</strong> we use Cloudflare Web Analytics, which counts page views and basic usage without setting cookies or building individual visitor profiles.</li>
         </ul>
 
         <h2>Advertising</h2>
-        <p>The site displays advertising. When ads are served by a third-party provider (for example Google AdSense), that provider may use cookies or similar technologies to serve and measure ads, and — subject to your choices — to personalize them. You can review and change your ad personalization settings at any time through the provider&rsquo;s own tools (for Google, via Google Ad Settings). We do not control these third-party cookies.</p>
+        <p>This site does not currently display third-party advertising. If we introduce ads (for example Google AdSense) later, that provider may use cookies or similar technologies to serve and measure ads, and — subject to your choices — to personalize them. We will update this policy before any ads go live.</p>
 
         <h2>Children</h2>
         <p>This site is a general-audience trivia game and is not directed at children under 13. We do not knowingly collect personal information from children.</p>

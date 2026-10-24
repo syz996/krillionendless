@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { PROMPTS, TIERS } from '../../../lib/prompts';
+import { PROMPT_GUIDES } from '../../../lib/prompt-guides';
 import { SITE } from '../../../lib/site';
 import SiteHeader from '../../../components/SiteHeader';
 import SiteFooter from '../../../components/SiteFooter';
@@ -40,6 +41,7 @@ export default async function PromptPage({ params }: { params: Promise<{ slug: s
   const related = Array.from({ length: 6 }, (_, k) => PROMPTS[(idx + 1 + k) % PROMPTS.length]);
   const sorted = [...prompt.answers].sort((a, b) => b.points - a.points);
   const canonical = `${BASE}/prompts/${prompt.id}/`;
+  const guide = PROMPT_GUIDES[prompt.id];
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -60,6 +62,8 @@ export default async function PromptPage({ params }: { params: Promise<{ slug: s
 
         <h1>{prompt.text}</h1>
         <p className="meta">{prompt.answers.length} accepted answers · practice rarity tiers · independent question bank</p>
+
+        {guide ? <section className="prompt-guide"><h2>How this prompt works</h2><p>{guide}</p></section> : null}
 
         <p>Below is the full accepted-answer list for this prompt from the {SITE.brand} practice bank, sorted from rarest to most common. The tiers and points are our own editorial labels for the <a href="/#game">unlimited practice game</a> — they are not official Krillion answers, rarity data or player statistics. The hint for this prompt: {prompt.hint}</p>
 
