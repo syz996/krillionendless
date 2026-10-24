@@ -23,8 +23,8 @@ export default function SiteFooter() {
 
         <p>© 2026 {SITE.domain}</p>
 
-        {/* Smol Launch verification badge */}
-        <div className="mt-4 flex justify-center">
+        {/* Directory badges */}
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
           <a
             href="https://smollaunch.com"
             target="_blank"
@@ -37,6 +37,21 @@ export default function SiteFooter() {
               loading="lazy"
               width="250"
               height="60"
+            />
+          </a>
+
+          <a
+            href="https://twelve.tools"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Featured on Twelve Tools"
+          >
+            <img
+              src="https://twelve.tools/badge0-white.svg"
+              alt="Featured on Twelve Tools"
+              loading="lazy"
+              width="148"
+              height="40"
             />
           </a>
         </div>
