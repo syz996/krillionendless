@@ -19,9 +19,15 @@ jobs:
         with:
           node-version: 20
       - run: node --check fetch-dive.mjs
+      - run: node --check complete-dive.mjs
       - run: node fetch-dive.mjs
       # 晚间 cron 触发时重抓覆盖当日「薄」答案（脚本自带 20:00–23:00 纽约窗口守卫，白天运行自动跳过）
       - run: node fetch-dive.mjs --refetch
+      # 补写 hint/analysis 并打包为正式数据（智谱 GLM 免费模型；脚本自带与 refetch 相同的纽约晚窗口守卫）
+      - name: 补全 hint/analysis 并打包
+        env:
+          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
+        run: node complete-dive.mjs
       - run: node fetch-dive.mjs --verify
       - run: node generate-deepcut.mjs
       - run: |
