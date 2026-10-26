@@ -2,9 +2,14 @@ name: fetch dive
 
 on:
   schedule:
-    - cron: '0 17 * * *'   # UTC 17:00 = 纽约 13:00（夏令时），翻期后首抓（草稿）
-    - cron: '0 1 * * *'    # UTC 1:00 = 纽约 21:00（夏令时），晚间重抓补全当日答案池
+    # 纽约 20:00–23:00 = UTC 00:00–03:00（夏令时）。多设几点，抵消 GitHub 定时延迟
+    - cron: '0 0,1,2 * * *'
   workflow_dispatch:
+    inputs:
+      force:
+        description: '无视纽约窗口强制打包（会把当天薄草稿一并定型，慎用）'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -21,22 +26,29 @@ jobs:
       - run: node --check fetch-dive.mjs
       - run: node --check complete-dive.mjs
       - run: node fetch-dive.mjs
-      # 晚间 cron 触发时重抓覆盖当日「薄」答案（脚本自带 20:00–23:00 纽约窗口守卫，白天运行自动跳过）
+      # 晚间重抓覆盖当日「薄」答案（脚本自带 20:00–23:00 纽约窗口守卫）
       - run: node fetch-dive.mjs --refetch
-      # 补写 hint/analysis 并打包为正式数据（智谱 GLM 免费模型；脚本自带与 refetch 相同的纽约晚窗口守卫）
+      # 补写 hint/analysis 并打包为正式数据（脚本自带同窗口守卫）
       - name: 补全 hint/analysis 并打包
         env:
           ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
-        run: node complete-dive.mjs
+        run: |
+          if [ "${{ inputs.force }}" = "true" ]; then
+            node complete-dive.mjs --force
+          else
+            node complete-dive.mjs
+          fi
       - run: node fetch-dive.mjs --verify
       - run: node generate-deepcut.mjs
-      - run: |
+      # if: always() 是护栏：某一期打包失败时，前面已成功的期仍要推上去
+      - name: Commit and push changes
+        if: always()
+        run: |
           git config user.name  "dive-bot"
           git config user.email "bot@krillionendless.org"
           git add content/ public/data/
-          git diff --cached --quiet || git commit -m "dive: $(date -u +%F)"
+          git diff --cached --quiet || git commit -m "dive: $(TZ=America/New_York date +%F)"
           git push
-      # 任一步骤失败时自动开 issue：数据断档必须人工介入，不能静默失败
       - name: Report failure
         if: failure()
         uses: actions/github-script@v7
