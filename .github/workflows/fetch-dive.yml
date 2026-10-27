@@ -4,6 +4,7 @@ on:
   schedule:
     # 纽约 20:00–23:00 = UTC 00:00–03:00（夏令时）。多设几点，抵消 GitHub 定时延迟
     - cron: '0 0,1,2 * * *'
+    - cron: '0 12 * * *'   # UTC 12:00 = 纽约 08:00（夏令时）= 北京 20:00
   workflow_dispatch:
     inputs:
       force:
