@@ -54,7 +54,7 @@ export default function SiteFooter() {
               height="40"
             />
           </a>
-          <a href="https://nicklaunches.com/products/krillion-unlimited/" target="_blank" rel="noopener"><img src="https://nicklaunches.com/badges/featured-dark.png" alt="Krillion Unlimited on Nick Launches" width="244" height="56" /></a>
+          <a href="https://nicklaunches.com/products/krillion-unlimited/" target="_blank" rel="noopener"><img src="https://nicklaunches.com/badges/featured-dark.png" alt="Krillion Unlimited on Nick Launches" loading="lazy" width="244" height="56" /></a>
         </div>
       </div>
     </footer>
