@@ -54,6 +54,9 @@ export default function SiteFooter() {
               height="40"
             />
           </a>
+          <a href="https://nicklaunches.com/" target="_blank" rel="noopener">
+          <img src="https://nicklaunches.com/badges/featured.png" alt="Featured on Nick Launches" width="244" height="56" />
+          </a>
         </div>
       </div>
     </footer>
