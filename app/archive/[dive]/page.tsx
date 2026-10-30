@@ -113,8 +113,8 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
   const idx = DIVES.findIndex(x => x.dive === dive.dive);
   const prev = idx > 0 ? DIVES[idx - 1] : undefined;
   const next = idx >= 0 && idx < DIVES.length - 1 ? DIVES[idx + 1] : undefined;
-  const stats = showAnswers ? diveStats(dive) : null;
   const showAnswers = answersPublished(dive);
+  const stats = showAnswers ? diveStats(dive) : null;
 
   // 当期未揭晓答案时，把「答案」FAQ 换成次日揭晓的说法，避免同页与 H1 自相矛盾。
   const answersFaq = showAnswers
@@ -223,7 +223,8 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
             })}
           </section>
         ) : null}
-      {stats ? (
+
+        {stats ? (
           <section>
             <h2>Dive #{dive.dive} answer pool by the numbers</h2>
             <p>Every count below is taken straight from the official answer pool for Dive #{dive.dive} &mdash; nothing here is estimated or rounded. The seven prompts accepted <strong>{stats.total.toLocaleString('en-US')}</strong> distinct answers in total, an average of {stats.avg.toLocaleString('en-US')} per prompt.</p>
