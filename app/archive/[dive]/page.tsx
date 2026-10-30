@@ -4,8 +4,52 @@ import { DIVES, SITE, answersPublished, contentModifiedDate, isCurrentDive, fmtD
 import SiteHeader from '../../../components/SiteHeader';
 import SiteFooter from '../../../components/SiteFooter';
 import DeepcutReveal from '../../../components/DeepcutReveal';
+import type { Dive } from '../../../lib/archive';
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
+// 每期答案条数统计：构建时从最终答案池现算，不写进数据文件。
+// 晚间 refetch 覆盖 answers 后，这里的数字会自动跟着变，不会过期。
+type DiveStats = {
+  total: number;
+  avg: number;
+  rows: { index: number; prompt: string; count: number }[];
+  widest: { index: number; count: number };
+  narrowest: { index: number; count: number };
+  tiers: { tier: string; count: number }[];
+  rarest: { answer: string; tier: string; score: number }[];
+};
+
+function diveStats(dive: Dive): DiveStats | null {
+  const rows = dive.prompts
+    .map((p, i) => ({ index: i + 1, prompt: p.prompt, answers: p.answers || [] }))
+    .filter(r => r.answers.length > 0);
+  if (!rows.length) return null;
+  const total = rows.reduce((s, r) => s + r.answers.length, 0);
+  const widest = rows.reduce((a, b) => (b.answers.length > a.answers.length ? b : a));
+  const narrowest = rows.reduce((a, b) => (b.answers.length < a.answers.length ? b : a));
+  const tiers = ['krillion', 'deepcut', 'rare', 'schooler', 'plankton']
+    .map(tier => ({ tier, count: rows.reduce((s, r) => s + r.answers.filter(a => a.tier === tier).length, 0) }));
+  const seen = new Set<string>();
+  const rarest = rows
+    .flatMap(r => r.answers.map(a => ({ answer: a.answer, tier: a.tier, score: a.score || 0 })))
+    .sort((a, b) => b.score - a.score)
+    .filter(a => {
+      const k = a.answer.toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    })
+    .slice(0, 5);
+  return {
+    total,
+    avg: Math.round(total / rows.length),
+    rows: rows.map(r => ({ index: r.index, prompt: r.prompt, count: r.answers.length })),
+    widest: { index: widest.index, count: widest.answers.length },
+    narrowest: { index: narrowest.index, count: narrowest.answers.length },
+    tiers,
+    rarest,
+  };
+}
 
 export const dynamicParams = false;
 
@@ -27,6 +71,7 @@ export async function generateMetadata({ params }: { params: Promise<{ dive: str
   const displayDate = fmtDate(dive.date);
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
   const showAnswers = answersPublished(dive);
+  const stats = showAnswers ? diveStats(dive) : null;
   const title = dive.overrides?.title || (showAnswers
     ? `Krillion Dive #${dive.dive} Answers, Prompts & Hints (${displayDate})`
     : `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`);
@@ -177,6 +222,20 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
                 </details>
               );
             })}
+          </section>
+        ) : null}
+      {stats ? (
+          <section>
+            <h2>Dive #{dive.dive} answer pool by the numbers</h2>
+            <p>Every count below is taken straight from the official answer pool for Dive #{dive.dive} &mdash; nothing here is estimated or rounded. The seven prompts accepted <strong>{stats.total.toLocaleString('en-US')}</strong> distinct answers in total, an average of {stats.avg.toLocaleString('en-US')} per prompt.</p>
+            <div className="table-wrap"><table>
+              <thead><tr><th>#</th><th>Prompt</th><th>Answers</th></tr></thead>
+              <tbody>{stats.rows.map(r => (
+                <tr key={r.index}><td>{r.index}</td><td>{r.prompt}</td><td>{r.count.toLocaleString('en-US')}</td></tr>
+              ))}</tbody>
+            </table></div>
+            <p>Widest pool: prompt {stats.widest.index}, with {stats.widest.count.toLocaleString('en-US')} answers. Narrowest: prompt {stats.narrowest.index}, with {stats.narrowest.count.toLocaleString('en-US')}. Rarity split: {stats.tiers.filter(t => t.count > 0).map(t => `${t.count.toLocaleString('en-US')} ${t.tier}`).join(', ')}.</p>
+            <p>The five highest-scoring answers of the whole dive were {stats.rarest.map((a, i) => (<span key={a.answer}>{i > 0 ? (i === stats.rarest.length - 1 ? ' and ' : ', ') : ''}<strong>{a.answer}</strong></span>))} &mdash; the ones almost nobody manages to name in 25 seconds.</p>
           </section>
         ) : null}
 
