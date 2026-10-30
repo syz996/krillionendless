@@ -207,11 +207,11 @@ function pack(dive) {
 async function main() {
   if (!API_KEY) { console.log('未配置 ZHIPU_API_KEY，跳过补全。'); return; }
 
+  // 窗口只记日志、不再拦截：白天跑成也允许打包，页面当天就能上线；
+  // 晚间 refetch 会把这个 gz 里的 answers 换成全量，hint / analysis 保留。
   const { hour, minute } = nyClock();
-  if (!FORCE && (hour < 20 || hour >= 23)) {
-    console.log(`当前纽约 ${hour}:${String(minute).padStart(2, '0')}，不在 20:00–23:00 窗口，跳过（--force 可强制）。`);
-    return;
-  }
+  const inWindow = hour >= 20 && hour < 23;
+  console.log(`当前纽约 ${hour}:${String(minute).padStart(2, '0')}${inWindow ? '（窗口内）' : '（窗口外：按当前答案池打包，晚间 refetch 补全答案）'}`);
 
   if (!fs.existsSync(DRAFT_DIR)) { console.log('无草稿目录，无需补全。'); return; }
   const pending = fs.readdirSync(DRAFT_DIR).filter(f => f.endsWith('.json')).sort()
@@ -222,7 +222,12 @@ async function main() {
 
   for (const item of pending) {
     const dive = item.data;
-    console.log(`补全 Dive #${dive.dive} ...`);
+    const pool = (dive.prompts || []).reduce((s, p) => s + (p.answers?.length || 0), 0);
+    if (!FORCE && pool < 500) {
+      console.log(`Dive #${dive.dive} 答案池仅 ${pool} 条（< 500），太薄，留待后面几次运行补全（--force 可强制）。`);
+      continue;
+    }
+    console.log(`补全 Dive #${dive.dive} ...（答案池 ${pool} 条）`);
     const gen = await generate(dive);
     dive.prompts.forEach((p, i) => { p.hint = gen.hints[i]; });
     dive.analysis = gen.analysis;
