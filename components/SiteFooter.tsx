@@ -5,9 +5,10 @@ export default function SiteFooter() {
   return (
     <footer className="foot">
       <div className="wrap">
-        <nav>
+       <nav>
+          <a href="/">Krillion Unlimited</a>
+          <a href="/archive/">Krillion archive</a>
           <a href="/prompts/">Prompts</a>
-          <a href="/archive/">Archive</a>
           <a href="/about/">About</a>
           <a href="/contact/">Contact</a>
           <a href="/privacy/">Privacy</a>
