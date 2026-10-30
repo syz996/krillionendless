@@ -13,12 +13,12 @@ const ogImage = {
 export const metadata: Metadata = {
   title: "Krillion Unlimited Game — Independent Practice Dive",
   description:
-    "Play an independent rare-answer trivia practice game with seven prompts, a 25-second timer, and an original starter question bank.",
+    "Play Krillion Unlimited unblocked — an independent rare-answer trivia practice dive with seven prompts, a 25-second timer and no daily limit.",
   alternates: { canonical: "/" },
   openGraph: {
     title: "Krillion Unlimited Game — Independent Practice Dive",
     description:
-      "Play an independent rare-answer trivia practice game with seven prompts, a 25-second timer, and an original starter question bank.",
+      "Play Krillion Unlimited unblocked — an independent rare-answer trivia practice dive with seven prompts, a 25-second timer and no daily limit.",
     url: "/",
     siteName: "KrillionEndless",
     type: "website",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Krillion Unlimited Game — Independent Practice Dive",
     description:
-      "Play an independent rare-answer trivia practice game with seven prompts, a 25-second timer, and an original starter question bank.",
+      "Play Krillion Unlimited unblocked — an independent rare-answer trivia practice dive with seven prompts, a 25-second timer and no daily limit.",
     images: [ogImage],
   },
   robots: { index: true, follow: true },
