@@ -71,7 +71,6 @@ export async function generateMetadata({ params }: { params: Promise<{ dive: str
   const displayDate = fmtDate(dive.date);
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
   const showAnswers = answersPublished(dive);
-  const stats = showAnswers ? diveStats(dive) : null;
   const title = dive.overrides?.title || (showAnswers
     ? `Krillion Dive #${dive.dive} Answers, Prompts & Hints (${displayDate})`
     : `Krillion Dive #${dive.dive} Prompts & Hints (${displayDate})`);
@@ -114,7 +113,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
   const idx = DIVES.findIndex(x => x.dive === dive.dive);
   const prev = idx > 0 ? DIVES[idx - 1] : undefined;
   const next = idx >= 0 && idx < DIVES.length - 1 ? DIVES[idx + 1] : undefined;
-
+  const stats = showAnswers ? diveStats(dive) : null;
   const showAnswers = answersPublished(dive);
 
   // 当期未揭晓答案时，把「答案」FAQ 换成次日揭晓的说法，避免同页与 H1 自相矛盾。
