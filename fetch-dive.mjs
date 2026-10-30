@@ -223,10 +223,8 @@ async function main() {
 async function refetch() {
   const { hour, minute } = nyClock();
   const force = process.argv.includes('--force');
-  if (!force && (hour < 20 || hour >= 23)) {
-    console.log(`当前纽约 ${hour}:${String(minute).padStart(2, '0')}，不在 20:00–23:00 窗口，跳过（--force 可强制）。`);
-    return;
-  }
+  const inWindow = hour >= 20 && hour < 23;
+  console.log(`当前纽约 ${hour}:${String(minute).padStart(2, '0')}${inWindow ? '（窗口内：收盘前重抓）' : '（窗口外：按当日累计答案重抓）'}`);
 
   const isoDate = todayInNewYork();
   const number = diveNumberFor(isoDate);
