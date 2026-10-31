@@ -83,7 +83,7 @@ async function chat(messages) {
   const res = await fetch(ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` },
-    body: JSON.stringify({ model: MODEL, messages, temperature: 0.5 }),
+    body: JSON.stringify({ model: MODEL, messages, temperature: 0.5, max_tokens: 2000 }),
   });
   if (!res.ok) {
     const t = await res.text();
@@ -144,7 +144,7 @@ async function generate(dive) {
   const published = loadPublished();
   let feedback = '';
 
-  for (let attempt = 1; attempt <= 5; attempt++) {
+  for (let attempt = 1; attempt <= 8; attempt++) {
     const extra = feedback ? `\n\n【上一轮未通过，请修正】${feedback}` : '';
     const raw = await chat([
       { role: 'system', content: SYSTEM },
@@ -161,7 +161,7 @@ async function generate(dive) {
 
     if (!Array.isArray(out.hints) || out.hints.length !== 7) { feedback = 'hints 必须是恰好 7 条的数组。'; continue; }
     if (out.hints.some(h => typeof h !== 'string' || !h.trim())) { feedback = '每条 hint 必须是非空字符串。'; continue; }
-    if (!Array.isArray(out.analysis) || out.analysis.length < 2) { feedback = 'analysis 至少 2 段。'; continue; }
+    if (!Array.isArray(out.analysis) || out.analysis.length < 4) { feedback = `analysis 必须 4~5 段、每段 60~90 词，现在只有 ${Array.isArray(out.analysis) ? out.analysis.length : 0} 段，请补足。`; continue; }
 
     const leak = leakCheck(dive, out.hints);
     if (leak) { feedback = leak; continue; }
