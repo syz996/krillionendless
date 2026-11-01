@@ -12,6 +12,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body>
         {children}
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6859136145612852"
+          crossOrigin="anonymous"
+        />
+        {/* End Google AdSense */}
         {/* Cloudflare Web Analytics */}
         <script
           type="module"
