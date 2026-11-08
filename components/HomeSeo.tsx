@@ -51,49 +51,57 @@ export default function HomeSeo({
       }
     : null;
 
-  return (
-    <section>
-      <h2>Today&rsquo;s Krillion prompts &amp; hints — Dive #{dive.number}</h2>
-      <p>
-        {dive.dateLabel} · all seven prompts with a hint each. The official answer list is added the
-        next day.
-      </p>
-      <p>
-        <Link href={dive.path}>See Dive #{dive.number} prompts &amp; hints →</Link>
-      </p>
-      {previous ? (
+   return (
+    <>
+      <section className="content-section" id="todays-dive">
+        <h2>Today&rsquo;s Krillion prompts &amp; hints — Dive #{dive.number}</h2>
         <p>
-          Want answers right now? <Link href={previous.path}>Dive #{previous.number} full answers</Link>{" "}
-          ({previous.dateLabel}) are already published, or browse{" "}
-          <Link href="/archive/">the full archive</Link> back to Dive #94.
+          {dive.dateLabel} · all seven prompts with a hint each. The official answer list is added the
+          next day.
         </p>
-      ) : null}
+        <p>
+          <Link href={dive.path}>See Dive #{dive.number} prompts &amp; hints →</Link>
+        </p>
+        {previous ? (
+          <p>
+            Want answers right now? <Link href={previous.path}>Dive #{previous.number} full answers</Link>{" "}
+            ({previous.dateLabel}) are already published, or browse{" "}
+            <Link href="/archive/">the full archive</Link> back to Dive #94.
+          </p>
+        ) : null}
+      </section>
 
-      <h2>Krillion Unlimited vs. the daily dive</h2>
-      <p>
-        The daily dive is one round per day and its answer list goes up the next day; the practice
-        mode on this page never runs out. Practising unlimited does not change the official game — it
-        just lets you rehearse the answer bands without waiting for tomorrow.
-      </p>
+      <section className="content-section">
+        <h2>Krillion Unlimited vs. the daily dive</h2>
+        <p>
+          The daily dive is one round per day and its answer list goes up the next day; the practice
+          mode on this page never runs out. Practising unlimited does not change the official game — it
+          just lets you rehearse the answer bands without waiting for tomorrow.
+        </p>
+      </section>
 
-      <h2>Practice by category</h2>
-      <p>
-        Drill the prompts that show up most in dives:{" "}
-        {CATEGORIES.map((c, i) => (
-          <span key={c.href}>
-            <Link href={c.href}>{c.label}</Link>
-            {i < CATEGORIES.length - 1 ? ", " : ", or "}
-          </span>
-        ))}
-        <Link href="/prompts/">all {PROMPTS.length} prompts</Link>.
-      </p>
+      <section className="content-section" id="practice-by-category">
+        <h2>Practice by category</h2>
+        <p>
+          Drill the prompts that show up most in dives:{" "}
+          {CATEGORIES.map((c, i) => (
+            <span key={c.href}>
+              <Link href={c.href}>{c.label}</Link>
+              {i < CATEGORIES.length - 1 ? ", " : ", or "}
+            </span>
+          ))}
+          <Link href="/prompts/">all {PROMPTS.length} prompts</Link>.
+        </p>
+      </section>
 
-      <h2>Play unblocked, on any device</h2>
-      <p>
-        Everything runs in the browser, so it works on a school Chromebook, a work laptop, an iPad or
-        a phone. No extension, no install. If the page will not load on your network, see{" "}
-        <Link href="/krillion-unblocked/">Krillion Unlimited unblocked</Link> for the workarounds.
-      </p>
-    </section>
+      <section className="content-section">
+        <h2>Play unblocked, on any device</h2>
+        <p>
+          Everything runs in the browser, so it works on a school Chromebook, a work laptop, an iPad or
+          a phone. No extension, no install. If the page will not load on your network, see{" "}
+          <Link href="/krillion-unblocked/">Krillion Unlimited unblocked</Link> for the workarounds.
+        </p>
+      </section>
+    </>
   );
 }
