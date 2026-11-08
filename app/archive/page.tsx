@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { DIVES, SITE, answersPublished, fmtDate, diveSlug, getArchiveGroups } from '../../lib/archive';
 import SiteHeader from '../../components/SiteHeader';
-import SiteFooter from '../../components/SiteFooter';
+import SiteFooter from '../../components/SiteFooter'; 
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
 

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import GameClient, { type LatestDive } from "./GameClient";
 import { getHomeFaqs } from "@/content/faq";
 import { DIVES, answersPublished } from "@/lib/archive";
+import HomeSeo from "@/components/HomeSeo";
+
 
 const ogImage = {
   url: "https://krillionendless.org/og.png",
@@ -13,7 +15,7 @@ const ogImage = {
 export const metadata: Metadata = {
   title: "Krillion Unlimited Game — Independent Practice Dive",
   description:
-    "Play Krillion Unlimited unblocked — an independent rare-answer trivia practice dive with seven prompts, a 25-second timer and no daily limit.",
+    "Play Krillion Unlimited unblocked — an independent rare-answer trivia practice dive with seven prompts, a 25-second timer and no daily limit. Plus today's Krillion dive prompts, hints and the full archive from Dive #94.",
   alternates: { canonical: "/" },
   openGraph: {
     title: "Krillion Unlimited Game — Independent Practice Dive",
@@ -80,6 +82,7 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
       />
       <GameClient latestDive={latestDive} recentDives={recentDives} faqs={faqs} />
+      <HomeSeo />
     </>
   );
 }
