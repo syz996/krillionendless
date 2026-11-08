@@ -589,11 +589,20 @@ export const PROMPTS: Prompt[] = [
       { aliases: ['lemon'], tier: 'Schooler', points: 30 },
       { aliases: ['raspberry'], tier: 'Schooler', points: 30 },
       { aliases: ['blackberry'], tier: 'Schooler', points: 30 },
-      { aliases: ['pomegranate'], tier: 'Schooler', points: 30 },
-      { aliases: ['apricot'], tier: 'Schooler', points: 30 },
+      { aliases: ['pomegranate'], tier: 'Rare', points: 60 },
+      { aliases: ['apricot'], tier: 'Rare', points: 60 },
       { aliases: ['plum'], tier: 'Schooler', points: 30 },
       { aliases: ['coconut'], tier: 'Schooler', points: 30 },
-      { aliases: ['rambutan'], tier: 'One in a Krillion', points: 100 }
+      { aliases: ['rambutan'], tier: 'One in a Krillion', points: 100 },
+      { aliases: ['fig', 'figs'], tier: 'Rare', points: 60 },
+      { aliases: ['passion fruit', 'passionfruit'], tier: 'Rare', points: 60 },
+      { aliases: ['guava'], tier: 'Rare', points: 60 },
+      { aliases: ['lychee', 'litchi'], tier: 'Rare', points: 60 },
+      { aliases: ['papaya', 'pawpaw'], tier: 'Rare', points: 60 },
+      { aliases: ['dragon fruit', 'pitaya', 'pitahaya'], tier: 'Deep Cut', points: 85 },
+      { aliases: ['persimmon'], tier: 'Deep Cut', points: 85 },
+      { aliases: ['mangosteen'], tier: 'Deep Cut', points: 85 },
+      { aliases: ['durian'], tier: 'Deep Cut', points: 85 },
     ]
   },
   {
