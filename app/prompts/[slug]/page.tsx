@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!prompt) return {};
 
   const canonical = `${BASE}/prompts/${prompt.id}/`;
-  const title = `${prompt.text} — Practice Answers`;
+  const title = `${prompt.text} — Krillion Practice Answers`;
   const description = `All ${prompt.answers.length} accepted answers for the practice prompt “${prompt.text}”, with rarity tiers and points. Independent ${SITE.brand} question bank — not official Krillion data.`;
 
   return {
