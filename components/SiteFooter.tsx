@@ -25,7 +25,7 @@ export default function SiteFooter() {
         <p>© 2026 {SITE.domain}</p>
 
         {/* Directory badges */}
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
+        <div className="foot-badges">
           <a
             href="https://smollaunch.com"
             target="_blank"
@@ -55,9 +55,11 @@ export default function SiteFooter() {
               height="40"
             />
           </a>
-          <a href="https://nicklaunches.com/" target="_blank" rel="noopener">
+          <a href="https://nicklaunches.com/" target="_blank" rel="noopener noreferrer">
             <img src="https://nicklaunches.com/badges/featured-dark.png" alt="Krillion Unlimited on Nick Launches" loading="lazy" width="244" height="56" /></a>
-          <a href="https://postmake.io" target="_blank" rel="noopener"><img src="https://postmake.io/postmake_badge_light.png" alt="Featured on the Postmake directory" width="240" /></a>
+          <a href="https://postmake.io" target="_blank" rel="noopener"><img src="https://postmake.io/postmake_badge_light.png" alt="Featured on the Postmake directory" loading="lazy"
+  width="240"
+  height="56" /></a>
         </div>
       </div>
     </footer>
