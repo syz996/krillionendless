@@ -6,6 +6,7 @@ import { normalizeAnswer, findAnswer, PROMPTS, TIERS, type AnswerEntry } from '.
 import { SITE } from '../lib/site';
 import SiteHeader from '../components/SiteHeader';
 import SiteFooter from '../components/SiteFooter';
+import HomeSeo from '../components/HomeSeo';
 
 type Round = { text: string; hint: string; answers: AnswerEntry[]; id?: string };
 type RoundResult = { prompt: string; answer: string; accepted: boolean; tier?: string; points: number; timedOut?: boolean; lockedOut?: boolean };
@@ -203,6 +204,7 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
 
         <section className="content-section" id="archive-section"><h2>Practice archive</h2><p>Every dive we have logged is collected in the archive — each with its seven prompts, a hint for each one, a short note on what made that dive hard, and the official answer list once the day has passed. A new page is added every day.</p>{recentDives.length ? <ul className="recent-dives">{recentDives.map(d => <li key={d.dive}><a href={`/archive/dive-${d.dive}/`}>Dive #{d.dive} — {fmtDate(d.date)}</a></li>)}</ul> : null}<div className="archive-live"><strong>The archive is live</strong><a className="btn" href="/archive/">Browse all dives <ArrowRight size={16} /></a></div></section>
         <section className="content-section" id="faq-section"><h2>Frequently asked questions</h2>{faqs.map((f, n) => <details key={f.q} open={n === 0}><summary>{f.q}</summary><p>{f.a}</p></details>)}</section>
+        <HomeSeo />
         </main>
       <SiteFooter />
     </>
