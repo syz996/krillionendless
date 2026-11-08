@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import GameClient, { type LatestDive } from "./GameClient";
 import { getHomeFaqs } from "@/content/faq";
 import { DIVES, answersPublished } from "@/lib/archive";
-import HomeSeo from "@/components/HomeSeo";
 
 
 const ogImage = {
@@ -82,7 +81,6 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
       />
       <GameClient latestDive={latestDive} recentDives={recentDives} faqs={faqs} />
-      <HomeSeo />
     </>
   );
 }
