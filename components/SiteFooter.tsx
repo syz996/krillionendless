@@ -57,7 +57,7 @@ export default function SiteFooter() {
           </a>
           <a href="https://nicklaunches.com/" target="_blank" rel="noopener noreferrer">
             <img src="https://nicklaunches.com/badges/featured-dark.png" alt="Krillion Unlimited on Nick Launches" loading="lazy" width="244" height="56" /></a>
-          <a href="https://postmake.io" target="_blank" rel="noopener"><img src="https://postmake.io/postmake_badge_light.png" alt="Featured on the Postmake directory" loading="lazy"
+          <a href="https://postmake.io" target="_blank" rel="noopener noreferrer"><img src="https://postmake.io/postmake_badge_light.png" alt="Featured on the Postmake directory" loading="lazy"
   width="240"
   height="56" /></a>
         </div>
