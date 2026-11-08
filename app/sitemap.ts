@@ -7,6 +7,8 @@ export const dynamic = 'force-static';
 // prompts 页只在题库扩充时变化，不能跟着最新一期每天变。
 // 改成题库实际最后一次修改的日期。
 const PROMPT_BANK_UPDATED = '2026-11-08';
+// 这一页内容独立于题库，单独记自己的最后修改日。
+const UNBLOCKED_UPDATED = '2026-11-08';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE.baseUrl.replace(/\/+$/, '');
@@ -29,8 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
       lastModified: PROMPT_BANK_UPDATED,
     })),
-    // /krillion-unblocked/ 页面建好、确认线上返回 200 之后再放开这一行
-    // { url: `${base}/krillion-unblocked/`, priority: 0.6, lastModified: PROMPT_BANK_UPDATED },
+    { url: `${base}/krillion-unblocked/`, priority: 0.6, lastModified: UNBLOCKED_UPDATED },
     { url: `${base}/about/`, priority: 0.3 },
     { url: `${base}/contact/`, priority: 0.3 },
     { url: `${base}/privacy/`, priority: 0.3 },
