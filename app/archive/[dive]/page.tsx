@@ -206,7 +206,8 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
             <p>The full official answer list for this dive, with every answer&rsquo;s rarity tier and score. Each prompt is collapsed — open one only when you are ready to see its answers. The prompts and hints above stay spoiler-free.</p>
             {dive.prompts.map((p, i) => {
               const nonDeepcut = (p.answers || []).filter(a => a.tier !== 'deepcut');
-              const deepcutCount = shownDeepcutCount((p.answers?.length || 0) - nonDeepcut.length);
+              const deepcutTotal = (p.answers?.length || 0) - nonDeepcut.length;
+              const deepcutCount = shownDeepcutCount(deepcutTotal);
               if (!p.answers?.length) return null;
               return (
                 <details key={i}>
