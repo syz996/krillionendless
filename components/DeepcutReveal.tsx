@@ -7,6 +7,13 @@ import { Loader2 } from 'lucide-react';
 const FIRST = 200;
 const STEP = 500;
 
+type RevealProps = {
+  dive: number;
+  promptIndex: number;
+  count: number; // 实际会展示的条数（已被 lib/deepcut.ts 的 DEEPCUT_SHOWN 截断）
+  total: number; // 这一题 Deep Cut 的总条数（全量，只用于文案）
+};
+
 // 就近错误边界：这块崩了只影响这一个答案表，不会把整页换成兜底页
 class Boundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
@@ -21,7 +28,7 @@ class Boundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   }
 }
 
-function Reveal({ dive, promptIndex, count }: { dive: number; promptIndex: number; count: number }) {
+function Reveal({ dive, promptIndex, count, total }: RevealProps) {
   const [answers, setAnswers] = useState<string[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -48,11 +55,16 @@ function Reveal({ dive, promptIndex, count }: { dive: number; promptIndex: numbe
 
   if (count === 0) return null;
 
+  // 全量比展示量多时，把两个数字都写出来，别让人以为只给了 150 条里的 150
+  const label = total > count
+    ? `Show ${count.toLocaleString('en-US')} of ${total.toLocaleString('en-US')} Deep Cut answers`
+    : `Show ${count.toLocaleString('en-US')} Deep Cut answers`;
+
   if (answers === null) {
     return (
       <p className="deepcut-toggle" translate="no">
         <button type="button" className="btn ghost" onClick={load} disabled={loading}>
-          {loading ? <><Loader2 size={15} className="spin" /> Loading…</> : <>Show {count.toLocaleString('en-US')} Deep Cut answers</>}
+          {loading ? <><Loader2 size={15} className="spin" /> Loading…</> : <>{label}</>}
         </button>
         {error ? <span className="small-note"> Could not load — try again.</span> : null}
       </p>
@@ -87,6 +99,6 @@ function Reveal({ dive, promptIndex, count }: { dive: number; promptIndex: numbe
   );
 }
 
-export default function DeepcutReveal(props: { dive: number; promptIndex: number; count: number }) {
+export default function DeepcutReveal(props: RevealProps) {
   return <Boundary><Reveal {...props} /></Boundary>;
 }
