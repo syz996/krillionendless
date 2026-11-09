@@ -52,7 +52,7 @@ function Reveal({ dive, promptIndex, count }: { dive: number; promptIndex: numbe
     return (
       <p className="deepcut-toggle" translate="no">
         <button type="button" className="btn ghost" onClick={load} disabled={loading}>
-          {loading ? <><Loader2 size={15} className="spin" /> Loading…</> : <>Show all {count.toLocaleString('en-US')} Deep Cut answers</>}
+          {loading ? <><Loader2 size={15} className="spin" /> Loading…</> : <>Show {count.toLocaleString('en-US')} Deep Cut answers</>}
         </button>
         {error ? <span className="small-note"> Could not load — try again.</span> : null}
       </p>
