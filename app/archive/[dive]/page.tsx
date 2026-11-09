@@ -5,6 +5,7 @@ import SiteHeader from '../../../components/SiteHeader';
 import SiteFooter from '../../../components/SiteFooter';
 import DeepcutReveal from '../../../components/DeepcutReveal';
 import type { Dive } from '../../../lib/archive';
+import { shownDeepcutCount } from '../../../lib/deepcut';
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
 // 每期答案条数统计：构建时从最终答案池现算，不写进数据文件。
@@ -205,7 +206,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
             <p>The full official answer list for this dive, with every answer&rsquo;s rarity tier and score. Each prompt is collapsed — open one only when you are ready to see its answers. The prompts and hints above stay spoiler-free.</p>
             {dive.prompts.map((p, i) => {
               const nonDeepcut = (p.answers || []).filter(a => a.tier !== 'deepcut');
-              const deepcutCount = (p.answers?.length || 0) - nonDeepcut.length;
+              const deepcutCount = shownDeepcutCount((p.answers?.length || 0) - nonDeepcut.length);
               if (!p.answers?.length) return null;
               return (
                 <details key={i}>
