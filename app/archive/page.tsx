@@ -94,7 +94,7 @@ export default function ArchivePage() {
               <h2>{g.label}</h2>
               <ul>
                 {g.dives.map(d => (
-                  <li key={d.dive}><a href={`/archive/${diveSlug(d.dive)}/`}>Dive #{d.dive} — {fmtDate(d.date)}</a>{d.analysis?.[0] ? <p className="dive-summary">{firstSentence(d.analysis[0])}</p> : null}</li>
+                 <li key={d.dive}><a href={`/archive/${diveSlug(d.dive)}/`}>Dive #{d.dive} {answersPublished(d) ? 'answers & prompts' : 'prompts & hints'} — {fmtDate(d.date)}</a>{d.analysis?.[0] ? <p className="dive-summary">{firstSentence(d.analysis[0])}</p> : null}</li>
                 ))}
               </ul>
             </div>
