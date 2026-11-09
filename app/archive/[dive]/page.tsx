@@ -218,7 +218,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
                       <tr key={a.answer}><td>{a.answer}</td><td>{a.tier}</td><td>{a.score}</td></tr>
                     ))}</tbody>
                   </table></div>
-                  <DeepcutReveal dive={dive.dive} promptIndex={i} count={deepcutCount} />
+                  <DeepcutReveal dive={dive.dive} promptIndex={i} count={deepcutCount} total={deepcutTotal} />
                 </details>
               );
             })}
