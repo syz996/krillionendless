@@ -8,6 +8,7 @@ export default function SiteFooter() {
         <nav>
           <a href="/">Krillion Unlimited</a>
           <a href="/archive/">Krillion archive</a>
+          <a href="/krillion-unblocked/">Krillion unblocked</a>
           <a href="/prompts/">Prompts</a>
           <a href="/about/">About</a>
           <a href="/contact/">Contact</a>
