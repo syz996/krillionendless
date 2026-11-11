@@ -51,7 +51,7 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
   const lockRef = useRef(false);
   const [sink, setSink] = useState(0);            // [2] 已下潜格数（答对一题 +1）
   const [shake, setShake] = useState(0);          // [2] 答错时自增，驱动面板重播动画
-  const [flash, setFlash] = useState<0 | 1 | 2>(0);
+  const [flash, setFlash] = useState<'ok' | 'no' | null>(null);
 const [flashKind, setFlashKind] = useState<'ok' | 'no'>('ok');
   const [entryNote, setEntryNote] = useState(''); // [3] 从 ?dive=/历史期进来时的提示文案
   const [air, setAir] = useState(3);               // [7] 3 罐氧气：超时或 Pass 扣一罐
@@ -175,8 +175,10 @@ const [flashKind, setFlashKind] = useState<'ok' | 'no'>('ok');
       const misses = wrongCount + 1;
       setWrongCount(misses);
       setShake(n => n + 1); // [4] 答错：面板抖动重播
-      setFlashKind('ok'); setFlash(n => n + 2);
-      setFlashKind('no'); setFlash(n => n + 2);
+      setFlash('ok');
+window.setTimeout(() => setFlash(null), 1100);
+     setFlash('no');
+window.setTimeout(() => setFlash(null), 700);
       setTierNote(null);
       setMissHint({ count: currentPrompt.answers.length, slug: currentPrompt.id || '' });
       setNotice(misses === 1
