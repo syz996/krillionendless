@@ -86,9 +86,7 @@ function Jelly({ hue }: { hue: 'cyan' | 'violet' }) {
 function Brine({ n, delay }: { n: number; delay: number }) {
   return (
     <div className="stage__school" style={{ animationDelay: `${delay}s` }}>
-      {Array.from({ length: n }, (_, i) => (
-        <i key={i} style={{ top: `${4 + ((i * 37) % 22)}px`, animationDelay: `${(i * 0.23) % 1.2}s` }} />
-      ))}
+      {[0, 1, 2, 3, 4].map(i => <i key={i} style={{ left: `${i * 14}px`, top: `${i * 5}px`, animationDelay: `${i * 0.36}s` }} />)}
     </div>
   );
 }
