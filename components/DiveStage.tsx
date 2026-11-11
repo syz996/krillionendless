@@ -34,7 +34,7 @@ function Diver() {
         {/* 头套 + 面镜 */}
         <path d="M14 13.4 q2 -10.4 8.2 -10.4 q7 0 9 10.4 q-8.2 -3 -17.2 0 z" fill="#16394f" stroke="#0a2434" strokeWidth="1" />
         <rect x="14.4" y="11" width="16.4" height="9.2" rx="3.6" fill="#0c2637" stroke="#061622" strokeWidth="1.1" />
-        <rect x="16.4" y="12.6" width="6.4" height="5.8" rx="2" fill="#7fdcf7" opacity=".82" />
+        <rect x="16.4" y="12.6" width="6.4 h="5.8" rx="2" fill="#7fdcf7" opacity=".82" />
         <rect x="23.6" y="12.6" width="5.4" height="5.8" rx="2" fill="#5cc6e8" opacity=".7" />
         <path d="M17.6 14.4 h2.6" stroke="#eBEEFF" strokeWidth="1.1" strokeLinecap="round" opacity=".8" />
         <circle cx="15.2" cy="15.6" r="1.6" fill="#cfd8e3" stroke="#8fa2b3" strokeWidth=".7" />
@@ -48,9 +48,9 @@ function Diver() {
 
 function Fish({ variant }: { variant: 'a' | 'b' | 'c' }) {
   const palette = {
-    a: { body: '#4fd9c6', fin: '#2aa898', dark: '#0b5d57', glow: 'rgba(79,217,198,.45)' },
-    b: { body: '#ffd166', fin: '#d9a53e', dark: '#8a5f12', glow: 'rgba(255,209,102,.4)' },
-    c: { body: '#9fd4ee', fin: '#6da6c4', dark: '#2f5b73', glow: 'rgba(159,212,238,.35)' },
+    a: { body: '#4fd9c6', fin: '#2aa898', dark: '#0b5d57' },
+    b: { body: '#ffd166', fin: '#d9a53e', dark: '#8a5f12' },
+    c: { body: '#9fd4ee', fin: '#6da6c4', dark: '#2f5b73' },
   }[variant];
   return (
     <svg viewBox="0 0 48 24" xmlns="http://www.w3.org/2000/svg">
@@ -68,11 +68,45 @@ function Fish({ variant }: { variant: 'a' | 'b' | 'c' }) {
   );
 }
 
-export default function DiveStage({ depth, total, shake, children }: {
-  depth: number; total: number; shake: number; children: ReactNode;
+export default function DiveStage({ depth, total, shake, air = 3, flash, outOfAir = false, children }: {
+  depth: number; total: number; shake: number; air?: number;
+  flash?: 'ok' | 'no' | null; outOfAir?: boolean; children: ReactNode;
 }) {
   const d = Math.min(6, depth);
+  const lowAir = air <= 1 && !outOfAir;
   return (
-    <div className={`stage stage--d${d}${outOfAir ? ' stage--out' : ''}`} data-flash={flash}>
+    <div
+      className={`stage stage--d${d}${outOfAir ? ' stage--out' : ''}${lowAir ? ' stage--low-air' : ''}${flash ? ` stage--flash-${flash}` : ''}`}
+    >
+      <div className="stage__ray" aria-hidden="true" />
+      <div className="stage__water" aria-hidden="true" />
+      <div className="stage__surface" aria-hidden="true" />
+      <div className="stage__ruler" aria-hidden="true">
+        {[0, 100, 200, 300].map(m => <span key={m} style={{ top: `${(m / 300) * 100}%` }}>{m}m</span>)}
+      </div>
+      <div className="stage__seabed" aria-hidden="true" />
+      <div className="stage__fish stage__fish--a"><Fish variant="a" /></div>
+      <div className="stage__fish stage__fish--b"><Fish variant="b" /></div>
+      <div className="stage__fish stage__fish--c"><Fish variant="c" /></div>
+      <div className="stage__coral" aria-hidden="true" />
+      <div className="stage__silt" aria-hidden="true" />
+      <div className="stage__motes" aria-hidden="true">
+        {Array.from({ length: 10 }, (_, i) => (
+          <i key={i} style={{ left: `${7 + i * 9}%`, animationDelay: `${i * 0.7}s` }} />
+        ))}
+      </div>
+      <div className="stage__rail" aria-hidden="true">
+        {Array.from({ length: total }, (_, i) => <span key={i} className={i < depth ? 'on' : ''} />)}
+      </div>
+      <div
+        className="stage__diver"
+        style={{ top: `${10 + (Math.min(depth, total) / Math.max(1, total)) * 66}%` }}
+        aria-hidden="true"
+      >
+        <div className="diver__swim"><Diver /></div>
+        <span className="stage__bub" /><span className="stage__bub stage__bub--2" />
+      </div>
+      <div className="stage__panel" key={shake}>{children}</div>
+    </div>
   );
 }
