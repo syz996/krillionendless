@@ -174,3 +174,11 @@ main>h1{margin-top:12px}
 @media(prefers-reduced-motion:reduce){
   .stage::after,.stage[data-flash] *{animation:none!important}
 }
+/* 用 class 触发，播完自动停（Java 用 setTimeout 清掉 flash 状态） */
+.stage--flash-ok::after{animation:ripple 1.1s ease-out}
+.stage--flash-ok .diver__leg{animation:kick .28s ease-in-out 3}
+.stage--flash-ok .stage__diver{animation:diver-dash .9s ease-out}
+.stage--flash-ok .stage__bub{animation:bub .9s ease-out 3}
+.stage--flash-ok .stage__bub--2{animation-delay:.2s}
+.stage--flash-no{animation:stage-shake .42s cubic-bezier(.36,.07,.19,.97)}
+.stage--flash-no::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;z-index:3;background:linear-gradient(90deg,transparent,#ff4d6d,transparent);animation:redline .7s ease-out forwards}
