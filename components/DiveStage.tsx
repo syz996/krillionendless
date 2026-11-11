@@ -73,30 +73,6 @@ export default function DiveStage({ depth, total, shake, children }: {
 }) {
   const d = Math.min(6, depth);
   return (
-    <div className={`stage stage--d${d}`}>
-      <div className="stage__ray" aria-hidden="true" />
-      <div className="stage__water" aria-hidden="true" />
-      <div className="stage__surface" aria-hidden="true" />
-      <div className="stage__ruler" aria-hidden="true">
-        {[0, 100, 200, 300].map(m => <span key={m} style={{ top: `${(m / 300) * 100}%` }}>{m}m</span>)}
-      </div>
-      <div className="stage__seabed" aria-hidden="true" />
-      <div className="stage__fish stage__fish--a"><Fish variant="a" /></div>
-      <div className="stage__fish stage__fish--b"><Fish variant="b" /></div>
-      <div className="stage__fish stage__fish--c"><Fish variant="c" /></div>
-      <div className="stage__coral" aria-hidden="true" />
-      <div className="stage__silt" aria-hidden="true" />
-      <div className="stage__motes" aria-hidden="true">
-        {Array.from({ length: 10 }, (_, i) => <i key={i} style={{ left: `${7 + i * 9}%`, animationDelay: `${i * 0.7}s` }} />)}
-      </div>
-      <div className="stage__rail" aria-hidden="true">
-        {Array.from({ length: total }, (_, i) => <span key={i} className={i < depth ? 'on' : ''} />)}
-      </div>
-      <div className="stage__diver" style={{ top: `${10 + (d / Math.max(1, total)) * 66}%` }} aria-hidden="true">
-        <div className="diver__swim"><Diver /></div>
-        <span className="stage__bub" /><span className="stage__bub stage__bub--2" />
-      </div>
-      <div className="stage__panel" key={shake}>{children}</div>
-    </div>
+    <div className={`stage stage--d${d}${outOfAir ? ' stage--out' : ''}`} data-flash={flash}>
   );
 }
