@@ -175,6 +175,8 @@ const [flashKind, setFlashKind] = useState<'ok' | 'no'>('ok');
       const misses = wrongCount + 1;
       setWrongCount(misses);
       setShake(n => n + 1); // [4] 答错：面板抖动重播
+      setFlashKind('ok'); setFlash(n => n + 2);
+      setFlashKind('no'); setFlash(n => n + 2);
       setTierNote(null);
       setMissHint({ count: currentPrompt.answers.length, slug: currentPrompt.id || '' });
       setNotice(misses === 1
