@@ -19,3 +19,25 @@ main>h2,main>section>h2{font-size:21px;margin:26px 0 10px;letter-spacing:-.2px;l
 main>p,main>section>p{margin:0 0 14px}
 main>ul,main>section>ul{list-style:disc;margin:0 0 14px;padding-left:20px}
 main>h1{margin-top:12px}
+.stage{position:relative;min-height:440px;padding:18px 16px 22px;border-radius:12px;overflow:hidden;background:#0d3c55;transition:background .8s ease}
+.stage--d0{background:#155b7f}.stage--d1{background:#12506f}.stage--d2{background:#0e425e}
+.stage--d3{background:#0b3550}.stage--d4{background:#082944}.stage--d5{background:#061e35}.stage--d6{background:#041625}
+.stage__water{position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(255,255,255,.03) 0 2px,transparent 2px 7px)}
+.stage__silt{position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(transparent,#0a1a12)}
+.stage__fish{position:absolute;width:26px;height:10px;border-radius:50% 2px 2px 50%;background:rgba(40,217,200,.35);animation:swim 14s linear infinite}
+.stage__fish--a{top:18%}.stage__fish--b{top:56%;width:18px;height:7px;background:rgba(255,209,102,.3);animation-duration:22s;animation-delay:-6s}
+@keyframes swim{from{transform:translateX(-40px)}to{transform:translateX(calc(100% + 40px))}}
+.stage__rail{position:absolute;right:14px;top:14px;bottom:14px;display:flex;flex-direction:column;justify-content:space-between;width:6px;z-index:1}
+.stage__rail span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.16);transition:all .5s}
+.stage__rail span.on{background:var(--acc);box-shadow:0 0 10px var(--acc);transform:scale(1.5)}
+.stage__diver{position:absolute;left:8%;transform:translateY(-50%);transition:top .9s cubic-bezier(.34,1.3,.64,1);filter:drop-shadow(0 0 12px rgba(40,217,200,.5));z-index:1}
+.stage__bub{position:absolute;left:4px;top:-6px;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.7);animation:bub 2.4s ease-in infinite}
+.stage__bub--2{left:14px;animation-delay:.9s;width:3px;height:3px}
+@keyframes bub{0%{opacity:0;transform:translateY(0)}30%{opacity:.9}100%{opacity:0;transform:translateY(-60px)}}
+.stage__panel{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:.6rem;text-align:center;animation:pop .32s ease-out}
+@keyframes pop{0%{opacity:.2;transform:translateY(10px)}100%{opacity:1;transform:none}}
+.stage .prompt{font-size:clamp(1.2rem,4vw,1.7rem);color:#eaf7ff;margin:0;max-width:26ch}
+.stage .timer{font-size:2rem;color:var(--gold)}
+.stage .game-row{width:100%;max-width:420px}
+.stage input{background:rgba(4,22,37,.86);border:2px solid var(--acc);color:#eaf7ff}
+@media(max-width:600px){.stage{min-height:400px;padding:14px 10px 18px}.stage__diver{left:2%;transform:translateY(-50%) scale(.8)}}
