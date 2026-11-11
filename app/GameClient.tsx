@@ -51,6 +51,8 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
   const lockRef = useRef(false);
   const [sink, setSink] = useState(0);            // [2] 已下潜格数（答对一题 +1）
   const [shake, setShake] = useState(0);          // [2] 答错时自增，驱动面板重播动画
+  const [flash, setFlash] = useState<0 | 1 | 2>(0);
+const [flashKind, setFlashKind] = useState<'ok' | 'no'>('ok');
   const [entryNote, setEntryNote] = useState(''); // [3] 从 ?dive=/历史期进来时的提示文案
   const [air, setAir] = useState(3);               // [7] 3 罐氧气：超时或 Pass 扣一罐
   const [outOfAir, setOutOfAir] = useState(false); // [7] 氧气耗尽收尾，结算显示 OUT OF AIR
@@ -249,7 +251,7 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
 
         <section className="game" id="game" aria-label="Play the independent practice game">
           {!started && !finished ? <div className="intro-state"><div className="game-top"><span className="dive">PRACTICE DIVE</span><span>7 prompts · 25 seconds each</span></div><div className="intro-icon"><Waves size={30} /></div><h2>Ready to dive?</h2><p>{entryNote || 'Answer seven prompts — randomized practice questions, or a replay of the latest daily dive from the archive.'}</p><div className="intro-actions"><button className="btn" onClick={() => startGame('practice')}>Start practice dive <ArrowRight size={17} /></button>{latestDive ? <button className="btn ghost" onClick={() => startGame('replay')}>Replay Dive #{latestDive.dive}</button> : null}</div></div> : null}
-          {started && currentPrompt ? <DiveStage depth={sink} total={rounds.length} shake={shake}>
+          {started && currentPrompt ? <DiveStage depth={sink} total={rounds.length} shake={shake} flash={flash} outOfAir={outOfAir}>
             <div className="game-top"><span className="dive">{mode === 'replay' ? `DIVE #${latestDive?.dive} REPLAY` : 'PRACTICE DIVE'}</span><span>Prompt <strong>{current + 1}</strong> / {rounds.length}</span></div>
             <div className="progress"><span style={{ width: `${((current + 1) / rounds.length) * 100}%` }} /></div>
             {mode === 'practice' ? <div className={`air-bar${air <= 1 ? ' low' : ''}`} aria-label={`${air} of 3 air left`}>{Array.from({ length: 3 }, (_, i) => <span key={i} className={i < air ? 'on' : ''} aria-hidden="true" />)}<em>{air === 0 ? 'OUT OF AIR' : `${air} air`}</em></div> : null}
