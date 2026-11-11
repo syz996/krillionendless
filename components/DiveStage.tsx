@@ -67,7 +67,47 @@ function Fish({ variant }: { variant: 'a' | 'b' | 'c' }) {
     </svg>
   );
 }
+function Jelly({ hue }: { hue: 'cyan' | 'violet' }) {
+  const c = hue === 'cyan'
+    ? { dome: 'rgba(127,230,255,.5)', tent: 'rgba(127,230,255,.32)' }
+    : { dome: 'rgba(200,160,255,.42)', tent: 'rgba(200,160,255,.28)' };
+  return (
+    <svg viewBox="0 0 40 52" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 22 q0 -18 14 -18 q14 0 14 18 q-7 3.4 -14 3.4 q-7 0 -14 -3.4 z"
+        fill={c.dome} stroke="rgba(255,255,255,.35)" strokeWidth=".8" />
+      <path d="M12 24 q-1 12 2 22 M20 25 q0 13 0 22 M28 24 q1 12 -2 22"
+        fill="none" stroke={c.tent} strokeWidth="1.4" strokeLinecap="round" />
+      <circle cx="15" cy="16" r="1.3" fill="rgba(255,255,255,.55)" />
+      <circle cx="25" cy="16" r="1.3" fill="rgba(255,255,255,.55)" />
+    </svg>
+  );
+}
 
+function Brine({ n, delay }: { n: number; delay: number }) {
+  return (
+    <div className="stage__school" style={{ animationDelay: `${delay}s` }}>
+      {Array.from({ length: n }, (_, i) => (
+        <i key={i} style={{ top: `${4 + ((i * 37) % 22)}px`, animationDelay: `${(i * 0.23) % 1.2}s` }} />
+      ))}
+    </div>
+  );
+}
+
+function Turtle() {
+  return (
+    <svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg">
+      <path className="turtle__flip" d="M20 20 q-9 -7 -15 -1 q-6 6 2 9 q6 2 13 -4 z"
+        fill="#2f7196" stroke="#0d3448" strokeWidth="1" />
+      <ellipse cx="36" cy="21" rx="17" ry="12" fill="#2e6b4a" stroke="#0d3320" strokeWidth="1.2" />
+      <path d="M24 18 q12 -5 24 0 M23 23 q13 4 26 0 M31 12 q5 9 0 18 M41 12 q-5 9 0 18"
+        fill="none" stroke="rgba(10,48,26,.55)" strokeWidth="1.1" />
+      <circle cx="53" cy="19" r="5.6" fill="#3d8a5e" stroke="#0d3320" strokeWidth="1" />
+      <circle cx="55" cy="18" r="1.2" fill="#0a1f2e" />
+      <path className="turtle__flip turtle__flip--b" d="M22 31 q-8 6 -14 3 q-3 -6 6 -8 q6 -1 8 5 z"
+        fill="#2f7196" stroke="#0d3448" strokeWidth="1" />
+    </svg>
+  );
+}
 export default function DiveStage({ depth, total, shake, air = 3, flash, outOfAir = false, children }: {
   depth: number; total: number; shake: number; air?: number;
   flash?: 'ok' | 'no' | null; outOfAir?: boolean; children: ReactNode;
@@ -88,6 +128,12 @@ export default function DiveStage({ depth, total, shake, air = 3, flash, outOfAi
       <div className="stage__fish stage__fish--a"><Fish variant="a" /></div>
       <div className="stage__fish stage__fish--b"><Fish variant="b" /></div>
       <div className="stage__fish stage__fish--c"><Fish variant="c" /></div>
+      <div className="stage__jelly stage__jelly--a"><Jelly hue="cyan" /></div>
+      <div className="stage__jelly stage__jelly--b"><Jelly hue="violet" /></div>
+      <div className="stage__school" aria-hidden="true">
+        {[0, 1, 2, 3, 4].map(i => <i key={i} style={{ animationDelay: `${i * 0.36}s`, top: `${i * 5}px` }} />)}
+      </div>
+      <div className="stage__turtle"><Turtle /></div>
       <div className="stage__coral" aria-hidden="true" />
       <div className="stage__silt" aria-hidden="true" />
       <div className="stage__motes" aria-hidden="true">

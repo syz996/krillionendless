@@ -118,11 +118,33 @@ main>h1{margin-top:12px}
 
 /* 输入框：降到“填空题”的视觉重量 */
 .stage .game-row{max-width:360px}
-.stage input{background:rgba(2,16,28,.35);border:1px solid rgba(127,230,255,.16);padding:12px 14px}
-.stage input::placeholder{color:rgba(143,179,204,.55)}
-.stage input:focus{background:rgba(2,16,28,.55);border-color:rgba(127,230,255,.45);box-shadow:0 0 0 3px rgba(40,217,200,.1)}
-.stage .game-row .btn{background:rgba(40,217,200,.72);color:#04212a;font-weight:700}
-.stage .game-row .btn:hover{background:rgba(40,217,200,.9)}
+/* 输入框：合并成一条，彻底压到“填空题”重量 */
+.stage input{
+  background:rgba(2,16,28,.42);
+  border:1px solid rgba(127,230,255,.22);
+  color:#eaf7ff;
+  padding:12px 14px;
+  border-radius:10px;
+  transition:background .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.stage input::placeholder{color:rgba(143,179,204,.5)}
+.stage input:hover{background:rgba(2,16,28,.52);border-color:rgba(127,230,255,.34)}
+.stage input:focus,
+.stage input:focus-visible{
+  background:rgba(2,16,28,.66);
+  border-color:rgba(127,230,255,.6);
+  box-shadow:0 0 0 3px rgba(40,217,200,.12);
+  outline:none;
+}
+/* 右侧按钮：比输入框亮一档，但不抢提示语 */
+.stage .game-row .btn{
+  background:rgba(40,217,200,.85);
+  color:#03212a;
+  font-weight:800;
+  letter-spacing:.4px;
+  padding:12px 18px;
+}
+.stage .game-row .btn:hover{background:rgba(40,217,200,1)}
 
 /* 把中心还给提示语 */
 .stage .prompt{font-size:clamp(1.25rem,4.2vw,1.8rem);text-shadow:0 2px 14px rgba(0,0,0,.45)}
@@ -182,3 +204,44 @@ main>h1{margin-top:12px}
 .stage--flash-ok .stage__bub--2{animation-delay:.2s}
 .stage--flash-no{animation:stage-shake .42s cubic-bezier(.36,.07,.19,.97)}
 .stage--flash-no::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;z-index:3;background:linear-gradient(90deg,transparent,#ff4d6d,transparent);animation:redline .7s ease-out forwards}
+/* 水母：缓慢垂直漂浮 + 伞盖呼吸 */
+.stage__jelly{position:absolute;pointer-events:none;z-index:1;filter:drop-shadow(0 0 10px rgba(127,230,255,.35))}
+.stage__jelly svg{display:block;width:38px;height:50px;overflow:visible}
+.stage__jelly--a{left:76%;top:30%;animation:jelly-drift 17s ease-in-out infinite alternate}
+.stage__jelly--b{left:11%;top:62%;animation:jelly-drift 23s ease-in-out infinite alternate-reverse}
+.stage__jelly--b svg{width:30px;height:40px;opacity:.7}
+@keyframes jelly-drift{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(-14px,-26px) scale(1.05)}
+  100%{transform:translate(10px,-52px) scale(.96)}
+}
+.stage__jelly svg{animation:jelly-pulse 3.4s ease-in-out infinite}
+.stage__jelly--b svg{animation-duration:4.6s}
+@keyframes jelly-pulse{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.9) translateY(-2px)}}
+
+/* 小鱼群：5 条一起横穿，错开高低和节奏 */
+.stage__school{position:absolute;left:0;top:38%;width:100%;height:26px;pointer-events:none;z-index:1;animation:swim 26s linear infinite;animation-delay:-9s}
+.stage__school i{position:absolute;left:-14px;width:11px;height:4px;border-radius:50% 2px 2px 50%;background:rgba(159,212,238,.55);animation:school-bob 2.2s ease-in-out infinite}
+@keyframes school-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* 海龟：慢速横穿 + 前鳍划水 */
+.stage__turtle{position:absolute;left:0;top:66%;pointer-events:none;z-index:1;animation:swim 48s linear infinite;animation-delay:-20s;opacity:.75}
+.stage__turtle svg{display:block;width:64px;height:40px;overflow:visible}
+.turtle__flip{transform-origin:22px 20px;animation:turtle-stroke 3.6s ease-in-out infinite}
+.turtle__flip--b{animation-delay:1.8s}
+@keyframes turtle-stroke{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(14deg)}}
+
+/* 深浅分层：深处只剩水母，浅处才有鱼群 */
+.stage--d4 .stage__school,.stage--d5 .stage__school,.stage--d6 .stage__school{opacity:.25}
+.stage--d5 .stage__jelly,.stage--d6 .stage__jelly{filter:drop-shadow(0 0 14px rgba(127,230,255,.7)) brightness(1.15)}
+.stage--d6 .stage__turtle{opacity:.3}
+
+@media(max-width:600px){
+  .stage__jelly svg{width:28px;height:36px}
+  .stage__jelly--b svg{width:22px;height:30px}
+  .stage__turtle svg{width:46px;height:29px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .stage__jelly,.stage__jelly svg,.stage__school,.stage__school i,.stage__turtle,.turtle__flip{animation:none!important}
+}

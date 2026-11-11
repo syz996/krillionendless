@@ -264,7 +264,7 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
             {mode === 'practice' ? <>
               <form className="game-row" onSubmit={e => { e.preventDefault(); submitAnswer(); }}>
                 <input ref={inputRef} value={answer} onChange={e => { setAnswer(e.target.value); setNotice(''); setMissHint(null); setTierNote(null); }} placeholder="Type your answer…" autoComplete="off" aria-label="Your answer" />
-                <button className="btn" type="submit">Submit</button>
+                <button className="btn" type="submit">Dive <ArrowRight size={16} /></button>
               </form>
               <p className="feedback" aria-live="polite">{feedback || ' '}</p>
               {tierNote ? <p className="tier-note" aria-live="polite">{tierNote}</p> : null}
