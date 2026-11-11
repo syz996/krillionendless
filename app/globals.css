@@ -245,3 +245,5 @@ main>h1{margin-top:12px}
 @media(prefers-reduced-motion:reduce){
   .stage__jelly,.stage__jelly svg,.stage__school,.stage__school i,.stage__turtle,.turtle__flip{animation:none!important}
 }
+.stage__fish{left:0;width:100%}
+.stage__turtle{width:100%}
