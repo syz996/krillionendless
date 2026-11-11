@@ -41,3 +41,12 @@ main>h1{margin-top:12px}
 .stage .game-row{width:100%;max-width:420px}
 .stage input{background:rgba(4,22,37,.86);border:2px solid var(--acc);color:#eaf7ff}
 @media(max-width:600px){.stage{min-height:400px;padding:14px 10px 18px}.stage__diver{left:2%;transform:translateY(-50%) scale(.8)}}
+.air-bar{display:flex;align-items:center;gap:6px;margin:12px 0 0;font-size:11px;letter-spacing:.6px;color:var(--dim)}
+.air-bar span{width:24px;height:6px;border-radius:2px;background:rgba(255,255,255,.14);transition:background .3s,box-shadow .3s}
+.air-bar span.on{background:var(--acc);box-shadow:0 0 8px rgba(40,217,200,.55)}
+.air-bar em{font-style:normal;margin-left:4px;text-transform:uppercase}
+.air-bar.low span.on{background:var(--gold);box-shadow:0 0 8px rgba(255,209,102,.6)}
+.air-bar.low em{color:var(--gold)}
+.pass-btn{border:none;background:none;color:var(--dim);font:inherit;font-size:11px;letter-spacing:.7px;text-transform:uppercase;cursor:pointer;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
+.pass-btn:hover{color:var(--txt)}
+.results-state .dive.air-out{color:#ff4d6d}
