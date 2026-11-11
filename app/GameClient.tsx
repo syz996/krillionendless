@@ -7,6 +7,7 @@ import { SITE } from '../lib/site';
 import SiteHeader from '../components/SiteHeader';
 import SiteFooter from '../components/SiteFooter';
 import HomeSeo from '../components/HomeSeo';
+import DiveStage from '../components/DiveStage'; // [1] 新增
 
 type Round = { text: string; hint: string; answers: AnswerEntry[]; id?: string };
 type RoundResult = { prompt: string; answer: string; accepted: boolean; tier?: string; points: number; timedOut?: boolean; lockedOut?: boolean };
@@ -48,6 +49,9 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
   const [lockedPrompt, setLockedPrompt] = useState<{ prompt: string; answers: AnswerEntry[] } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const lockRef = useRef(false);
+  const [sink, setSink] = useState(0);            // [2] 已下潜格数（答对一题 +1）
+  const [shake, setShake] = useState(0);          // [2] 答错时自增，驱动面板重播动画
+  const [entryNote, setEntryNote] = useState(''); // [3] 从 ?dive=/历史期进来时的提示文案
   const currentPrompt = rounds[current];
   const score = useMemo(() => results.reduce((sum, item) => sum + item.points, 0), [results]);
   const acceptedCount = useMemo(() => results.filter(item => item.accepted).length, [results]);
@@ -73,6 +77,36 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
     }
   }, [current, rounds.length]);
 
+  // [3] 入口参数：/prompts/pokemon/ → /?prompt=pokemon 直接从这个词开局；存档页 → /?dive=117 回放当期
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const promptId = params.get('prompt');
+    const diveNo = Number(params.get('dive'));
+    if (promptId) {
+      const target = PROMPTS.find(p => p.id === promptId);
+      if (target) {
+        const first: Round = { text: target.text, hint: target.hint, answers: target.answers, id: target.id };
+        const rest = shuffle(PROMPTS.filter(p => p.id !== promptId)).slice(0, 6).map(p => ({ text: p.text, hint: p.hint, answers: p.answers, id: p.id }));
+        setMode('practice');
+        setRounds([first, ...rest]);
+        setCurrent(0); setSeconds(25); setAnswer(''); setNotice(''); setFeedback('');
+        setResults([]); setWrongCount(0); setMissHint(null); setTierNote(null); setLockedPrompt(null);
+        setSink(0); setShake(0); setFinished(false); setStarted(true); setCopyState('idle');
+        lockRef.current = false;
+        return;
+      }
+    }
+    if (Number.isFinite(diveNo) && diveNo > 0) {
+      if (latestDive && diveNo === latestDive.dive) {
+        startGame('replay');
+      } else {
+        setEntryNote(`Dive #${diveNo} is archived — replay Dive #${latestDive?.dive ?? '—'} or start a fresh practice dive.`);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (!started || finished) return;
     const id = window.setInterval(() => { if (!lockRef.current) setSeconds(s => Math.max(0, s - 1)); }, 1000);
@@ -96,8 +130,9 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
     setMode(nextMode);
     setRounds(next);
     setCurrent(0); setSeconds(25); setAnswer(''); setNotice(''); setFeedback(''); setResults([]); setWrongCount(0);
-  setMissHint(null); setTierNote(null); setLockedPrompt(null);
-  setFinished(false); setStarted(true); setCopyState('idle'); lockRef.current = false;
+    setMissHint(null); setTierNote(null); setLockedPrompt(null);
+    setFinished(false); setStarted(true); setCopyState('idle'); lockRef.current = false;
+    setSink(0); setShake(0); setEntryNote(''); // [6] 重置舞台
   }
 
   function submitAnswer() {
@@ -108,6 +143,7 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
     if (!match) {
       const misses = wrongCount + 1;
       setWrongCount(misses);
+      setShake(n => n + 1); // [4] 答错：面板抖动重播
       setTierNote(null);
       if (misses >= 3) {
         lockRef.current = true;
@@ -127,6 +163,7 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
     setLockedPrompt(null);
     const meta = TIERS.find(t => t.name === match.tier);
     setFeedback(`Correct — ${match.tier} · +${match.points} pts`);
+    setSink(n => n + 1); // [5] 答对：潜水员下沉一格、背景变深一档
     setTierNote(`${match.tier} is ${meta?.label?.toLowerCase()} — ${meta?.blurb || ''}`);
     const result: RoundResult = { prompt: currentPrompt.text, answer: answer.trim(), accepted: true, tier: match.tier, points: match.points };
     window.setTimeout(() => { lockRef.current = false; moveNext(result); }, 1500);
@@ -170,8 +207,8 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
         <section className="hero"><div className="eyebrow"><Waves size={15} /> INDEPENDENT PRACTICE MODE</div><h1>Krillion Unlimited</h1><p className="sub">No daily limit — play Krillion Unlimited unblocked in your browser, free and with no download. An original practice dive you can start whenever you like.</p></section>
 
         <section className="game" id="game" aria-label="Play the independent practice game">
-          {!started && !finished ? <div className="intro-state"><div className="game-top"><span className="dive">PRACTICE DIVE</span><span>7 prompts · 25 seconds each</span></div><div className="intro-icon"><Waves size={30} /></div><h2>Ready to dive?</h2><p>Answer seven prompts — randomized practice questions, or a replay of the latest daily dive from the archive.</p><div className="intro-actions"><button className="btn" onClick={() => startGame('practice')}>Start practice dive <ArrowRight size={17} /></button>{latestDive ? <button className="btn ghost" onClick={() => startGame('replay')}>Replay Dive #{latestDive.dive}</button> : null}</div></div> : null}
-          {started && currentPrompt ? <>
+          {!started && !finished ? <div className="intro-state"><div className="game-top"><span className="dive">PRACTICE DIVE</span><span>7 prompts · 25 seconds each</span></div><div className="intro-icon"><Waves size={30} /></div><h2>Ready to dive?</h2><p>{entryNote || 'Answer seven prompts — randomized practice questions, or a replay of the latest daily dive from the archive.'}</p><div className="intro-actions"><button className="btn" onClick={() => startGame('practice')}>Start practice dive <ArrowRight size={17} /></button>{latestDive ? <button className="btn ghost" onClick={() => startGame('replay')}>Replay Dive #{latestDive.dive}</button> : null}</div></div> : null}
+          {started && currentPrompt ? <DiveStage depth={sink} total={rounds.length} shake={shake}>
             <div className="game-top"><span className="dive">{mode === 'replay' ? `DIVE #${latestDive?.dive} REPLAY` : `Practice Dive #${current + 1}`}</span><span>Prompt <strong>{current + 1}</strong> / {rounds.length}</span></div>
             <div className="progress"><span style={{ width: `${((current + 1) / rounds.length) * 100}%` }} /></div>
             <p className="prompt">{currentPrompt.text}</p>
@@ -191,7 +228,7 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
             </>}
             <details className="hint-reveal"><summary>Reveal hint</summary><div className="hint"><strong>Hint:</strong> {currentPrompt.hint}</div></details>
             {mode === 'practice' ? <ul className="tiers">{TIERS.map(tier => <li key={tier.name}>{tier.name} · {tier.points}</li>)}</ul> : null}
-          </> : null}
+          </DiveStage> : null}
           {finished && mode === 'practice' ? <div className="results-state"><div className="game-top"><span className="dive">DIVE COMPLETE</span><span>{rounds.length} / {rounds.length} prompts</span></div><div className="score-number">{score}<span> pts</span></div>{best ? <p className="best-pick">Best pick: {best.prompt} — {best.tier} (+{best.points} pts)</p> : null}<p className="depth">Estimated practice depth: {score * 10} m</p><p className="disclaimer">Practice score only. The answer list and tiers are our own data, not official Krillion scoring or player statistics.</p><div className="result-list">{results.map((item, index) => { const bank = rounds[index]?.answers ?? []; const mine = item.accepted && bank.length ? findAnswer(normalizeAnswer(item.answer), bank) : undefined; return <div key={`${item.prompt}-${index}`}><div className="result-row"><div><strong>{index + 1}. {item.prompt}</strong><p>{item.timedOut ? 'Time ran out' : item.lockedOut ? 'Locked out after three misses' : item.accepted ? `Your answer: ${item.answer}` : 'No accepted answer'}</p></div><div className="result-points"><strong>{item.points}</strong><span>{item.tier ? `${item.tier} · ${tierLabel(item.tier)}` : 'No Echo'}</span></div></div>{bank.length ? <details className="answer-reveal"><summary>Reveal all answers</summary><ul>{[...bank].sort((a, b) => b.points - a.points).map(entry => <li key={entry.aliases[0]} className={entry === mine ? 'mine' : undefined}>{entry.aliases[0]} · {entry.points}</li>)}</ul></details> : null}</div>; })}</div><div className="intro-actions"><button className="btn" onClick={() => startGame('practice')}><RotateCcw size={16} /> Play another dive</button><button className="btn ghost" type="button" onClick={copyResult}>{copyState === 'ok' ? 'Copied!' : copyState === 'fail' ? 'Copy failed' : 'Copy result'}</button></div></div> : null}
           {finished && mode === 'replay' ? <div className="results-state"><div className="game-top"><span className="dive">REPLAY COMPLETE</span><span>{rounds.length} / {rounds.length} prompts</span></div><div className="score-number">{inTimeCount}<span> / {rounds.length} in time</span></div><p className="depth">Replay of Dive #{latestDive?.dive}</p><p className="disclaimer">Replay mode uses the archive&rsquo;s public prompts and hints only — there is no scoring in this mode.</p><div className="result-list">{results.map((item, index) => <div className="result-row" key={`${item.prompt}-${index}`}><div><strong>{index + 1}. {item.prompt}</strong><p>{item.timedOut ? 'Time ran out' : 'Answered in time'}</p></div></div>)}</div><div className="intro-actions"><button className="btn" onClick={() => startGame('replay')}><RotateCcw size={16} /> Replay again</button>{latestDive ? <a className="btn ghost" href={`/archive/dive-${latestDive.dive}/`}>Open Dive #{latestDive.dive} page <ArrowRight size={16} /></a> : null}</div></div> : null}
         </section>
