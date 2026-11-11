@@ -83,6 +83,56 @@ main>h1{margin-top:12px}
   .stage__motes i{width:2px;height:2px}
   .stage .timer{font-size:1.7rem}
 }
-.stage input{background:rgba(2,16,28,.55);border:1px solid rgba(127,230,255,.32);color:#eaf7ff;box-shadow:none;transition:border-color .2s,background .2s}
-.stage input:focus{background:rgba(2,16,28,.72);border-color:rgba(127,230,255,.6);box-shadow:0 0 0 3px rgba(40,217,200,.12)}
-.stage .game-row .btn{padding:13px 20px;background:rgba(40,217,200,.9);box-shadow:none}
+/* 潜水员：去掉光晕、换矢量小人、加打水与漂浮 */
+.stage__diver{filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));z-index:2}
+.stage__diver svg{width:44px;height:64px;display:block;overflow:visible}
+.diver__swim{transform-origin:50% 70%;animation:diver-bob 3.6s ease-in-out infinite}
+@keyframes diver-bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-4px) rotate(3deg)}}
+.diver__leg{transform-origin:22px 38px;animation:kick 1.9s ease-in-out infinite}
+.diver__leg--back{animation-delay:.32s}
+@keyframes kick{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(11deg)}}
+.stage__bub{left:9px;top:-4px}
+.stage__bub--2{left:19px}
+
+/* 鱼：换矢量、尾巴摆、按体量分层 */
+.stage__fish{background:none;border-radius:0;width:auto;height:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+.stage__fish svg{display:block;overflow:visible}
+.stage__fish--a svg{width:48px;height:24px}
+.stage__fish--b svg{width:34px;height:17px}
+.stage__fish--c svg{width:56px;height:28px;opacity:.62}
+.stage__fish--b{top:56%}
+.stage__fish--c{top:74%}
+.fish__tail{transform-origin:12px 12px;animation:tail 1.1s ease-in-out infinite}
+.stage__fish--b .fish__tail{animation-duration:1.5s}
+.stage__fish--c .fish__tail{animation-duration:1.9s}
+@keyframes tail{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(13deg)}}
+@keyframes swim{from{transform:translateX(-70px)}to{transform:translateX(calc(100% + 70px))}}
+
+/* 海床：从珊瑚剪影再压一层起伏暗带 */
+.stage__seabed{position:absolute;left:0;right:0;bottom:0;height:13%;pointer-events:none;
+  background:
+    radial-gradient(ellipse 120px 26px at 20% 100%,#041a12 60%,transparent 61%),
+    radial-gradient(ellipse 160px 20px at 62% 100%,#03150f 60%,transparent 61%),
+    radial-gradient(ellipse 100px 30px at 88% 100%,#041a12 60%,transparent 61%);
+  opacity:.95}
+
+/* 输入框：降到“填空题”的视觉重量 */
+.stage .game-row{max-width:360px}
+.stage input{background:rgba(2,16,28,.35);border:1px solid rgba(127,230,255,.16);padding:12px 14px}
+.stage input::placeholder{color:rgba(143,179,204,.55)}
+.stage input:focus{background:rgba(2,16,28,.55);border-color:rgba(127,230,255,.45);box-shadow:0 0 0 3px rgba(40,217,200,.1)}
+.stage .game-row .btn{background:rgba(40,217,200,.72);color:#04212a;font-weight:700}
+.stage .game-row .btn:hover{background:rgba(40,217,200,.9)}
+
+/* 把中心还给提示语 */
+.stage .prompt{font-size:clamp(1.25rem,4.2vw,1.8rem);text-shadow:0 2px 14px rgba(0,0,0,.45)}
+.stage .tiers li{border-color:rgba(255,255,255,.07);color:rgba(143,179,204,.8)}
+.stage .timer{border-width:3px;box-shadow:0 0 18px rgba(255,209,102,.28)}
+
+@media(max-width:600px){
+  .stage__diver svg{width:34px;height:50px}
+  .stage__fish--a svg{width:36px;height:18px}
+  .stage__fish--b svg{width:26px;height:13px}
+  .stage__fish--c svg{width:42px;height:21px}
+  .stage .game-row{max-width:100%}
+}
