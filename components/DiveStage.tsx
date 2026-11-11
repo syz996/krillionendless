@@ -34,7 +34,7 @@ function Diver() {
         {/* 头套 + 面镜 */}
         <path d="M14 13.4 q2 -10.4 8.2 -10.4 q7 0 9 10.4 q-8.2 -3 -17.2 0 z" fill="#16394f" stroke="#0a2434" strokeWidth="1" />
         <rect x="14.4" y="11" width="16.4" height="9.2" rx="3.6" fill="#0c2637" stroke="#061622" strokeWidth="1.1" />
-        <rect x="16.4" y="12.6" width="6.4 h="5.8" rx="2" fill="#7fdcf7" opacity=".82" />
+        <rect x="16.4" y="12.6" width="6.4" height="5.8" rx="2" fill="#7fdcf7" opacity=".82" />
         <rect x="23.6" y="12.6" width="5.4" height="5.8" rx="2" fill="#5cc6e8" opacity=".7" />
         <path d="M17.6 14.4 h2.6" stroke="#eBEEFF" strokeWidth="1.1" strokeLinecap="round" opacity=".8" />
         <circle cx="15.2" cy="15.6" r="1.6" fill="#cfd8e3" stroke="#8fa2b3" strokeWidth=".7" />

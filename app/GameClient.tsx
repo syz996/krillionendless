@@ -52,7 +52,6 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
   const [sink, setSink] = useState(0);            // [2] 已下潜格数（答对一题 +1）
   const [shake, setShake] = useState(0);          // [2] 答错时自增，驱动面板重播动画
   const [flash, setFlash] = useState<'ok' | 'no' | null>(null);
-const [flashKind, setFlashKind] = useState<'ok' | 'no'>('ok');
   const [entryNote, setEntryNote] = useState(''); // [3] 从 ?dive=/历史期进来时的提示文案
   const [air, setAir] = useState(3);               // [7] 3 罐氧气：超时或 Pass 扣一罐
   const [outOfAir, setOutOfAir] = useState(false); // [7] 氧气耗尽收尾，结算显示 OUT OF AIR
@@ -163,8 +162,9 @@ const [flashKind, setFlashKind] = useState<'ok' | 'no'>('ok');
     setCurrent(0); setSeconds(25); setAnswer(''); setNotice(''); setFeedback(''); setResults([]); setWrongCount(0);
     setMissHint(null); setTierNote(null); setLockedPrompt(null);
     setFinished(false); setStarted(true); setCopyState('idle'); lockRef.current = false;
-    setSink(0); setShake(0); setEntryNote(''); setAir(3); setOutOfAir(false); // [6] 重置舞台与氧气
+    setSink(0); setShake(0); setEntryNote(''); setAir(3); setOutOfAir(false); setFlash(null);
   }
+
 
   function submitAnswer() {
     if (!started || !currentPrompt || lockRef.current || mode !== 'practice') return;
@@ -176,9 +176,9 @@ const [flashKind, setFlashKind] = useState<'ok' | 'no'>('ok');
       setWrongCount(misses);
       setShake(n => n + 1); // [4] 答错：面板抖动重播
       setFlash('ok');
-window.setTimeout(() => setFlash(null), 1100);
-     setFlash('no');
-window.setTimeout(() => setFlash(null), 700);
+      window.setTimeout(() => setFlash(null), 1100);
+      setFlash('no');
+      window.setTimeout(() => setFlash(null), 700);
       setTierNote(null);
       setMissHint({ count: currentPrompt.answers.length, slug: currentPrompt.id || '' });
       setNotice(misses === 1
@@ -255,7 +255,7 @@ window.setTimeout(() => setFlash(null), 700);
 
         <section className="game" id="game" aria-label="Play the independent practice game">
           {!started && !finished ? <div className="intro-state"><div className="game-top"><span className="dive">PRACTICE DIVE</span><span>7 prompts · 25 seconds each</span></div><div className="intro-icon"><Waves size={30} /></div><h2>Ready to dive?</h2><p>{entryNote || 'Answer seven prompts — randomized practice questions, or a replay of the latest daily dive from the archive.'}</p><div className="intro-actions"><button className="btn" onClick={() => startGame('practice')}>Start practice dive <ArrowRight size={17} /></button>{latestDive ? <button className="btn ghost" onClick={() => startGame('replay')}>Replay Dive #{latestDive.dive}</button> : null}</div></div> : null}
-          {started && currentPrompt ? <DiveStage depth={sink} total={rounds.length} shake={shake} flash={flash} outOfAir={outOfAir}>
+          {started && currentPrompt ? <DiveStage depth={sink} total={rounds.length} shake={shake} air={air} flash={flash} outOfAir={outOfAir}>
             <div className="game-top"><span className="dive">{mode === 'replay' ? `DIVE #${latestDive?.dive} REPLAY` : 'PRACTICE DIVE'}</span><span>Prompt <strong>{current + 1}</strong> / {rounds.length}</span></div>
             <div className="progress"><span style={{ width: `${((current + 1) / rounds.length) * 100}%` }} /></div>
             {mode === 'practice' ? <div className={`air-bar${air <= 1 ? ' low' : ''}`} aria-label={`${air} of 3 air left`}>{Array.from({ length: 3 }, (_, i) => <span key={i} className={i < air ? 'on' : ''} aria-hidden="true" />)}<em>{air === 0 ? 'OUT OF AIR' : `${air} air`}</em></div> : null}
@@ -278,7 +278,7 @@ window.setTimeout(() => setFlash(null), 700);
             <details className="hint-reveal"><summary>Reveal hint</summary><div className="hint"><strong>Hint:</strong> {currentPrompt.hint}</div></details>
             {mode === 'practice' ? <ul className="tiers">{TIERS.map(tier => <li key={tier.name}>{tier.name} · {tier.points}</li>)}</ul> : null}
           </DiveStage> : null}
-                    {finished && mode === 'practice' ? <div className="results-state"><div className="game-top"><span className={`dive${outOfAir ? ' air-out' : ''}`}>{outOfAir ? 'OUT OF AIR' : 'DIVE COMPLETE'}</span><span>{results.length} / {rounds.length} prompts</span></div><div className="score-number">{score}<span> pts</span></div>{best ? <p className="best-pick">Best pick: {best.prompt} — {best.tier} (+{best.points} pts)</p> : null}<p className="depth">Estimated practice depth: {score * 10} m</p><p className="disclaimer">Practice score only. The answer list and tiers are our own data, not official Krillion scoring or player statistics.</p><div className="result-list">{results.map((item, index) => { const bank = rounds[index]?.answers ?? []; const mine = item.accepted && bank.length ? findAnswer(normalizeAnswer(item.answer), bank) : undefined; return <div key={`${item.prompt}-${index}`}><div className="result-row"><div><strong>{index + 1}. {item.prompt}</strong><p>{item.timedOut ? 'Time ran out · −1 air' : item.passed ? 'Passed · −1 air' : item.lockedOut ? 'Locked out after three misses' : item.accepted ? `Your answer: ${item.answer}` : 'No accepted answer'}</p></div><div className="result-points"><strong>{item.points}</strong><span>{item.tier ? `${item.tier} · ${tierLabel(item.tier)}` : 'No Echo'}</span></div></div>{bank.length ? <details className="answer-reveal"><summary>Reveal all answers</summary><ul>{[...bank].sort((a, b) => b.points - a.points).map(entry => <li key={entry.aliases[0]} className={entry === mine ? 'mine' : undefined}>{entry.aliases[0]} · {entry.points}</li>)}</ul></details> : null}</div>; })}</div><div className="intro-actions"><button className="btn" onClick={() => startGame('practice')}><RotateCcw size={16} /> Play another dive</button><button className="btn ghost" type="button" onClick={copyResult}>{copyState === 'ok' ? 'Copied!' : copyState === 'fail' ? 'Copy failed' : 'Copy result'}</button></div></div> : null}
+          {finished && mode === 'practice' ? <div className="results-state"><div className="game-top"><span className={`dive${outOfAir ? ' air-out' : ''}`}>{outOfAir ? 'OUT OF AIR' : 'DIVE COMPLETE'}</span><span>{results.length} / {rounds.length} prompts</span></div><div className="score-number">{score}<span> pts</span></div>{best ? <p className="best-pick">Best pick: {best.prompt} — {best.tier} (+{best.points} pts)</p> : null}<p className="depth">Estimated practice depth: {score * 10} m</p><p className="disclaimer">Practice score only. The answer list and tiers are our own data, not official Krillion scoring or player statistics.</p><div className="result-list">{results.map((item, index) => { const bank = rounds[index]?.answers ?? []; const mine = item.accepted && bank.length ? findAnswer(normalizeAnswer(item.answer), bank) : undefined; return <div key={`${item.prompt}-${index}`}><div className="result-row"><div><strong>{index + 1}. {item.prompt}</strong><p>{item.timedOut ? 'Time ran out · −1 air' : item.passed ? 'Passed · −1 air' : item.lockedOut ? 'Locked out after three misses' : item.accepted ? `Your answer: ${item.answer}` : 'No accepted answer'}</p></div><div className="result-points"><strong>{item.points}</strong><span>{item.tier ? `${item.tier} · ${tierLabel(item.tier)}` : 'No Echo'}</span></div></div>{bank.length ? <details className="answer-reveal"><summary>Reveal all answers</summary><ul>{[...bank].sort((a, b) => b.points - a.points).map(entry => <li key={entry.aliases[0]} className={entry === mine ? 'mine' : undefined}>{entry.aliases[0]} · {entry.points}</li>)}</ul></details> : null}</div>; })}</div><div className="intro-actions"><button className="btn" onClick={() => startGame('practice')}><RotateCcw size={16} /> Play another dive</button><button className="btn ghost" type="button" onClick={copyResult}>{copyState === 'ok' ? 'Copied!' : copyState === 'fail' ? 'Copy failed' : 'Copy result'}</button></div></div> : null}
           {finished && mode === 'replay' ? <div className="results-state"><div className="game-top"><span className="dive">REPLAY COMPLETE</span><span>{rounds.length} / {rounds.length} prompts</span></div><div className="score-number">{inTimeCount}<span> / {rounds.length} in time</span></div><p className="depth">Replay of Dive #{latestDive?.dive}</p><p className="disclaimer">Replay mode uses the archive&rsquo;s public prompts and hints only — there is no scoring in this mode.</p><div className="result-list">{results.map((item, index) => <div className="result-row" key={`${item.prompt}-${index}`}><div><strong>{index + 1}. {item.prompt}</strong><p>{item.timedOut ? 'Time ran out' : 'Answered in time'}</p></div></div>)}</div><div className="intro-actions"><button className="btn" onClick={() => startGame('replay')}><RotateCcw size={16} /> Replay again</button>{latestDive ? <a className="btn ghost" href={`/archive/dive-${latestDive.dive}/`}>Open Dive #{latestDive.dive} page <ArrowRight size={16} /></a> : null}</div></div> : null}
         </section>
 
