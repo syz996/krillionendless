@@ -1,5 +1,7 @@
 export type AnswerEntry = { aliases: string[]; tier: string; points: number; note?: string };
-export type Prompt = { id: string; text: string; answers: AnswerEntry[]; hint: string };
+export type Prompt = {
+  id: string; text: string; answers: AnswerEntry[]; hint: string; seoTitle?: string;
+};
 
 // Practice question bank for the independent KrillionEndless practice game.
 // Tiers are editorial rarity labels, NOT official Krillion data or live player statistics.
@@ -241,6 +243,7 @@ export const PROMPTS: Prompt[] = [
   },
   {
     id: 'pizza-topping', text: 'Name a pizza topping', hint: 'Anything that commonly sits on top of a pizza qualifies; the more specific, the less everyone else will pick it.',
+    seoTitle: 'Pizza Toppings List — 21 Krillion Answers, Rarest First',
     answers: [
       { aliases: ['pepperoni'], tier: 'Plankton', points: 10 },
       { aliases: ['cheese'], tier: 'Plankton', points: 10 },
@@ -293,6 +296,7 @@ export const PROMPTS: Prompt[] = [
   },
   {
     id: 'european-capital', text: 'Name a capital city in Europe', hint: 'Aim past the first few cities every tourist names; the continent has dozens of capital cities.',
+    seoTitle: 'European Capitals List — 21 Krillion Answers, Rarest First',
     answers: [
       { aliases: ['paris'], tier: 'Plankton', points: 10 },
       { aliases: ['london'], tier: 'Plankton', points: 10 },
@@ -572,6 +576,7 @@ export const PROMPTS: Prompt[] = [
   },
   {
     id: 'fruit', text: 'Name a fruit', hint: 'Anything eaten as a fruit counts; the common grocery picks are the crowded end.',
+    seoTitle: 'Name a Fruit List — 30 Krillion Answers, Rarest First',
     answers: [
       { aliases: ['apple'], tier: 'Plankton', points: 10 },
       { aliases: ['banana'], tier: 'Plankton', points: 10 },
@@ -839,6 +844,7 @@ export const PROMPTS: Prompt[] = [
   },
   {
     id: 'african-country', text: 'Name a country in Africa', hint: 'The continent has over fifty countries; the biggest names are the crowded picks.',
+    seoTitle: 'African Countries List — 22 Krillion Answers, Rarest First',
     answers: [
       { aliases: ['egypt'], tier: 'Plankton', points: 10 },
       { aliases: ['nigeria'], tier: 'Plankton', points: 10 },
@@ -1176,6 +1182,7 @@ export const PROMPTS: Prompt[] = [
   },
   {
     id: 'dessert', text: 'Name a dessert', hint: 'Think of sweets served after a meal or as a treat.',
+    seoTitle: 'Dessert List — 21 Krillion Answers, Rarest First',
     answers: [
       { aliases: ['cake'], tier: 'Plankton', points: 10 },
       { aliases: ['ice cream'], tier: 'Plankton', points: 10 },
