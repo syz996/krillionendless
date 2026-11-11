@@ -193,6 +193,8 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
     const meta = TIERS.find(t => t.name === match.tier);
     setFeedback(`Correct — ${match.tier} · +${match.points} pts`);
     setSink(n => n + 1); // [5] 答对：潜水员下沉一格、背景变深一档
+    setFlash('ok');
+    window.setTimeout(() => setFlash(null), 1100);
     if (match.points >= 100) setAir(a => Math.min(3, a + 1)); // [7] 100 分档还一罐氧气
     setTierNote(`${match.tier} is ${meta?.label?.toLowerCase()} — ${meta?.blurb || ''}`);
     const result: RoundResult = { prompt: currentPrompt.text, answer: answer.trim(), accepted: true, tier: match.tier, points: match.points };
