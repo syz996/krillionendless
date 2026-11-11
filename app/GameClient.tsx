@@ -175,8 +175,6 @@ export default function HomePage({ latestDive, recentDives = [], faqs = [] }: { 
       const misses = wrongCount + 1;
       setWrongCount(misses);
       setShake(n => n + 1); // [4] 答错：面板抖动重播
-      setFlash('ok');
-      window.setTimeout(() => setFlash(null), 1100);
       setFlash('no');
       window.setTimeout(() => setFlash(null), 700);
       setTierNote(null);
