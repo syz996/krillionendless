@@ -6,6 +6,24 @@ import SiteFooter from '../../../components/SiteFooter';
 import DeepcutReveal from '../../../components/DeepcutReveal';
 import type { Dive } from '../../../lib/archive';
 import { shownDeepcutCount } from '../../../lib/deepcut';
+import { promptLinksForDive } from '@/lib/prompt-links';
+
+
+const ANCHOR: Record<string, string> = {
+  'fruit': 'Name a fruit — full answer list',
+  'tv-show': 'Name a TV show — full answer list',
+  'superhero': 'Name a superhero — full answer list',
+  'video-game': 'Name a video game — full answer list',
+  'bird-type': 'Name a type of bird — full answer list',
+  'pasta-type': 'Name a type of pasta — full answer list',
+  'fast-food-chain': 'Name a fast food chain — full answer list',
+  'pokemon': 'Name a Pokémon — full answer list',
+  'dessert': 'Name a dessert — full answer list',
+  'holiday': 'Name a holiday — full answer list',
+  'music-genre': 'Name a genre of music — full answer list',
+  'flower-type': 'Name a type of flower — full answer list',
+  'olympic-sport': 'Sports in the Olympics — full answer list',
+};
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
 // 每期答案条数统计：构建时从最终答案池现算，不写进数据文件。
@@ -104,6 +122,7 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
   if (!dive) notFound();
 
   const displayDate = fmtDate(dive.date);
+  const promptLinks = promptLinksForDive(dive.dive);
 
   // 相关期：按与当前期的距离排序，取前 5（首尾自动缩短）
   const related = DIVES
@@ -120,13 +139,13 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
   // 当期未揭晓答案时，把「答案」FAQ 换成次日揭晓的说法，避免同页与 H1 自相矛盾。
   const answersFaq = showAnswers
     ? {
-        q: 'Do these pages include the official answers?',
-        a: 'Yes — this dive carries the full official answer list with rarity tiers and scores, collapsed prompt by prompt so nothing is spoiled until you open it.',
-      }
+      q: 'Do these pages include the official answers?',
+      a: 'Yes — this dive carries the full official answer list with rarity tiers and scores, collapsed prompt by prompt so nothing is spoiled until you open it.',
+    }
     : {
-        q: 'When do the official answers appear?',
-        a: 'This is the newest dive, so only its prompts and hints are shown. The full official answer list publishes the following day — previous dives already include theirs.',
-      };
+      q: 'When do the official answers appear?',
+      a: 'This is the newest dive, so only its prompts and hints are shown. The full official answer list publishes the following day — previous dives already include theirs.',
+    };
   const faq = [...(dive.faq || []), SITE.defaultFaq[0], answersFaq, ...SITE.defaultFaq.slice(1)];
 
   const canonical = `${BASE}/archive/${diveSlug(dive.dive)}/`;
@@ -213,6 +232,13 @@ export default async function DivePage({ params }: { params: Promise<{ dive: str
                 <details key={i}>
                   <summary>{i + 1}. {p.prompt} ({p.answers.length} answers)</summary>
                   {p.explanation ? <p className="answer-note"><strong>Why this one is tricky:</strong> {p.explanation}</p> : null}
+                  {promptLinks[i + 1] && (
+                    <p>
+                      <a href={`/prompts/${promptLinks[i + 1]}/`}>
+                        {ANCHOR[promptLinks[i + 1]] ?? 'Related practice prompts'}
+                      </a>
+                    </p>
+                  )}
                   <div className="table-wrap"><table>
                     <thead><tr><th>Answer</th><th>Tier</th><th>Score</th></tr></thead>
                     <tbody>{nonDeepcut.sort((a, b) => b.score - a.score).map(a => (
