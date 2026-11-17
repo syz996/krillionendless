@@ -108,7 +108,10 @@ export function isCurrentDive(dive: Dive): boolean {
 
 // 该期答案是否「已公开」：有答案数据，且不是仍处当日进行的当前期。
 export function answersPublished(dive: Dive): boolean {
-  return hasAnswers(dive) && !isCurrentDive(dive);
+  if (!hasAnswers(dive)) return false;
+  if (!isCurrentDive(dive)) return true;
+  const pool = dive.prompts.reduce((s, p) => s + (p.answers?.length ?? 0), 0);
+  return pool >= 500;
 }
 
 export type ArchiveGroup = { key: string; label: string; dives: Dive[] };
