@@ -5,6 +5,7 @@ import { PROMPT_GUIDES } from '../../../lib/prompt-guides';
 import { SITE } from '../../../lib/site';
 import SiteHeader from '../../../components/SiteHeader';
 import SiteFooter from '../../../components/SiteFooter';
+import { PROMPT_APPEARANCES } from '../../../lib/prompt-links';
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
 
