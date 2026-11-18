@@ -42,6 +42,7 @@ export default async function PromptPage({ params }: { params: Promise<{ slug: s
   const sorted = [...prompt.answers].sort((a, b) => b.points - a.points);
   const canonical = `${BASE}/prompts/${prompt.id}/`;
   const guide = PROMPT_GUIDES[prompt.id];
+  const appearances = PROMPT_APPEARANCES[prompt.id] ?? [];
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -85,7 +86,18 @@ export default async function PromptPage({ params }: { params: Promise<{ slug: s
         </div>
 
         <p className="small-note">Practice tiers run from Plankton ({TIERS[0].points} pts, most common) to One in a Krillion ({TIERS[TIERS.length - 1].points} pts, rarest). Exact and close matches are accepted — a leading “the” or “a” will not sink an answer.</p>
-
+      {appearances.length ? (
+          <section>
+            <h2>This prompt has appeared in</h2>
+            <ul className="archive">
+              {appearances.map(a => (
+                <li key={a.dive}>
+                  <a href={`/archive/dive-${a.dive}/`}>Dive #{a.dive} · prompt {a.index}</a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
         <section>
           <h2>More practice prompts</h2>
           <ul className="archive">
