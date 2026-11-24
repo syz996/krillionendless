@@ -82,11 +82,7 @@ export default async function PromptPage({ params }: { params: Promise<{ slug: s
           </tbody>
         </table></div>
 
-        <div className="tier-legend">
-          {TIERS.map(t => <p key={t.name}><strong>{t.name}</strong> · {t.points} pts ({t.label.toLowerCase()}) — {t.blurb}</p>)}
-        </div>
-
-        <p className="small-note">Practice tiers run from Plankton ({TIERS[0].points} pts, most common) to One in a Krillion ({TIERS[TIERS.length - 1].points} pts, rarest). Exact and close matches are accepted — a leading “the” or “a” will not sink an answer.</p>
+        <p className="small-note">Practice tiers run from Plankton (10 pts, most common) to One in a Krillion (100 pts, rarest) — see <a href="/guides/how-scoring-works/">how Krillion scoring works</a> for what each tier rewards. Exact and close matches are accepted — a leading “the” or “a” will not sink an answer.</p>
       {appearances.length ? (
           <section>
             <h2>This prompt has appeared in</h2>

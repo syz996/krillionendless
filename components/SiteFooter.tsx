@@ -10,6 +10,7 @@ export default function SiteFooter() {
           <a href="/archive/">Krillion archive</a>
           <a href="/krillion-unblocked/">Krillion unblocked</a>
           <a href="/prompts/">Prompts</a>
+          <a href="/guides/">Guides</a>
           <a href="/about/">About</a>
           <a href="/contact/">Contact</a>
           <a href="/privacy/">Privacy</a>

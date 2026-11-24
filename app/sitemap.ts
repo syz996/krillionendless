@@ -9,6 +9,8 @@ export const dynamic = 'force-static';
 const PROMPT_BANK_UPDATED = '2026-11-08';
 // 这一页内容独立于题库，单独记自己的最后修改日。
 const UNBLOCKED_UPDATED = '2026-11-08';
+// 指南文章手工维护，改一次更新一次这个日期。
+const GUIDES_UPDATED = '2026-11-24';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE.baseUrl.replace(/\/+$/, '');
@@ -31,6 +33,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
       lastModified: PROMPT_BANK_UPDATED,
     })),
+    { url: `${base}/guides/`, priority: 0.6, lastModified: GUIDES_UPDATED },
+    { url: `${base}/guides/how-scoring-works/`, priority: 0.6, lastModified: GUIDES_UPDATED },
+    { url: `${base}/guides/rare-answers-strategy/`, priority: 0.6, lastModified: GUIDES_UPDATED },
+    { url: `${base}/guides/daily-vs-unlimited/`, priority: 0.6, lastModified: GUIDES_UPDATED },
     { url: `${base}/krillion-unblocked/`, priority: 0.6, lastModified: UNBLOCKED_UPDATED },
     { url: `${base}/about/`, priority: 0.3 },
     { url: `${base}/contact/`, priority: 0.3 },
