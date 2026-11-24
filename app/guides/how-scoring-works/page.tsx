@@ -67,7 +67,7 @@ export default function HowScoringWorksPage() {
         <p>
           The <a href="/prompts/fruit/">Name a fruit</a> prompt is the clearest case because the
           category is familiar to everyone while the scoring spread is the full width of the table.
-          All 30 accepted answers sit across four of the six tiers:
+          All 30 accepted answers sit across five of the six tiers:
         </p>
 
         <ul>
