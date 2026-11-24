@@ -5,7 +5,7 @@ import SiteFooter from '../../../components/SiteFooter';
 
 const BASE = SITE.baseUrl.replace(/\/+$/, '');
 const CANONICAL = `${BASE}/guides/daily-vs-unlimited/`;
-const TITLE = 'Krillion Daily vs Endless Practice: What&rsquo;s the Difference';
+const TITLE = "Krillion Daily vs Endless Practice: What's the Difference";
 const DESCRIPTION =
   'The official daily dive, our unlimited practice mode and the answer archive explained — same seven prompts, different purpose, and why practice mode has no daily limit.';
 
