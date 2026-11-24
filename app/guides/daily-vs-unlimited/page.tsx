@@ -10,7 +10,7 @@ const DESCRIPTION =
   'The official daily dive, our unlimited practice mode and the answer archive explained — same seven prompts, different purpose, and why practice mode has no daily limit.';
 
 export const metadata: Metadata = {
-  title: 'Krillion Daily vs Endless Practice: What&rsquo;s the Difference',
+  title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: CANONICAL },
   robots: { index: true, follow: true },
